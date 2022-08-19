@@ -35,7 +35,11 @@ The following are some notable features that thjis particular installation uses
 * Voice alerting to start of rain (to take washing off the line) - unfortunately weather sdtation takes a few minutues to report
 * Voice notification for when leasving shopping mall
 * Slider to set minimum state of charge to Victron CCGX ESS
-* Ajust minimum SoC slider to match any chnages made on Victron CCGX side 
+* Ajust minimum SoC slider to match any chnages made on Victron CCGX side
+
+## Files
+* File in docker sub-folder is the docker-compose file I used to create the Home Assistant container
+* Other config files are inside the ha-config subfolder for HA. All are as named. The lovelace file is a copy of the Lovelace dashboard UI config to see how the cards are configured.
 
 ## ToDo Wishlist
 * Tweak load shedding card to show attributes and better status
