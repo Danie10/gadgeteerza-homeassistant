@@ -39,16 +39,15 @@ The following are some notable features that thjis particular installation uses
 
 ## Files
 * File in docker sub-folder is the docker-compose file I used to create the Home Assistant container
-* Other config files are inside the ha-config subfolder for HA. All are as named. The lovelace file is a copy of the Lovelace dashboard UI config to see how the cards are configured.
+* Other config files are inside the ha-configs subfolder for HA. All are as named. The lovelace file is a copy of the Lovelace dashboard UI config to see how the UI cards are configured, especially those with text replacement for numerical value data.
 
 ## ToDo Wishlist
 * Tweak load shedding card to show attributes and better status
 * Audio and notifications fro solar system alarms
-* Try link for clcik on Glances card to open full Glances web page
-* Tasmota inegration now showing the power draw or other attributes
+* Try link for click on Glances card to open full Glances web page
 * Automations for motion detected on cameras
 * Automation to adjust battery minimum SoC based on next day's weather forecast
-* Configure for remote access
+* Configure HA for remote access (ot just use VPN?)
 * Get Ambient weather card to show rain in mm instead of inches
 * Ingetration with Geyserwise hot water cylinder
 
@@ -65,3 +64,4 @@ Some resources I learnt a lot from include:
 * HAC Custom button possibility at https://github.com/custom-cards/button-card
 * RGB colour chart - https://www.rapidtables.com/web/color/RGB_Color.html
 * Restriction card confirmation at https://smarthomepursuits.com/how-to-create-a-lovelace-restriction-card-in-home-assistant/
+* Home Assistant docker image at https://www.home-assistant.io/installation/linux#docker-compose
