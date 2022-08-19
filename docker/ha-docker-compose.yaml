@@ -1,0 +1,21 @@
+version: '3'
+services:
+  homeassistant:
+    container_name: homeassistant
+    hostname: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    volumes:
+      - /srv/dev-disk-by-label-HD1/data/appdata/homeassistant/conf:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    ports:
+      - 8123:8123
+    environment:
+      - UID=998
+      - GID=100
+      - TZ=Africa/Johannesburg
+    labels:
+      # This is to ensure Watchtower alerts me to docker image updates
+      com.centurylinklabs.watchtower.enable: true
