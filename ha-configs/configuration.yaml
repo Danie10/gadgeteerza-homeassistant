@@ -1,0 +1,35 @@
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# Load Ambient weather station API data
+ambient_station:
+  api_key: !secret ambient_api_key
+  app_key: !secret ambient_app_key
+
+# APRS tracker
+device_tracker:
+  - platform: aprs
+    username: ZS1OSS  # or FO0BAR-1 to FO0BAR-15
+    callsigns:
+      - 'ZS1OSS*'
+      - 'ZS1DCC-1'
+
+# Enable backups
+backup:
+
+modbus: !include modbus.yaml
+#monitor_docker: !include monitor_docker.yaml
+
+# Load OurGroceries app API
+ourgroceries:
+  username: !secret our_groceries_username
+  password: !secret our_groceries_password

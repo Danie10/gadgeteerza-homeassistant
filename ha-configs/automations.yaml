@@ -1,0 +1,155 @@
+- id: '1660470443178'
+  alias: Danie leaving Canal Walk
+  description: Will trigger when Danie's iPhone leaves Canal Walk zone, and announce
+    it over lounge speaker
+  trigger:
+  - platform: zone
+    entity_id: device_tracker.danies_iphone_3
+    zone: zone.canal_walk
+    event: leave
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Hey+Chantel%2C+Danie+has+just+left+Canal+Walk
+      media_content_type: provider
+    metadata:
+      title: Hey Chantel, Danie has just left Canal Walk
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Hey+Chantel%2C+Danie+has+just+left+Canal+Walk
+  mode: single
+- id: '1660475333188'
+  alias: Say it started raining
+  description: If hourly rainfall moves above 0 then say it started raining now (only
+    when sun above horizon)
+  trigger:
+  - type: value
+    platform: device
+    device_id: 678c05c3b91925a60db50c480d33c096
+    entity_id: sensor.thornton_hourly_rain_rate
+    domain: sensor
+    above: 0
+  condition:
+  - condition: and
+    conditions:
+    - condition: sun
+      before: sunset
+      after: sunrise
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now
+      media_content_type: provider
+    metadata:
+      title: Hey it just started to rain just now
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now
+  mode: single
+- id: '1660505820459'
+  alias: VoIP Phone Offline
+  description: If presence lost from router notify it is offline
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.rt_ac88u_connected_devices
+    attribute: 00:15:65:BA:F9:CD/192.168.1.107/VoIP_Phone
+    from: '1'
+    to: '0'
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Hey+the+voice+over+IP+phone+has+gone+offline
+      media_content_type: provider
+    metadata:
+      title: Hey the voice over IP phone has gone offline
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Hey+the+voice+over+IP+phone+has+gone+offline
+  mode: single
+- id: '1660506156628'
+  alias: Lounge TV Turned Off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.rt_ac88u_connected_devices
+    attribute: E8:5B:5B:3C:70:79/192.168.1.191/Lounge_TV
+    from: '1'
+    to: '0'
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.bedroom_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Hey+the+lounge+TV+has+gone+offline
+      media_content_type: provider
+    metadata:
+      title: Hey the lounge TV has gone offline
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Hey+the+lounge+TV+has+gone+offline
+  mode: single
+- id: '1660744900739'
+  alias: Victron Modbus Write min SOC manual
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_number.multiplus_minimum_soc
+  condition: []
+  action:
+  - service: modbus.write_register
+    data_template:
+      address: 2901
+      slave: 100
+      hub: victron
+      value: '{{ states(''input_number.multiplus_minimum_soc'')|int * 10}}'
+  mode: single
+- id: '1660829853910'
+  alias: Set slider from minimum SoC
+  description: Sets slider to actual minimum SoC
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.victron_battery_min_soc
+  condition: []
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.multiplus_minimum_soc
+      value: '{{ states(''sensor.victron_battery_min_soc'')|int }}'
+  mode: single
