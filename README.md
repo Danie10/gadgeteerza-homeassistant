@@ -10,6 +10,8 @@ A key focus is on the Modbus TCP interface with a Victron slar system, with a Ba
 
 This is not a 'how-to' guide, but intended more as a reference for others to learn from the syntax and formatting of the code, or for accessing Victron or Balancell battery Modbus address registers.
 
+You can watch a video at https://www.youtube.com/watch?v=dlvlhou70VA about my initial setup of the dashboards.
+
 ## Key features and Integrations
 The following are some notable features that thjis particular installation uses
 * Modbus TCP interface to a Victron CCGX with a Multiplus II inverter/charger, and SmartSolar charger
