@@ -9,6 +9,7 @@ tts:
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+sensor: !include sensors.yaml
 
 # Load Ambient weather station API data
 ambient_station:

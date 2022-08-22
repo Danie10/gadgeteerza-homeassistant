@@ -1,0 +1,14 @@
+# Create custom sensor to output conversion as total potential max of forecast for panel area
+# Panel is 330W max for 1.94628m2 (8 panels = 15.57 m2 and 2,640 W max)
+# Efficiency of panel is 16.97% (Scale of 0.1697 of forecast as their potential maximum)
+# Weather station actual measured radiation 'sensor.thornton_solar_rad' is W/m2 (ignores efficiency of panels)
+# Total (W) = W/m2 * panel area * efficiency
+- platform: template
+  sensors:
+    radiation_converted:
+      friendly_name: "Forecasted solar radiation W/m2 converted to Total"
+      unit_of_measurement: "W"
+      icon_template: mdi:sun-wireless
+      device_class: power
+      value_template: >-
+          {{ states('sensor.thornton_solar_rad')|int * 15.57 * 0.1697}}
