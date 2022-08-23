@@ -30,14 +30,16 @@ The following are some notable features that thjis particular installation uses
 * UptimeRobot to monitor key websites
 * AdGuard Home for performance of DNS
 * OurGroceries application
+* Mini graph showing actual solar charger yield comparted to weather station's actual measured radiation in W/m2, and adjusted for panel area and wattage. Also includes forecasted solar for the day.
 * Home Assistant Community Store (HACS) integrations and frontend UI
 * HA running in a Docker container
 
 ## Automations
 * Voice alerting to start of rain (to take washing off the line) - unfortunately weather sdtation takes a few minutues to report
-* Voice notification for when leasving shopping mall
-* Slider to set minimum state of charge to Victron CCGX ESS
-* Ajust minimum SoC slider to match any chnages made on Victron CCGX side
+* Voice notification to home speaker for when I leave the shopping mall
+* Slider to set minimum state of charge back to Victron CCGX ESS
+* Ajust minimum SoC slider to match any changes made on Victron CCGX side
+* Alerts when hot water cylinder has heated up and is ready based on timers looking at grid power usage
 
 ## Files
 * File in docker sub-folder is the docker-compose file I used to create the Home Assistant container
@@ -49,9 +51,8 @@ The following are some notable features that thjis particular installation uses
 * Try link for click on Glances card to open full Glances web page
 * Automations for motion detected on cameras
 * Automation to adjust battery minimum SoC based on next day's weather forecast
-* Configure HA for remote access (ot just use VPN?)
 * Get Ambient weather card to show rain in mm instead of inches
-* Ingetration with Geyserwise hot water cylinder
+* Ingetration with Geyserwise hot water cylinder heating
 
 ## Credits
 Some resources I learnt a lot from include:
