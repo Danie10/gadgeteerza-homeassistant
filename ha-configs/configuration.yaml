@@ -1,6 +1,14 @@
-
 # Loads default set of integrations. Do not remove.
 default_config:
+
+# Allows local Nginx Proxy Manager
+# 2FA enabled already too
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.17.0.0/24
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
 
 # Text to speech
 tts:

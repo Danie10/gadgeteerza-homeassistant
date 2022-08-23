@@ -4,7 +4,7 @@
     it over lounge speaker
   trigger:
   - platform: zone
-    entity_id: device_tracker.danies_iphone_3
+    entity_id: device_tracker.danies_iphone_3_2
     zone: zone.canal_walk
     event: leave
   condition: []
@@ -62,6 +62,11 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now
+  - service: notify.mobile_app_danies_iphone_3
+    data:
+      message: Hey Danie, it's just started to rain, is there washing on the line
+        still?
+      title: Alert from Home Assistant
   mode: single
 - id: '1660505820459'
   alias: VoIP Phone Offline
@@ -92,6 +97,10 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Hey+the+voice+over+IP+phone+has+gone+offline
+  - service: notify.mobile_app_danies_iphone_3
+    data:
+      title: Alert from Home Assistant
+      message: VoIP phone has left the network, maybe check it's battery
   mode: single
 - id: '1660506156628'
   alias: Lounge TV Turned Off
@@ -152,4 +161,96 @@
     data_template:
       entity_id: input_number.multiplus_minimum_soc
       value: '{{ states(''sensor.victron_battery_min_soc'')|int }}'
+  mode: single
+- id: '1661195626346'
+  alias: Goodwood DRM's APRS beacon is offline
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: device_tracker.zs1dcc_1
+    zone: zone.goodwood_drm
+    event: leave
+  condition: []
+  action:
+  - service: notify.mobile_app_danies_iphone_3
+    data:
+      message: Goodwood APRS gone offline
+      title: Alert from Home Assistant
+  mode: single
+- id: '1661197173507'
+  alias: Danie leaves his Mom
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 2fb75ce303918244ed4b19315c8fdcce
+    domain: device_tracker
+    entity_id: device_tracker.danies_iphone_3_2
+    type: leaves
+    zone: zone.brown_annie_lawrence_home
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Hey%2C+Danie+has+just+left+his+mom+now
+      media_content_type: provider
+    metadata:
+      title: Hey, Danie has just left his mom now
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Hey%2C+Danie+has+just+left+his+mom+now
+  mode: single
+- id: '1661198337205'
+  alias: Shower hot water ready
+  description: Trigger if grid power exceeds 1,500W for 15 minutes. Any other device
+    is used less than 5 mins, and stove is usually running on solar or battery power.
+    Then when usage dropped to below 1100W for at least a minute, trigger action to
+    say water ready.
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.power_usage_696087
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+    above: '1500'
+  condition: []
+  action:
+  - wait_for_trigger:
+    - platform: numeric_state
+      entity_id: sensor.power_usage_696087
+      for:
+        hours: 0
+        minutes: 1
+        seconds: 0
+      below: '1100'
+    continue_on_timeout: false
+  - service: notify.mobile_app_danies_iphone_3
+    data:
+      message: Hot water should now be ready
+      title: Alert from Home Assistant
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Shower+hot+water+should+be+ready+now%21
+      media_content_type: provider
+    metadata:
+      title: Shower hot water should be ready now!
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Shower+hot+water+should+be+ready+now%21
   mode: single
