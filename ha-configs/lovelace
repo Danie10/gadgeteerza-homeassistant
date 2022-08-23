@@ -9,13 +9,38 @@
           "title": "Home",
           "cards": [
             {
-              "type": "gauge",
-              "entity": "sensor.monthly_energy_cost",
-              "name": "Monthly Geyser Cost",
-              "unit": "Rand",
-              "min": 0,
-              "max": 1000,
-              "needle": true
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.monthly_energy_cost",
+                  "name": "Monthly Cost",
+                  "unit": "Rand",
+                  "min": 0,
+                  "max": 1000,
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 600,
+                    "red": 800
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.power_usage_696087",
+                  "name": "Eskom Grid Power",
+                  "unit": "W",
+                  "min": 0,
+                  "max": 8000,
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 500,
+                    "red": 1100
+                  }
+                }
+              ],
+              "title": "Eskom Grid Power"
             },
             {
               "type": "gauge",
@@ -32,8 +57,7 @@
               "show_name": true,
               "camera_view": "live",
               "type": "picture-entity",
-              "entity": "camera.front_gate",
-              "image": "https://demo.home-assistant.io/stub_config/bedroom.png"
+              "entity": "camera.front_gate"
             },
             {
               "show_current": true,
@@ -51,7 +75,8 @@
               ],
               "dark_mode": true,
               "title": "Where is Danie?",
-              "hours_to_show": 1
+              "hours_to_show": 1,
+              "default_zoom": 14
             },
             {
               "type": "vertical-stack",
@@ -101,8 +126,8 @@
                 {
                   "type": "entity",
                   "entity": "sensor.coct_loadshedding_stage",
-                  "name": "Next Stage Starting",
-                  "attribute": "next_stage_start_time"
+                  "name": "Current Stage",
+                  "attribute": "stage_coct"
                 },
                 {
                   "type": "entity",
@@ -112,8 +137,8 @@
                 {
                   "type": "entity",
                   "entity": "sensor.coct_loadshedding_stage",
-                  "attribute": "coct_area",
-                  "name": "CoCT Area"
+                  "attribute": "next_load_shedding_slot",
+                  "name": "Next Slot"
                 }
               ],
               "title": "Cape Town Load Shedding"
@@ -300,6 +325,18 @@
                   }
                 }
               ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.cert_expiry_timestamp_gadgeteer_co_za"
+                },
+                {
+                  "entity": "sensor.cert_expiry_timestamp_gadgeteerza_co_za"
+                }
+              ],
+              "title": "SSL Domain Certificates"
             },
             {
               "type": "custom:mini-graph-card",
@@ -947,11 +984,15 @@
                   "entities": [
                     {
                       "entity": "sensor.pv_power_charger",
-                      "name": "Solar Yield"
+                      "name": "Solar Charger Yield"
                     },
                     {
-                      "entity": "sensor.thornton_solar_rad",
-                      "name": "Solar radiation"
+                      "entity": "sensor.radiation_converted",
+                      "name": "W/Station Yield"
+                    },
+                    {
+                      "entity": "sensor.power_production_now",
+                      "name": "Forecast"
                     }
                   ],
                   "icon": "hass:power",
@@ -959,6 +1000,7 @@
                   "line_width": 2,
                   "align_icon": "right",
                   "align_state": "center",
+                  "decimals": 0,
                   "show": {
                     "fill": true,
                     "labels": true,
