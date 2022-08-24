@@ -74,11 +74,9 @@
   trigger:
   - platform: state
     entity_id:
-    - sensor.rt_ac88u_connected_devices
-    attribute: 00:15:65:BA:F9:CD/192.168.1.107/VoIP_Phone
-    from: '1'
-    to: '0'
-  condition: []
+    - device_tracker.voip_phone
+  condition: '{{ (now() - state_attr(''device_tracker.voip_phone'', ''last_activity'')
+    | as_local > timedelta(minutes=10)) }}'
   action:
   - service: media_player.play_media
     target:
@@ -164,12 +162,23 @@
   mode: single
 - id: '1661195626346'
   alias: Goodwood DRM's APRS beacon is offline
-  description: ''
+  description: Sent alert notification if tracker state changes to 'Away' for longer
+    than 31 minutes (it beacons every 15 minutes). As it does not leave the zone and
+    beacon a different GPS location, it never actually triggers the 'left zone' trigger.
   trigger:
   - platform: zone
     entity_id: device_tracker.zs1dcc_1
     zone: zone.goodwood_drm
     event: leave
+    enabled: false
+  - platform: state
+    entity_id:
+    - device_tracker.zs1dcc_1
+    to: Away
+    for:
+      hours: 0
+      minutes: 31
+      seconds: 0
   condition: []
   action:
   - service: notify.mobile_app_danies_iphone_3

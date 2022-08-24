@@ -24,7 +24,7 @@ ambient_station:
   api_key: !secret ambient_api_key
   app_key: !secret ambient_app_key
 
-# APRS tracker
+# APRS tracker devices
 device_tracker:
   - platform: aprs
     username: ZS1OSS  # or FO0BAR-1 to FO0BAR-15
@@ -42,3 +42,4 @@ modbus: !include modbus.yaml
 ourgroceries:
   username: !secret our_groceries_username
   password: !secret our_groceries_password
+

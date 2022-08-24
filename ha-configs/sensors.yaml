@@ -1,3 +1,5 @@
+## sensors.yaml
+
 # Create custom sensor to output conversion as total potential max of forecast for panel area
 # Panel is 330W max for 1.94628m2 (8 panels = 15.57 m2 and 2,640 W max)
 # Efficiency of panel is 16.97% (Scale of 0.1697 of forecast as their potential maximum)
@@ -12,3 +14,34 @@
       device_class: power
       value_template: >-
           {{ states('sensor.thornton_solar_rad')|int * 15.57 * 0.1697}}
+          
+# Weather Underground PWS
+- platform: wundergroundpws
+  api_key: !secret wunderground_api
+  pws_id: !secret wunderground_station
+  numeric_precision: decimal
+  monitored_conditions:
+    - temp
+    - dewpt
+    - heatIndex
+    - solarRadiation
+    - uv
+    - windChill
+    - precipTotal
+    - precipRate
+    - windGust
+    - windSpeed
+    - weather_1d
+    - weather_1n
+    - weather_2d
+    - weather_2n
+    - precip_1d
+    - precip_chance_1d
+    - temp_high_1d
+    - temp_low_1d
+    - wind_1d
+    - precip_2d
+    - precip_chance_2d
+    - temp_high_2d
+    - temp_low_2d
+    - wind_2d
