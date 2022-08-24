@@ -15,31 +15,37 @@ You can watch a video at https://www.youtube.com/watch?v=dlvlhou70VA about my in
 ## Key features and Integrations
 The following are some notable features that thjis particular installation uses
 * Modbus TCP interface to a Victron CCGX with a Multiplus II inverter/charger, and SmartSolar charger
-* BalanceCell battery - https://balancell.com/products/balancell-p26-solar/
+* BalanceCell battery stats read - https://balancell.com/products/balancell-p26-solar/
 * Gauges tuned for severity colours
 * Ellies Efergy Engage hub energy monitoring - https://engage.efergy.com/
-* Tasmota firmware on Sonoff WiFi switch via MQTT
+* Tasmota firmware on Sonoff WiFi switch via MQTT showing power usage stats, and switch control
 * Glances performance stats from two servers
-* Reolink WiFi IP camera
-* Apple iPhone
+* Reolink WiFi IP cameras
+* Apple iPhone and iPad status, location, etc
 * Ambient weather station
+* Weather Underground Personal Weather Station stats
 * City of Cape Town load shedding
 * Ring doorbell
 * Google Cast for voice outputs
-* Asus router for alerting VoIP phone battery is flat
+* Asus router for alerting VoIP phone left network (battery is flat)
 * UptimeRobot to monitor key websites
 * AdGuard Home for performance of DNS
-* OurGroceries application
+* Domain name certificate expiries
+* OurGroceries application (trouble showing lists though)
+* Google Calendar showing next few days' schedule
 * Mini graph showing actual solar charger yield comparted to weather station's actual measured radiation in W/m2, and adjusted for panel area and wattage. Also includes forecasted solar for the day.
+* Restrictions set with warnings before some switches are toggled on the dashboard
 * Home Assistant Community Store (HACS) integrations and frontend UI
 * HA running in a Docker container
 
 ## Automations
-* Voice alerting to start of rain (to take washing off the line) - unfortunately weather sdtation takes a few minutues to report
+* Voice alerting to start of rain (to take washing off the line) - unfortunately weather station takes a few minutues to report
 * Voice notification to home speaker for when I leave the shopping mall
 * Slider to set minimum state of charge back to Victron CCGX ESS
 * Ajust minimum SoC slider to match any changes made on Victron CCGX side
-* Alerts when hot water cylinder has heated up and is ready based on timers looking at grid power usage
+* Alerts when hot water cylinder reached temperature and is ready, based on timers looking at grid power usage dropping after 10 minutes
+* VoIP phone battery flat by checking when it's 'last_activity' is longer than 10 minutes ago
+* Ham radio APRS beacon going offline (can't use left Zone as coordinates never change to elsewhere) so looks at a status chnage to 'Away' for longer tahn 31 minutes 
 
 ## Files
 * File in docker sub-folder is the docker-compose file I used to create the Home Assistant container
@@ -52,7 +58,7 @@ The following are some notable features that thjis particular installation uses
 * Automations for motion detected on cameras
 * Automation to adjust battery minimum SoC based on next day's weather forecast
 * Get Ambient weather card to show rain in mm instead of inches
-* Ingetration with Geyserwise hot water cylinder heating
+* Integration with Geyserwise hot water cylinder heating - no comms so may need a Geyserwise Max IoT device instead
 
 ## Credits
 Some resources I learnt a lot from include:
