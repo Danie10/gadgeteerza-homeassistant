@@ -45,7 +45,8 @@ The following are some notable features that thjis particular installation uses
 * Ajust minimum SoC slider to match any changes made on Victron CCGX side
 * Alerts when hot water cylinder reached temperature and is ready, based on timers looking at grid power usage dropping after 10 minutes
 * VoIP phone battery flat by checking when it's 'last_activity' is longer than 10 minutes ago
-* Ham radio APRS beacon going offline (can't use left Zone as coordinates never change to elsewhere) so looks at a status chnage to 'Away' for longer tahn 31 minutes 
+* Ham radio APRS beacon going offline (can't use left Zone as coordinates never change to elsewhere) so looks at a status change to 'Away' for longer than 31 minutes
+* Some audio message alerts for Victron system alarms
 
 ## Files
 * File in docker sub-folder is the docker-compose file I used to create the Home Assistant container
@@ -53,12 +54,12 @@ The following are some notable features that thjis particular installation uses
 
 ## ToDo Wishlist
 * Tweak load shedding card to show attributes and better status
-* Audio and notifications fro solar system alarms
 * Try link for click on Glances card to open full Glances web page
 * Automations for motion detected on cameras
 * Automation to adjust battery minimum SoC based on next day's weather forecast
 * Get Ambient weather card to show rain in mm instead of inches
 * Integration with Geyserwise hot water cylinder heating - no comms so may need a Geyserwise Max IoT device instead
+* Integration with Texecom burglar alarm system if possible 
 
 ## Credits
 Some resources I learnt a lot from include:
