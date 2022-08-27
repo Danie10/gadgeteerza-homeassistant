@@ -100,36 +100,6 @@
       title: Alert from Home Assistant
       message: VoIP phone has left the network, maybe check it's battery
   mode: single
-- id: '1660506156628'
-  alias: Lounge TV Turned Off
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.rt_ac88u_connected_devices
-    attribute: E8:5B:5B:3C:70:79/192.168.1.191/Lounge_TV
-    from: '1'
-    to: '0'
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.bedroom_speaker
-    data:
-      media_content_id: media-source://tts/google_translate?message=Hey+the+lounge+TV+has+gone+offline
-      media_content_type: provider
-    metadata:
-      title: Hey the lounge TV has gone offline
-      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
-      media_class: app
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://tts
-      - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Hey+the+lounge+TV+has+gone+offline
-  mode: single
 - id: '1660744900739'
   alias: Victron Modbus Write min SOC manual
   description: ''
@@ -190,12 +160,10 @@
   alias: Danie leaves his Mom
   description: ''
   trigger:
-  - platform: device
-    device_id: 2fb75ce303918244ed4b19315c8fdcce
-    domain: device_tracker
-    entity_id: device_tracker.danies_iphone_3_2
-    type: leaves
+  - platform: zone
+    entity_id: device_tracker.danies_iphone_3
     zone: zone.brown_annie_lawrence_home
+    event: leave
   condition: []
   action:
   - service: media_player.play_media
@@ -262,4 +230,113 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Shower+hot+water+should+be+ready+now%21
+  mode: single
+- id: '1661610916620'
+  alias: Victron AC Overload Alarm
+  description: 'Notification if AC overload alarm is triggered any time '
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.overload_alarm
+    to: '2'
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Caution+an+alarm+has+been+triggered%21+You+are+using+too+much+power+off+the+inverter%21
+      media_content_type: provider
+    metadata:
+      title: Caution an alarm has been triggered! You are using too much power off
+        the inverter!
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Caution+an+alarm+has+been+triggered%21+You+are+using+too+much+power+off+the+inverter%21
+  mode: single
+- id: '1661611188926'
+  alias: Grid Lost Notification
+  description: Notify if grid power lost during normal daily usage hours
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.grid_lost_alarm
+    to: '2'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+  condition:
+  - condition: time
+    after: 08:30:00
+    before: '23:00:00'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+lost...+use+power+sparingly+please
+      media_content_type: provider
+    metadata:
+      title: The grid power has just been lost... use power sparingly please
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+lost...+use+power+sparingly+please
+  mode: single
+- id: '1661611664417'
+  alias: Warn of high AC load
+  description: Audible warning if power usage approaching 5 kW inverter average load
+    limit. Let amount exceed for 15 seconds as peaks can be higher for short periods.
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.ac_loads
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+    above: '4700'
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Power+usage+approaching+inverter+limit.+Check+Victron+display+on+kitchen+wall.
+      media_content_type: provider
+    metadata:
+      title: Warning! Power usage approaching inverter limit. Check Victron display
+        on kitchen wall.
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Power+usage+approaching+inverter+limit.+Check+Victron+display+on+kitchen+wall.
+  - service: notify.mobile_app_danies_iphone_3
+    data:
+      message: AC power usage approaching inverter limit
+      title: Alert from Home Assistant
   mode: single

@@ -144,21 +144,6 @@
               "title": "Cape Town Load Shedding"
             },
             {
-              "camera_view": "auto",
-              "type": "picture-glance",
-              "title": "WiFi Camera",
-              "entities": [
-                {
-                  "entity": "binary_sensor.wifi_camera_motion"
-                },
-                {
-                  "entity": "sensor.wifi_camera_last_event"
-                }
-              ],
-              "camera_image": "camera.wifi_camera",
-              "entity": "camera.wifi_camera"
-            },
-            {
               "type": "horizontal-stack",
               "cards": [
                 {
@@ -201,6 +186,73 @@
                 }
               ],
               "title": "Cape Town Load Shedding"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "sensor.our_groceries"
+              ]
+            },
+            {
+              "initial_view": "listDay",
+              "type": "calendar",
+              "entities": [
+                "calendar.dvdmerwe_gmail_com",
+                "calendar.chantel_swart",
+                "calendar.holidays_in_south_africa"
+              ],
+              "title": "Our Schedule"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.wupws_weather_1n"
+                },
+                {
+                  "entity": "sensor.wupws_weather_2d"
+                },
+                {
+                  "entity": "sensor.wupws_heatindex"
+                },
+                {
+                  "entity": "sensor.wupws_temp_high_1d"
+                },
+                {
+                  "entity": "sensor.wupws_temp_high_2d"
+                },
+                {
+                  "entity": "sensor.wupws_temp_low_1d"
+                },
+                {
+                  "entity": "sensor.wupws_temp_low_2d"
+                },
+                {
+                  "entity": "sensor.wupws_precip_1d"
+                },
+                {
+                  "entity": "sensor.wupws_preciptotal"
+                },
+                {
+                  "entity": "sensor.wupws_precip_2d"
+                },
+                {
+                  "entity": "sensor.wupws_solarradiation"
+                }
+              ],
+              "title": "Weather Underground",
+              "state_color": true
+            },
+            {
+              "camera_view": "auto",
+              "type": "picture-glance",
+              "title": "WiFi Camera",
+              "entities": [
+                {
+                  "entity": "camera.wifi_camera"
+                }
+              ],
+              "camera_image": "camera.wifi_camera"
             }
           ]
         },
@@ -336,7 +388,7 @@
                   "entity": "sensor.cert_expiry_timestamp_gadgeteerza_co_za"
                 }
               ],
-              "title": "SSL Domain Certificates"
+              "title": "Domain Name Certificates Expiry"
             },
             {
               "type": "custom:mini-graph-card",
@@ -362,6 +414,36 @@
                 "extrema": true
               },
               "hours_to_show": 168
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.danie10_gadgeteerza_homeassistant_latest_commit",
+                  "name": "Latest commit"
+                },
+                {
+                  "entity": "sensor.danie10_gadgeteerza_homeassistant_latest_discussion",
+                  "name": "Latest discussion"
+                },
+                {
+                  "entity": "sensor.danie10_gadgeteerza_homeassistant_latest_issue",
+                  "name": "Latest issue"
+                },
+                {
+                  "entity": "sensor.danie10_gadgeteerza_homeassistant_latest_pull_request",
+                  "name": "Latest pull request"
+                },
+                {
+                  "entity": "sensor.danie10_gadgeteerza_homeassistant_latest_release",
+                  "name": "Latest release"
+                },
+                {
+                  "entity": "sensor.danie10_gadgeteerza_homeassistant_latest_tag",
+                  "name": "Latest tag"
+                }
+              ],
+              "title": "Danie10/gadgeteerza-homeassistant"
             }
           ]
         },
@@ -381,11 +463,25 @@
               "title": "APRS Devices"
             },
             {
-              "type": "entities",
-              "entities": [
+              "type": "vertical-stack",
+              "cards": [
                 {
-                  "entity": "switch.ham_radios_ham_radios",
-                  "name": "Ham Radios"
+                  "type": "custom:restriction-card",
+                  "duration": 10,
+                  "restrictions": {
+                    "confirm": {
+                      "text": "Are you SURE? This will turn off radios!"
+                    }
+                  },
+                  "card": {
+                    "type": "entities",
+                    "entities": [
+                      {
+                        "entity": "switch.ham_radios_ham_radios",
+                        "name": "Ham Radios"
+                      }
+                    ]
+                  }
                 }
               ],
               "title": "Ham Radios Power Switch"
@@ -509,7 +605,7 @@
                 {
                   "type": "gauge",
                   "entity": "sensor.battery_power",
-                  "name": "Battery Net",
+                  "name": "Battery Net Power",
                   "min": -5000,
                   "max": 5000,
                   "severity": {
@@ -884,7 +980,7 @@
                     {
                       "value": 0,
                       "icon": "mdi:battery-off-outline",
-                      "label": "Unused/Disdabled"
+                      "label": "Unused/Disabled"
                     },
                     {
                       "value": 1,
@@ -897,9 +993,19 @@
                       "label": "Self-Consumption"
                     },
                     {
+                      "value": 3,
+                      "icon": "mdi:battery-90",
+                      "label": "Self-Consumption"
+                    },
+                    {
+                      "value": 4,
+                      "icon": "mdi:battery-90",
+                      "label": "Optimised with Battery Life"
+                    },
+                    {
                       "value": 5,
                       "icon": "mdi:battery-minus-outline",
-                      "label": "Discharge"
+                      "label": "Discharge Disabled"
                     },
                     {
                       "value": 6,
@@ -909,7 +1015,7 @@
                     {
                       "value": 7,
                       "icon": "mdi:battery-30",
-                      "label": "Sustain"
+                      "label": "Sustain Battery"
                     },
                     {
                       "value": 9,
@@ -919,12 +1025,12 @@
                     {
                       "value": 10,
                       "icon": "mdi:battery-heart",
-                      "label": "Optimised with Battery Life"
+                      "label": "Optimised without Battery Life"
                     },
                     {
                       "value": 11,
                       "icon": "mdi:battery-outline",
-                      "label": "Optimised without Battery Life"
+                      "label": "????????"
                     }
                   ],
                   "size": "15%",
