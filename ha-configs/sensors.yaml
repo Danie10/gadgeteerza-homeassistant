@@ -45,3 +45,40 @@
     - temp_high_2d
     - temp_low_2d
     - wind_2d
+
+# RSS Feed from https://expiringonnetflix.blogspot.com/
+#- platform: feedparser
+#  name: Leaving Netflix
+#  feed_url: 'https://expiringonnetflix.blogspot.com/feeds/posts/default?alt=rss'
+#  date_format: '%a, %d %b %Y %H:%M:%S %Z'
+#  scan_interval:
+#    hours: 6
+#  inclusions:
+#    - title
+#    - link
+#    - description
+#    - image
+#    - pubDate
+    
+# RSS Feed from https://www.whats-on-netflix.com/leaving-soon/
+# Installed Feedparser via HACS and rebooted
+# Needed custom:list-card so downloaded list-card.js raw file from
+# https://github.com/iantrich/list-card, and place under the /www/community subdirectory.
+# Then import it as a new resource in HA's Settings / Dashboards / 3 dot menu top right, 
+# add resource, and a Javascript module, specify relative path to that .js file
+# eg. `/hacsfiles/list-card.js`, and then clear browser cache, and refresh browser
+- platform: feedparser
+  name: Leaving Netflix
+  feed_url: 'https://www.whats-on-netflix.com/leaving-soon/feed/'
+  date_format: '%a, %d %b %Y %H:%M:%S %Z'
+  scan_interval:
+    hours: 6
+  inclusions:
+    - title
+    - link
+    - description
+    - image
+    - pubDate
+    
+    
+    

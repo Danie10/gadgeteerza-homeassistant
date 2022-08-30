@@ -253,6 +253,47 @@
                 }
               ],
               "camera_image": "camera.wifi_camera"
+            },
+            {
+              "type": "custom:our-groceries-card",
+              "title": "Shopping Lists",
+              "show_header": true,
+              "entity": "sensor.our_groceries",
+              "show_crossed_off": false,
+              "sort_by_name": true,
+              "hide_empty_lists": true,
+              "show_lists": [
+                "Weekly Groceries",
+                "Dis-Chem"
+              ]
+            },
+            {
+              "type": "custom:list-card",
+              "entity": "sensor.leaving_netflix",
+              "title": "Leaving Netflix 2",
+              "icon": "mdi:rss",
+              "row_limit": 12,
+              "feed_attribute": "entries",
+              "columns": [
+                {
+                  "title": "Image",
+                  "type": "image",
+                  "width": 60,
+                  "height": 60,
+                  "add_link": "link",
+                  "field": "image"
+                },
+                {
+                  "title": "Title",
+                  "field": "title",
+                  "add_link": "link",
+                  "style": [
+                    {
+                      "white-space": "wrap"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
