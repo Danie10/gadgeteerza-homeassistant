@@ -33,6 +33,7 @@ The following are some notable features that thjis particular installation uses
 * Domain name certificate expiries
 * OurGroceries application (trouble showing lists though)
 * Google Calendar showing next few days' schedule
+* RSS feed showing Netflix titles leaving soon
 * Mini graph showing actual solar charger yield comparted to weather station's actual measured radiation in W/m2, and adjusted for panel area and wattage. Also includes forecasted solar for the day.
 * Restrictions set with warnings before some switches are toggled on the dashboard
 * Home Assistant Community Store (HACS) integrations and frontend UI
@@ -59,7 +60,8 @@ The following are some notable features that thjis particular installation uses
 * Automation to adjust battery minimum SoC based on next day's weather forecast
 * Get Ambient weather card to show rain in mm instead of inches
 * Integration with Geyserwise hot water cylinder heating - no comms so may need a Geyserwise Max IoT device instead
-* Integration with Texecom burglar alarm system if possible 
+* Integration with Texecom burglar alarm system if possible
+* Fix Our Groceries lists not displaying
 
 ## Credits
 Some resources I learnt a lot from include:
