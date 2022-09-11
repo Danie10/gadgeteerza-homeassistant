@@ -44,10 +44,11 @@ The following are some notable features that thjis particular installation uses
 * Voice notification to home speaker for when I leave the shopping mall
 * Slider to set minimum state of charge back to Victron CCGX ESS
 * Ajust minimum SoC slider to match any changes made on Victron CCGX side
-* Alerts when hot water cylinder reached temperature and is ready, based on timers looking at grid power usage dropping after 10 minutes
+* Alerts when hot water cylinder reached temperature and is ready, based on timers looking at grid power usage dropping after 15 minutes
 * VoIP phone battery flat by checking when it's 'last_activity' is longer than 10 minutes ago
-* Ham radio APRS beacon going offline (can't use left Zone as coordinates never change to elsewhere) so looks at a status change to 'Away' for longer than 31 minutes
+* Ham radio APRS beacon going offline (can't use left Zone as coordinates never change to elsewhere) so looks at a status change to 'Away' for longer than 31 minutes (still weaking this)
 * Some audio message alerts for Victron system alarms
+* Audible warning when AC load on the inverter exceeds 4,7 kWh
 
 ## Files
 * File in docker sub-folder is the docker-compose file I used to create the Home Assistant container
@@ -61,7 +62,7 @@ The following are some notable features that thjis particular installation uses
 * Get Ambient weather card to show rain in mm instead of inches
 * Integration with Geyserwise hot water cylinder heating - no comms so may need a Geyserwise Max IoT device instead
 * Integration with Texecom burglar alarm system if possible
-* Fix Our Groceries lists not displaying
+* Our Groceries shopping lists are showing and working now, but filtering on specific lists seems broken upstream
 
 ## Credits
 Some resources I learnt a lot from include:
