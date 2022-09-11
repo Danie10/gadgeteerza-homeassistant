@@ -116,78 +116,6 @@
               "title": "Our Weather Station Temperatures"
             },
             {
-              "type": "vertical-stack",
-              "cards": [
-                {
-                  "type": "entity",
-                  "entity": "sensor.coct_loadshedding_load_shedding_active",
-                  "name": "Load Shedding Active?"
-                },
-                {
-                  "type": "entity",
-                  "entity": "sensor.coct_loadshedding_stage",
-                  "name": "Current Stage",
-                  "attribute": "stage_coct"
-                },
-                {
-                  "type": "entity",
-                  "entity": "sensor.coct_loadshedding_next_load_shedding_slot",
-                  "name": "Next Load Shedding Slot"
-                },
-                {
-                  "type": "entity",
-                  "entity": "sensor.coct_loadshedding_stage",
-                  "attribute": "next_load_shedding_slot",
-                  "name": "Next Slot"
-                }
-              ],
-              "title": "Cape Town Load Shedding"
-            },
-            {
-              "type": "horizontal-stack",
-              "cards": [
-                {
-                  "type": "custom:button-card",
-                  "icon": "mdi:transmission-tower",
-                  "entity": "sensor.coct_loadshedding_stage",
-                  "attribute": "next_stage_start_time",
-                  "name": "Next Stage Start",
-                  "show_state": true,
-                  "show_name": true,
-                  "show_label": true,
-                  "size": "15%",
-                  "styles": null,
-                  "height": "100px"
-                },
-                {
-                  "type": "custom:button-card",
-                  "icon": "mdi:transmission-tower",
-                  "entity": "sensor.coct_loadshedding_load_shedding_active",
-                  "name": "Active",
-                  "show_state": false,
-                  "show_name": true,
-                  "show_label": true,
-                  "size": "15%",
-                  "styles": null,
-                  "height": "100px",
-                  "state": [
-                    {
-                      "value": "False",
-                      "color": "green",
-                      "label": "No"
-                    },
-                    {
-                      "value": "True",
-                      "color": "red",
-                      "label": "Yes",
-                      "icon": "mdi:transmission-tower-off"
-                    }
-                  ]
-                }
-              ],
-              "title": "Cape Town Load Shedding"
-            },
-            {
               "type": "entities",
               "entities": [
                 "sensor.our_groceries"
@@ -261,11 +189,7 @@
               "entity": "sensor.our_groceries",
               "show_crossed_off": false,
               "sort_by_name": true,
-              "hide_empty_lists": true,
-              "show_lists": [
-                "Weekly Groceries",
-                "Dis-Chem"
-              ]
+              "hide_empty_lists": true
             },
             {
               "type": "custom:list-card",
@@ -317,7 +241,8 @@
                     "green": 0,
                     "yellow": 25,
                     "red": 60
-                  }
+                  },
+                  "name": "Ping"
                 },
                 {
                   "type": "gauge",

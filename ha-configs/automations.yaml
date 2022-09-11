@@ -62,10 +62,9 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now
-  - service: notify.mobile_app_danies_iphone_3
+  - service: notify.mobile_app_iphone
     data:
-      message: Hey Danie, it's just started to rain, is there washing on the line
-        still?
+      message: Hey it has just started raining!
       title: Alert from Home Assistant
   mode: single
 - id: '1660505820459'
@@ -75,8 +74,10 @@
   - platform: state
     entity_id:
     - device_tracker.voip_phone
-  condition: '{{ (now() - state_attr(''device_tracker.voip_phone'', ''last_activity'')
-    | as_local > timedelta(minutes=10)) }}'
+  condition:
+  - condition: template
+    value_template: '{{ (now() - state_attr(''device_tracker.voip_phone'', ''last_activity'')
+      | as_local > timedelta(minutes=10)) }}'
   action:
   - service: media_player.play_media
     target:
@@ -95,10 +96,10 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Hey+the+voice+over+IP+phone+has+gone+offline
-  - service: notify.mobile_app_danies_iphone_3
+  - service: notify.mobile_app_danies_iphone
     data:
+      message: Hey the VoIP phone has gone offline. Check it's battery.
       title: Alert from Home Assistant
-      message: VoIP phone has left the network, maybe check it's battery
   mode: single
 - id: '1660744900739'
   alias: Victron Modbus Write min SOC manual
@@ -136,24 +137,19 @@
     than 31 minutes (it beacons every 15 minutes). As it does not leave the zone and
     beacon a different GPS location, it never actually triggers the 'left zone' trigger.
   trigger:
-  - platform: zone
-    entity_id: device_tracker.zs1dcc_1
-    zone: zone.goodwood_drm
-    event: leave
-    enabled: false
   - platform: state
     entity_id:
     - device_tracker.zs1dcc_1
-    to: Away
+    to: not_home
     for:
       hours: 0
       minutes: 31
       seconds: 0
   condition: []
   action:
-  - service: notify.mobile_app_danies_iphone_3
+  - service: notify.mobile_app_iphone
     data:
-      message: Goodwood APRS gone offline
+      message: Goodwood ZS1DCC beacon is offline fro 30 minutes!
       title: Alert from Home Assistant
   mode: single
 - id: '1661197173507'
@@ -186,10 +182,10 @@
   mode: single
 - id: '1661198337205'
   alias: Shower hot water ready
-  description: Trigger if grid power exceeds 1,500W for 15 minutes. Any other device
+  description: Trigger if grid power exceeds 1,500W for 20 minutes. Any other device
     is used less than 5 mins, and stove is usually running on solar or battery power.
     Then when usage dropped to below 1100W for at least a minute, trigger action to
-    say water ready.
+    say water ready, but only if after 8am and before 11pm.
   trigger:
   - platform: numeric_state
     entity_id: sensor.power_usage_696087
@@ -198,7 +194,18 @@
       minutes: 20
       seconds: 0
     above: '1500'
-  condition: []
+  condition:
+  - condition: time
+    after: 08:00:00
+    before: '23:00:00'
+    weekday:
+    - sun
+    - sat
+    - fri
+    - thu
+    - wed
+    - tue
+    - mon
   action:
   - wait_for_trigger:
     - platform: numeric_state
@@ -209,9 +216,9 @@
         seconds: 0
       below: '1100'
     continue_on_timeout: false
-  - service: notify.mobile_app_danies_iphone_3
+  - service: notify.mobile_app_iphone
     data:
-      message: Hot water should now be ready
+      message: Shower hot water should be ready!
       title: Alert from Home Assistant
   - service: media_player.play_media
     target:
@@ -262,16 +269,18 @@
   mode: single
 - id: '1661611188926'
   alias: Grid Lost Notification
-  description: Notify if grid power lost during normal daily usage hours
+  description: Notify if grid power lost during normal daily usage hours. Input source
+    240 = unavailable grid, whilst 1 is grid available
   trigger:
   - platform: state
     entity_id:
-    - sensor.grid_lost_alarm
-    to: '2'
+    - sensor.active_input_source
+    to: '240'
     for:
       hours: 0
       minutes: 0
       seconds: 15
+    from: '1'
   condition:
   - condition: time
     after: 08:30:00
@@ -335,8 +344,8 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Warning%21+Power+usage+approaching+inverter+limit.+Check+Victron+display+on+kitchen+wall.
-  - service: notify.mobile_app_danies_iphone_3
+  - service: notify.mobile_app_iphone
     data:
-      message: AC power usage approaching inverter limit
+      message: AC load on inverter approaching limit!
       title: Alert from Home Assistant
   mode: single

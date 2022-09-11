@@ -2,7 +2,7 @@
 # com.victronenergy.system  slave: 100
 # Multiplus slave: 246
 # Smartsolar Charger slave: 247
-# BalancelCell Battery slave: 245
+# BalancelCell Battery slave: 225
 # 
 #modbus:
   - name: victron
@@ -59,7 +59,7 @@
         slave: 100
         address: 845
         
-      - name: "Battery Time to Go"  #\\ Special value: 0 = charging read from //com.victronenergy.system
+      - name: "Battery Time to Go (System)"  #\\ Special value: 0 = charging read from //com.victronenergy.system
         unit_of_measurement: "s"
         scale: 0.01
         precision: 0
@@ -101,7 +101,7 @@
         address: 850
         device_class: energy
         
-      - name: "Grid Lost Alarm" # \\ 0=Ok;2=Alarm
+      - name: "Grid Lost Alarm" # \\ 0=Ok;2=Alarm - does not seem to work but try use active input source != 1 or = 240
         scale: 1
         precision: 0
         slave: 246
