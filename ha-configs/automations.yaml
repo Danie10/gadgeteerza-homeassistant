@@ -133,9 +133,10 @@
   mode: single
 - id: '1661195626346'
   alias: Goodwood DRM's APRS beacon is offline
-  description: Sent alert notification if tracker state changes to 'Away' for longer
-    than 31 minutes (it beacons every 15 minutes). As it does not leave the zone and
-    beacon a different GPS location, it never actually triggers the 'left zone' trigger.
+  description: Sent alert notification if tracker state changes to 'not_home' for
+    longer than 31 minutes (it beacons every 15 minutes). As it does not leave the
+    zone and beacon a different GPS location, it never actually triggers the 'left
+    zone' trigger.
   trigger:
   - platform: state
     entity_id:
@@ -275,12 +276,11 @@
   - platform: state
     entity_id:
     - sensor.active_input_source
-    to: '240'
+    to: '240.0'
     for:
       hours: 0
       minutes: 0
       seconds: 15
-    from: '1'
   condition:
   - condition: time
     after: 08:30:00
@@ -348,4 +348,104 @@
     data:
       message: AC load on inverter approaching limit!
       title: Alert from Home Assistant
+  mode: single
+- id: '1663233051485'
+  alias: Notify grid power restored
+  description: Notify if grid power restored during normal daily usage hours. Input
+    source 240 = unavailable grid, whilst 1 is grid available
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.active_input_source
+    to: '1.0'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+  condition:
+  - condition: time
+    after: 08:30:00
+    before: '23:00:00'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+restored...+enjoy%21
+      media_content_type: provider
+    metadata:
+      title: The grid power has just been restored... enjoy!
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+restored...+enjoy%21
+  mode: single
+- id: '1663425895514'
+  alias: Urgent notification for low solar battery
+  description: Urgent notification for 24/7 if solar system battery gets down to 10%
+    warning of an imminent shut down
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.battery_soc
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    below: 11
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+10%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out.
+      media_content_type: provider
+    metadata:
+      title: Attention Critical warning! Solar system battery just 10% and you need
+        to urgency turn off devices and power will soon run out.
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+10%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out.
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.bedroom_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+10%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out.
+      media_content_type: provider
+    metadata:
+      title: Attention Critical warning! Solar system battery just 10% and you need
+        to urgency turn off devices and power will soon run out.
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+10%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out.
+  - service: notify.mobile_app_iphone
+    data:
+      message: Attention Critical warning! Solar system battery just 10% and you need
+        to urgency turn off devices and power will soon run out.
+      title: Urgent Alert from Home Assistant
   mode: single

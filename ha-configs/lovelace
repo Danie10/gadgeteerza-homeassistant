@@ -53,13 +53,6 @@
               }
             },
             {
-              "show_state": true,
-              "show_name": true,
-              "camera_view": "live",
-              "type": "picture-entity",
-              "entity": "camera.front_gate"
-            },
-            {
               "show_current": true,
               "show_forecast": true,
               "type": "weather-forecast",
@@ -67,10 +60,17 @@
               "name": "Weather Forecast"
             },
             {
+              "show_state": true,
+              "show_name": true,
+              "camera_view": "live",
+              "type": "picture-entity",
+              "entity": "camera.front_gate"
+            },
+            {
               "type": "map",
               "entities": [
                 {
-                  "entity": "device_tracker.danies_iphone_3"
+                  "entity": "device_tracker.danies_iphone_3_2"
                 }
               ],
               "dark_mode": true,
@@ -114,12 +114,6 @@
                 }
               ],
               "title": "Our Weather Station Temperatures"
-            },
-            {
-              "type": "entities",
-              "entities": [
-                "sensor.our_groceries"
-              ]
             },
             {
               "initial_view": "listDay",
@@ -184,7 +178,7 @@
             },
             {
               "type": "custom:our-groceries-card",
-              "title": "Shopping Lists",
+              "title": "Shopping Lists (click name to open list)",
               "show_header": true,
               "entity": "sensor.our_groceries",
               "show_crossed_off": false,
@@ -728,9 +722,8 @@
                 },
                 {
                   "value": 252,
-                  "color": "rgb(255,0,0)",
-                  "icon": "mdi:alert",
-                  "label": "Bulk Protection"
+                  "color": "rgb(0,255,0)",
+                  "label": "Ext. Control"
                 }
               ]
             },
@@ -996,7 +989,7 @@
                     {
                       "value": 11,
                       "icon": "mdi:battery-outline",
-                      "label": "????????"
+                      "label": "Optimised without Battery Life - 11"
                     }
                   ],
                   "size": "15%",
