@@ -2,11 +2,12 @@
 A repository of the YAML files used to configure my Home Assistant instance.
 
 <img src="images/dashboard-screenshot.jpg" width="500">
+<img src="images/dashboard-screenshot2.jpg" width="500">
 
 ## Description
 These are the YAML config files from my own installation of Home Assistant. Every installation is unique, and built up from others' ideas and code, and mine will likely be expanding and updating over time. So I will share what I've been learning on my journey, in the hope it helps other new users. I've battled up to three or four hours sometimes to just get one card working properly, and it often comes down to syntax or formatting issues.
 
-A key focus is on the Modbus TCP interface with a Victron slar system, with a BalanceCell battery. This instance of HA is running in a Docker container (docker-compose.yaml also included).
+A key focus is on the Modbus TCP interface with a Victron solar system, with a BalanceCell battery. This instance of HA is running in a Docker container (docker-compose.yaml also included).
 
 This is not a 'how-to' guide, but intended more as a reference for others to learn from the syntax and formatting of the code, or for accessing Victron or Balancell battery Modbus address registers.
 
@@ -15,7 +16,8 @@ You can watch a video at https://www.youtube.com/watch?v=dlvlhou70VA about my in
 ## Key features and Integrations
 The following are some notable features that thjis particular installation uses
 * Modbus TCP interface to a Victron CCGX with a Multiplus II inverter/charger, and SmartSolar charger
-* BalanceCell battery stats read - https://balancell.com/products/balancell-p26-solar/
+* Balancell battery stats read - https://balancell.com/products/balancell-p26-solar/
+* Time left on battery to 0 Amps as well as to current Minimum SoC (based on current battery load in Amps)
 * Gauges tuned for severity colours
 * Ellies Efergy Engage hub energy monitoring - https://engage.efergy.com/
 * Tasmota firmware on Sonoff WiFi switch via MQTT showing power usage stats, and switch control
@@ -42,13 +44,14 @@ The following are some notable features that thjis particular installation uses
 ## Automations
 * Voice alerting to start of rain (to take washing off the line) - unfortunately weather station takes a few minutues to report
 * Voice notification to home speaker for when I leave the shopping mall
-* Slider to set minimum state of charge back to Victron CCGX ESS
-* Ajust minimum SoC slider to match any changes made on Victron CCGX side
+* Slider to set minimum state of charge back to Victron CCGX ESS ie. adjust Victron system
+* Ajust minimum SoC slider to match any changes made on Victron CCGX side ie. respond to chnages made on Victron system remotely
 * Alerts when hot water cylinder reached temperature and is ready, based on timers looking at grid power usage dropping after 15 minutes
 * VoIP phone battery flat by checking when it's 'last_activity' is longer than 10 minutes ago
 * Ham radio APRS beacon going offline (can't use left Zone as coordinates never change to elsewhere) so looks at a status change to 'Away' for longer than 31 minutes (still weaking this)
 * Some audio message alerts for Victron system alarms
 * Audible warning when AC load on the inverter exceeds 4,7 kWh
+* Voice alerts for when grid power has been lost, as well as when it is back on
 
 ## Files
 * File in docker sub-folder is the docker-compose file I used to create the Home Assistant container
@@ -63,6 +66,17 @@ The following are some notable features that thjis particular installation uses
 * Integration with Geyserwise hot water cylinder heating - no comms so may need a Geyserwise Max IoT device instead
 * Integration with Texecom burglar alarm system if possible
 * Our Groceries shopping lists are showing and working now, but filtering on specific lists seems broken upstream
+* Thinking about battery time left:
+  * What to do with time to min SoC if it is below that value
+  * How to use the time left in reverse ie. when battery charging and current to battery is positive, as would be nice to try use same guages and values
+
+## Time Left on Battery Calculations
+Just for interest this is how I've done the basic calculation, based on the Balancell battery pack havinga  206 Ah capacity at full ie. 100% SOC:
+* Hours left = SOC% multiplied by 206 Ah and then divided by Battery Current in Amps (yes battery current variesd but it recalculates in current usage)
+  * (74% * 206 Ah) / 13 Amps = 11.72 hours
+* Time left to Minimum SoC basically is the same except it subtracts the Min SOC from Current SOC to arrive at the difference left, so if Minimum SOC is say 40% then:
+  * ((75%-40%) * 206 Ah) / 13 Amps = 5.38 hours
+Detail is in the sensors.yaml file with comments.
 
 ## Credits
 Some resources I learnt a lot from include:
