@@ -1,15 +1,14 @@
 # GadgeteerZA Home Assistant
 A repository of the YAML files used to configure my Home Assistant instance.
 
-<img src="images/dashboard-screenshot.jpg" width="600">
-<img src="images/dashboard-screenshot2.jpg" width="600">
-<!-- blank line -->
-<figure class="video_container">
-  <video controls="true" allowfullscreen="true" poster="images/video-thumbnail.jpg">
-    <source src="images/HA-Solar-Status-2022-09-18_22.31.14.mp4" type="video/mp4">
-  </video>
-</figure>
-<!-- blank line -->
+## Screnshots
+<p align="center">
+<img src="images/dashboard-screenshot.jpg" style="width: 500px; max-width: 100%; height: auto" title="Solar dashboard tab">
+
+<img src="images/dashboard-screenshot2.jpg" style="width: 500px; max-width: 100%; height: auto" title="Front dashboard tab">
+
+<img src="images/HA-Solar-Status-2022-09-18.gif" style="width: 500px; max-width: 100%; height: auto" title="Video showing grid lost and battery time left">
+</p>
 
 ## Description
 These are the YAML config files from my own installation of Home Assistant. Every installation is unique, and built up from others' ideas and code, and mine will likely be expanding and updating over time. So I will share what I've been learning on my journey, in the hope it helps other new users. I've battled up to three or four hours sometimes to just get one card working properly, and it often comes down to syntax or formatting issues.
