@@ -53,6 +53,40 @@
               }
             },
             {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.time_left_on_battery_zero",
+                  "name": "Time to Empty",
+                  "unit": "Hours",
+                  "min": 0,
+                  "max": 30,
+                  "needle": true,
+                  "severity": {
+                    "green": 5,
+                    "yellow": 3,
+                    "red": 0
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.time_left_on_battery_min_soc",
+                  "name": "Time to Min SoC",
+                  "unit": "Hours",
+                  "min": 0,
+                  "max": 30,
+                  "needle": true,
+                  "severity": {
+                    "green": 3,
+                    "yellow": 2,
+                    "red": 0
+                  }
+                }
+              ],
+              "title": "Time Left on Battery"
+            },
+            {
               "show_current": true,
               "show_forecast": true,
               "type": "weather-forecast",
@@ -126,6 +160,17 @@
               "title": "Our Schedule"
             },
             {
+              "camera_view": "auto",
+              "type": "picture-glance",
+              "title": "WiFi Camera",
+              "entities": [
+                {
+                  "entity": "camera.wifi_camera"
+                }
+              ],
+              "camera_image": "camera.wifi_camera"
+            },
+            {
               "type": "entities",
               "entities": [
                 {
@@ -164,17 +209,6 @@
               ],
               "title": "Weather Underground",
               "state_color": true
-            },
-            {
-              "camera_view": "auto",
-              "type": "picture-glance",
-              "title": "WiFi Camera",
-              "entities": [
-                {
-                  "entity": "camera.wifi_camera"
-                }
-              ],
-              "camera_image": "camera.wifi_camera"
             },
             {
               "type": "custom:our-groceries-card",
