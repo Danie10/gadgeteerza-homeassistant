@@ -651,79 +651,160 @@
               ]
             },
             {
-              "type": "custom:button-card",
-              "entity": "sensor.ve_bus_state",
-              "icon": "mdi:solar-power-variant",
-              "show_state": false,
-              "show_label": true,
-              "state": [
+              "type": "horizontal-stack",
+              "cards": [
                 {
-                  "value": 0,
-                  "color": "var(--disabled-text-color)",
-                  "icon": "mdi:power-plug-off-outline",
-                  "label": "Off"
+                  "type": "custom:button-card",
+                  "entity": "sensor.ve_bus_state",
+                  "icon": "mdi:solar-power-variant",
+                  "show_state": false,
+                  "show_label": true,
+                  "state": [
+                    {
+                      "value": 0,
+                      "color": "var(--disabled-text-color)",
+                      "icon": "mdi:power-plug-off-outline",
+                      "label": "Off"
+                    },
+                    {
+                      "value": 1,
+                      "color": "rgb(255,255,0)",
+                      "icon": "mdi:lightning-bolt-circle",
+                      "label": "Low Power"
+                    },
+                    {
+                      "value": 2,
+                      "color": "rgb(255,0,0)",
+                      "icon": "mdi:alert",
+                      "label": "Fault"
+                    },
+                    {
+                      "value": 3,
+                      "color": "rgb(0,255,0)",
+                      "label": "[[[\n  if (states[\"sensor.battery_power\"].state <= 0) return 'Discharging';\n  else return 'Bulk Charge';\n]]]\n"
+                    },
+                    {
+                      "value": 4,
+                      "color": "rgb(0,128,0)",
+                      "label": "Absorption"
+                    },
+                    {
+                      "value": 5,
+                      "color": "rgb(0,128,128)",
+                      "label": "Float"
+                    },
+                    {
+                      "value": 6,
+                      "color": "rgb(0,206,209)",
+                      "label": "Storage"
+                    },
+                    {
+                      "value": 7,
+                      "color": "rgb(173,216,230)",
+                      "label": "Equalize"
+                    },
+                    {
+                      "value": 8,
+                      "color": "rgb(138,43,226)",
+                      "label": "Pass Through"
+                    },
+                    {
+                      "value": 9,
+                      "color": "rgb(255,0,255)",
+                      "label": "Inverting"
+                    },
+                    {
+                      "value": 10,
+                      "color": "rgb(184,134,11)",
+                      "label": "Power Assist"
+                    },
+                    {
+                      "value": 11,
+                      "color": "rgb(218,165,32)",
+                      "label": "Power Supply"
+                    },
+                    {
+                      "value": 252,
+                      "color": "rgb(0,255,0)",
+                      "label": "Ext. Control"
+                    }
+                  ]
                 },
                 {
-                  "value": 1,
-                  "color": "rgb(255,255,0)",
-                  "icon": "mdi:lightning-bolt-circle",
-                  "label": "Low Power"
-                },
-                {
-                  "value": 2,
-                  "color": "rgb(255,0,0)",
-                  "icon": "mdi:alert",
-                  "label": "Fault"
-                },
-                {
-                  "value": 3,
-                  "color": "rgb(0,255,0)",
-                  "label": "[[[\n  if (states[\"sensor.battery_power\"].state <= 0) return 'Discharging';\n  else return 'Bulk Charge';\n]]]\n"
-                },
-                {
-                  "value": 4,
-                  "color": "rgb(0,128,0)",
-                  "label": "Absorption"
-                },
-                {
-                  "value": 5,
-                  "color": "rgb(0,128,128)",
-                  "label": "Float"
-                },
-                {
-                  "value": 6,
-                  "color": "rgb(0,206,209)",
-                  "label": "Storage"
-                },
-                {
-                  "value": 7,
-                  "color": "rgb(173,216,230)",
-                  "label": "Equalize"
-                },
-                {
-                  "value": 8,
-                  "color": "rgb(138,43,226)",
-                  "label": "Pass Through"
-                },
-                {
-                  "value": 9,
-                  "color": "rgb(255,0,255)",
-                  "label": "Inverting"
-                },
-                {
-                  "value": 10,
-                  "color": "rgb(184,134,11)",
-                  "label": "Power Assist"
-                },
-                {
-                  "value": 11,
-                  "color": "rgb(218,165,32)",
-                  "label": "Power Supply"
-                },
-                {
-                  "value": 252,
-                  "color": "rgb(0,255,0)",
-                  "label": "Ext. Control"
+                  "type": "custom:button-card",
+                  "entity": "sensor.victron_ess_battery_life_state",
+                  "icon": "mdi:battery-heart",
+                  "show_state": false,
+                  "show_label": true,
+                  "state": [
+                    {
+                      "value": 0,
+                      "color": "var(--disabled-text-color)",
+                      "icon": "mdi:battery-off-outline",
+                      "label": "Unused"
+                    },
+                    {
+                      "value": 1,
+                      "color": "rgb(218,165,32)",
+                      "icon": "mdi:battery-sync-outline",
+                      "label": "Restarting"
+                    },
+                    {
+                      "value": 2,
+                      "color": "rgb(0,255,0)",
+                      "label": "Self-Consumption"
+                    },
+                    {
+                      "value": 3,
+                      "color": "rgb(0,255,0)",
+                      "label": "Self-Consumption"
+                    },
+                    {
+                      "value": 4,
+                      "color": "rgb(0,255,0)",
+                      "label": "Self-Consumption"
+                    },
+                    {
+                      "value": 5,
+                      "color": "rgb(0,255,0)",
+                      "label": "Discharge Disabled"
+                    },
+                    {
+                      "value": 6,
+                      "color": "rgb(0,255,0)",
+                      "icon": "mdi:battery-charging-medium",
+                      "label": "Force Charge"
+                    },
+                    {
+                      "value": 7,
+                      "color": "rgb(0,255,0)",
+                      "icon": "mdi:battery-charging-50",
+                      "label": "Sustain"
+                    },
+                    {
+                      "value": 9,
+                      "color": "rgb(0,255,0)",
+                      "icon": "mdi:battery-charging-100",
+                      "label": "Keep batteries charged"
+                    },
+                    {
+                      "value": 10,
+                      "color": "rgb(0,255,0)",
+                      "icon": "mdi:battery-arrow-down",
+                      "label": "Battery Life Disabled"
+                    },
+                    {
+                      "value": 11,
+                      "color": "rgb(218,165,32)",
+                      "label": "BL Disabled (Low SoC)"
+                    },
+                    {
+                      "value": 12,
+                      "color": "rgb(0,255,0)",
+                      "icon": "mdi:battery-arrow-up-outline",
+                      "label": "Charging"
+                    }
+                  ]
                 }
               ]
             },
@@ -734,31 +815,47 @@
                 {
                   "type": "custom:button-card",
                   "color_type": "icon",
-                  "entity": "sensor.grid_lost_alarm",
+                  "entity": "sensor.active_input_source",
                   "name": "Grid Status",
                   "show_label": true,
-                  "state": [
-                    {
-                      "value": 0,
-                      "icon": "mdi:transmission-tower",
-                      "color": "green",
-                      "label": "Ok"
-                    },
-                    {
-                      "value": 2,
-                      "icon": "mdi:transmission-tower-off",
-                      "color": "red",
-                      "label": "LOST"
-                    }
-                  ],
-                  "size": "15%",
+                  "size": "100%",
+                  "layout": "icon_name_state2nd",
                   "styles": {
                     "card": [
                       {
                         "height": "100px"
                       }
                     ]
-                  }
+                  },
+                  "state": [
+                    {
+                      "value": 1,
+                      "icon": "mdi:transmission-tower",
+                      "label": "Ok",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "green"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 240,
+                      "icon": "mdi:transmission-tower-off",
+                      "label": "LOST",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 1s ease infinite"
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 },
                 {
                   "type": "custom:button-card",
@@ -766,21 +863,37 @@
                   "entity": "sensor.solar_battery_general_alarm",
                   "name": "Battery Status",
                   "show_label": true,
+                  "size": "100%",
+                  "layout": "icon_name_state2nd",
                   "state": [
                     {
                       "value": 0,
                       "icon": "mdi:battery-charging",
-                      "color": "green",
-                      "label": "Ok"
+                      "label": "Ok",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "green"
+                          }
+                        ]
+                      }
                     },
                     {
                       "value": 2,
                       "icon": "mdi:battery-unknown",
-                      "color": "red",
-                      "label": "ALARM"
+                      "label": "ALARM",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 1s ease infinite"
+                          }
+                        ]
+                      }
                     }
                   ],
-                  "size": "15%",
                   "styles": {
                     "card": [
                       {
@@ -799,36 +912,88 @@
                   "state": [
                     {
                       "value": 0,
-                      "color": "green",
-                      "label": "Ok"
+                      "label": "Ok",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "green"
+                          }
+                        ]
+                      }
                     },
                     {
                       "value": 1,
-                      "color": "red",
-                      "label": "Battery Temp"
+                      "label": "Battery Temp",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
                     },
                     {
                       "value": 2,
-                      "color": "red",
-                      "label": "Battery Voltage"
+                      "label": "Battery Voltage",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
                     },
                     {
                       "value": 3,
-                      "color": "red",
-                      "label": "Batt+ Wiring"
+                      "label": "Batt+ Wiring",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
                     },
                     {
                       "value": 4,
-                      "color": "red",
-                      "label": "Batt- Wiring"
+                      "label": "Batt- Wiring",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
                     },
                     {
                       "value": 5,
-                      "color": "red",
-                      "label": "Batt Temp Sensor"
+                      "label": "Batt Temp Sensor",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
                     }
                   ],
-                  "size": "15%",
+                  "size": "100%",
+                  "layout": "icon_name_state2nd",
                   "styles": {
                     "card": [
                       {
@@ -841,29 +1006,65 @@
                   "type": "custom:button-card",
                   "color_type": "icon",
                   "icon": "mdi:power-socket-fr",
-                  "entity": "sensor.overload_alarm",
+                  "entity": "sensor.ac_loads",
                   "name": "AC Load Overload",
                   "show_label": true,
-                  "state": [
-                    {
-                      "value": 0,
-                      "color": "green",
-                      "label": "Ok"
-                    },
-                    {
-                      "value": 2,
-                      "color": "red",
-                      "label": "ALARM"
-                    }
-                  ],
-                  "size": "15%",
+                  "size": "100%",
+                  "layout": "icon_name_state2nd",
                   "styles": {
                     "card": [
                       {
                         "height": "100px"
                       }
                     ]
-                  }
+                  },
+                  "state": [
+                    {
+                      "value": 4700,
+                      "operator": ">",
+                      "color": "white",
+                      "label": "ALARM!",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 1s ease infinite"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 4000,
+                      "operator": ">",
+                      "color": "white",
+                      "label": "WARNING!",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "yellow"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 4700,
+                      "operator": "<=",
+                      "color": "white",
+                      "label": "Ok",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "green"
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 }
               ]
             },
@@ -989,7 +1190,7 @@
                     {
                       "value": 11,
                       "icon": "mdi:battery-outline",
-                      "label": "Optimised without Battery Life - 11"
+                      "label": "Optimised without Battery Life"
                     }
                   ],
                   "size": "15%",
