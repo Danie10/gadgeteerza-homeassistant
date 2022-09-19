@@ -72,6 +72,7 @@ The following are some notable features that this particular installation uses:
 * Integration with Geyserwise hot water cylinder heating - no comms so may need a Geyserwise Max IoT device instead
 * Integration with Texecom burglar alarm system if possible
 * Our Groceries shopping lists are showing and working now, but filtering on specific lists seems broken upstream
+* Tweak time left on batteries to rather use current AC inverter load, than the small default 8 Amps I had set it to now. This will be more realistic, based on the current loads on the inverter (not battery current)
 * Possible time left to full charge gauge
 
 ## Time Left on Battery Calculations
