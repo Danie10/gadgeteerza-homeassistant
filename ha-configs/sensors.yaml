@@ -15,41 +15,48 @@
       value_template: >-
           {{ states('sensor.thornton_solar_rad')|int * 15.57 * 0.1697}}
           
-    # Calculate hours left to empty based on battery max capacity of 206 Ah at 100% charge
-    # Hours left = SOC% * 206 divided by Current in Amps eg. 86% at 11 Amps is (0.86*206)/11
-    # Added condition to show time left ONLY if battery discharging at more than 8 Amps, otherwise would show infinity close to 0 Amps
-    # If battery current is close to zero or positive (charging), then calculate time left base on current SOC at an 8 Amp discharge 
-    # Arrived at 8 Amps number by using 24 hours as max
+    # Calculate hours left to empty based on battery_max_capacity at 100% charge
+    # Hours left = SOC% * battery_max_capacity (Ah) divided by Current in Amps eg. 86% at 11 Amps is (0.86*206)/11
+    # Condition 1 to check battery is discharging (current in Amps will be negative number), then use ABS of battery_current to make negative current flow, a positive float number
+    # Condition 2 to check if battery current is zero or charging, then calculate time left based on ac load (AC Watts converted to DC Amps current - because AC Watts = DC Watts)
     # Had to convert all to floats for precision of partial hours, then rounded to 2 decimals
     time_left_on_battery_zero:
       friendly_name: "Time left on Battery to Empty"
       unit_of_measurement: "Hours"
       icon_template: mdi:sort-clock-ascending-outline
       value_template: >-
-          {% if states('sensor.battery_current')|int < - 8 %}
-            {{ (((states('sensor.battery_soc')|float*206)/100)/states('sensor.battery_current')|float|abs) | round(2) }}
+          {% set battery_current = states('sensor.battery_current')|float %}
+          {% set battery_soc = states('sensor.battery_soc')|float %}
+          {% set loads_current = states('sensor.ac_loads')|float/states('sensor.battery_voltage')|float %}
+          {% set battery_max_capacity = states('sensor.solar_battery_maximum_capacity')|float %}
+          {% if battery_current < 0 %}
+            {{ (((battery_soc*battery_max_capacity)/100)/battery_current|abs) | round(2) }}
           {% else %}
-            {{ (((states('sensor.battery_soc')|float*206)/100)/8 | float ) | round(2) }}
+            {{ (((battery_soc*battery_max_capacity)/100)/loads_current|float ) | round(2) }}
           {% endif %}
           
-    # Calculate hours left to current min Soc based on battery max capacity of 206 Ah at 100% charge, ie. when it reverts back to grid power
-    # Hours left = (SOC%-MinSOC) * 206 divided by Current in Amps eg. 86%-40% at 11 Amps is (0.46*206)/11
-    # Started with condition to check if SoC has not already reached MinSOC or below it, as then time to reach MinSOC has reached 0 hours
-    # Added condition to show time left ONLY if battery discharging at more than 8 Amps, otherwise would show infinity close to 0 Amps
-    # If battery current is close to zero or positive (charging), then calculate time left base on current SOC at an 8 Amp discharge 
-    # Arrived at 8 Amps number by using 24 hours as max
+    # Calculate hours left to current min Soc based on battery_max_capacity at 100% charge, ie. when it reverts back to grid power
+    # Hours left = (SOC%-MinSOC) * battery_max_capacity (Ah) divided by Current in Amps eg. 86%-40% at 11 Amps is (0.46*206)/11
+    # Condition 1 to check if SoC has not already reached MinSOC or below it, as then time to reach MinSOC has reached 0 hours, so make 0
+    # Condition 2 to check battery is discharging (current in Amps will be negative number), then use ABS of battery_current to make negative current flow, a positive float number
+    # Condition 3 to check if battery current is zero or charging, then calculate time left based on ac load (AC Watts converted to DC Amps current - because AC Watts = DC Watts) 
     # Had to convert all to floats for precision of partial hours, then rounded to 2 decimals
     time_left_on_battery_min_soc:
       friendly_name: "Time left on Battery to Min SoC"
       unit_of_measurement: "Hours"
       icon_template: mdi:sort-clock-ascending
       value_template: >-
-        {% if (states('sensor.battery_soc')|float-states('sensor.victron_battery_min_soc')|float) <= 0 %}
+        {% set battery_current = states('sensor.battery_current')|float %}
+        {% set battery_soc = states('sensor.battery_soc')|float %}
+        {% set loads_current = states('sensor.ac_loads')|float/states('sensor.battery_voltage')|float %}
+        {% set battery_min_soc = states('sensor.victron_battery_min_soc')|float %}
+        {% set battery_max_capacity = states('sensor.solar_battery_maximum_capacity')|float %}
+        {% if (battery_soc-battery_min_soc) < 0 %}
           {{ 0 }}
-        {% elif states('sensor.battery_current')|int < - 8 %}
-          {{ ((((states('sensor.battery_soc')|float-states('sensor.victron_battery_min_soc')|float)*206)/100)/(states('sensor.battery_current')|float|abs))|round(2) }}
+        {% elif battery_current < 0 %}
+          {{ ((((battery_soc-battery_min_soc)*battery_max_capacity)/100)/(battery_current|abs)) | round(2) }}
         {% else %}
-          {{ ((((states('sensor.battery_soc')|float-states('sensor.victron_battery_min_soc')|float)*206)/100)/8 | float ) | round(2) }}
+          {{ ((((battery_soc-battery_min_soc)*battery_max_capacity)/100)/loads_current | float ) | round(2) }}
         {% endif %}
           
 # Weather Underground PWS

@@ -228,6 +228,14 @@
         slave: 225
         address: 304
         
+      - name: "Solar Battery Maximum Capacity"  # \\ Ah
+        unit_of_measurement: "Ah"
+        scale: 0.1
+        precision: 1
+        scan_interval: 300
+        slave: 225
+        address: 309
+        
       - name: "Solar Battery Cell Imbalance Alarm"  #  \\ 0=No alarm;2=Alarm
         scale: 1
         precision: 0
