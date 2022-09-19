@@ -53,40 +53,6 @@
               }
             },
             {
-              "type": "horizontal-stack",
-              "cards": [
-                {
-                  "type": "gauge",
-                  "entity": "sensor.time_left_on_battery_zero",
-                  "name": "Time to Empty",
-                  "unit": "Hours",
-                  "min": 0,
-                  "max": 30,
-                  "needle": true,
-                  "severity": {
-                    "green": 5,
-                    "yellow": 3,
-                    "red": 0
-                  }
-                },
-                {
-                  "type": "gauge",
-                  "entity": "sensor.time_left_on_battery_min_soc",
-                  "name": "Time to Min SoC",
-                  "unit": "Hours",
-                  "min": 0,
-                  "max": 30,
-                  "needle": true,
-                  "severity": {
-                    "green": 3,
-                    "yellow": 2,
-                    "red": 0
-                  }
-                }
-              ],
-              "title": "Time Left on Battery"
-            },
-            {
               "show_current": true,
               "show_forecast": true,
               "type": "weather-forecast",
@@ -549,7 +515,7 @@
                 {
                   "type": "gauge",
                   "entity": "sensor.pv_power",
-                  "name": "Inverter PV Power",
+                  "name": "Solar PV Power",
                   "min": 0,
                   "max": 2650,
                   "needle": true,
@@ -646,6 +612,40 @@
               "type": "horizontal-stack",
               "cards": [
                 {
+                  "type": "gauge",
+                  "entity": "sensor.time_left_on_battery_zero",
+                  "name": "Time to Empty",
+                  "unit": "Hours",
+                  "min": 0,
+                  "max": 30,
+                  "needle": true,
+                  "severity": {
+                    "green": 5,
+                    "yellow": 3,
+                    "red": 0
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.time_left_on_battery_min_soc",
+                  "name": "Time to Min SoC",
+                  "unit": "Hours",
+                  "min": 0,
+                  "max": 30,
+                  "needle": true,
+                  "severity": {
+                    "green": 3,
+                    "yellow": 1,
+                    "red": 0
+                  }
+                }
+              ],
+              "title": "Time Left on Battery"
+            },
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
                   "type": "custom:button-card",
                   "icon": "mdi:transmission-tower",
                   "entity": "sensor.power_usage",
@@ -682,7 +682,8 @@
                   "height": "100px",
                   "color": "rgb(0,255,0)"
                 }
-              ]
+              ],
+              "title": "Eskom Power"
             },
             {
               "type": "horizontal-stack",
@@ -840,7 +841,8 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "title": "Victron ESS"
             },
             {
               "type": "vertical-stack",
@@ -1106,6 +1108,27 @@
               "type": "custom:sun-card"
             },
             {
+              "show_name": true,
+              "show_icon": true,
+              "show_state": true,
+              "type": "glance",
+              "entities": [
+                {
+                  "entity": "sensor.openweathermap_cloud_coverage",
+                  "name": "Today"
+                },
+                {
+                  "entity": "sensor.openweathermap_forecast_cloud_coverage",
+                  "name": "Tomorrow"
+                },
+                {
+                  "entity": "sensor.openweathermap_forecast_condition",
+                  "name": "Forecast Tomorrow"
+                }
+              ],
+              "title": "Cloud Coverage"
+            },
+            {
               "type": "entities",
               "entities": [
                 {
@@ -1131,33 +1154,6 @@
               ],
               "title": "Solar PV Charge Stats",
               "show_header_toggle": false
-            },
-            {
-              "show_name": true,
-              "show_icon": true,
-              "show_state": true,
-              "type": "glance",
-              "entities": [
-                {
-                  "entity": "sensor.openweathermap_cloud_coverage",
-                  "name": "Today"
-                },
-                {
-                  "entity": "sensor.openweathermap_forecast_cloud_coverage",
-                  "name": "Tomorrow"
-                },
-                {
-                  "entity": "sensor.openweathermap_forecast_condition",
-                  "name": "Forecast Tomorrow"
-                }
-              ],
-              "title": "Cloud Coverage"
-            },
-            {
-              "type": "iframe",
-              "url": "http://192.168.1.205/",
-              "aspect_ratio": "50%",
-              "title": "Victron CCGX"
             },
             {
               "type": "vertical-stack",
@@ -1274,6 +1270,12 @@
                   }
                 }
               ]
+            },
+            {
+              "type": "iframe",
+              "url": "http://192.168.1.205/",
+              "aspect_ratio": "50%",
+              "title": "Victron CCGX"
             },
             {
               "type": "vertical-stack",

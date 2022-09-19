@@ -14,24 +14,43 @@
       device_class: power
       value_template: >-
           {{ states('sensor.thornton_solar_rad')|int * 15.57 * 0.1697}}
+          
     # Calculate hours left to empty based on battery max capacity of 206 Ah at 100% charge
     # Hours left = SOC% * 206 divided by Current in Amps eg. 86% at 11 Amps is (0.86*206)/11
-    # Had to convert all to floats, then absolute value to get positive number, then rounded to 2 decimals
+    # Added condition to show time left ONLY if battery discharging at more than 8 Amps, otherwise would show infinity close to 0 Amps
+    # If battery current is close to zero or positive (charging), then calculate time left base on current SOC at an 8 Amp discharge 
+    # Arrived at 8 Amps number by using 24 hours as max
+    # Had to convert all to floats for precision of partial hours, then rounded to 2 decimals
     time_left_on_battery_zero:
       friendly_name: "Time left on Battery to Empty"
       unit_of_measurement: "Hours"
       icon_template: mdi:sort-clock-ascending-outline
       value_template: >-
-          {{ (((states('sensor.battery_soc')|float*206)/100)/states('sensor.battery_current')|float|abs) | round(2) }}
+          {% if states('sensor.battery_current')|int < - 8 %}
+            {{ (((states('sensor.battery_soc')|float*206)/100)/states('sensor.battery_current')|float|abs) | round(2) }}
+          {% else %}
+            {{ (((states('sensor.battery_soc')|float*206)/100)/8 | float ) | round(2) }}
+          {% endif %}
+          
     # Calculate hours left to current min Soc based on battery max capacity of 206 Ah at 100% charge, ie. when it reverts back to grid power
     # Hours left = (SOC%-MinSOC) * 206 divided by Current in Amps eg. 86%-40% at 11 Amps is (0.46*206)/11
-    # Had to convert all to floats, then absolute value to get positive number, then rounded to 2 decimals
+    # Started with condition to check if SoC has not already reached MinSOC or below it, as then time to reach MinSOC has reached 0 hours
+    # Added condition to show time left ONLY if battery discharging at more than 8 Amps, otherwise would show infinity close to 0 Amps
+    # If battery current is close to zero or positive (charging), then calculate time left base on current SOC at an 8 Amp discharge 
+    # Arrived at 8 Amps number by using 24 hours as max
+    # Had to convert all to floats for precision of partial hours, then rounded to 2 decimals
     time_left_on_battery_min_soc:
       friendly_name: "Time left on Battery to Min SoC"
       unit_of_measurement: "Hours"
       icon_template: mdi:sort-clock-ascending
       value_template: >-
-          {{ (((states('sensor.battery_soc')|float-states('sensor.victron_battery_min_soc')|float*206)/100)/states('sensor.battery_current')|float) | abs | round(2) }}
+        {% if (states('sensor.battery_soc')|float-states('sensor.victron_battery_min_soc')|float) <= 0 %}
+          {{ 0 }}
+        {% elif states('sensor.battery_current')|int < - 8 %}
+          {{ ((((states('sensor.battery_soc')|float-states('sensor.victron_battery_min_soc')|float)*206)/100)/(states('sensor.battery_current')|float|abs))|round(2) }}
+        {% else %}
+          {{ ((((states('sensor.battery_soc')|float-states('sensor.victron_battery_min_soc')|float)*206)/100)/8 | float ) | round(2) }}
+        {% endif %}
           
 # Weather Underground PWS
 - platform: wundergroundpws

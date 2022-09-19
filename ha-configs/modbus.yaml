@@ -150,7 +150,7 @@
         address: 2901
         data_type: 'uint16'
         
-      - name: "Victron ESS battery life state" # \\ 0=Unused, BL disabled;1=Restarting;2=Self-consumption;3=Self-consumption;4=Self-consumption;5=Discharge disabled;6=Force charge;7=Sustain;9=Keep batteries charged;10=BL Disabled;11=BL Disabled (Low SoC)
+      - name: "Victron ESS battery life state" # \\ 0=Unused, BL disabled;1=Restarting;2=Self-consumption;3=Self-consumption;4=Self-consumption;5=Discharge disabled;6=Force charge;7=Sustain;9=Keep batteries charged;10=BL Disabled;11=BL Disabled (Low SoC); 12=Charging
         scale: 1
         precision: 0
         scan_interval: 10
