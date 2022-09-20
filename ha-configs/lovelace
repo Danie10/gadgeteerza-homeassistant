@@ -617,7 +617,7 @@
                   "name": "Time to Empty",
                   "unit": "Hours",
                   "min": 0,
-                  "max": 30,
+                  "max": 24,
                   "needle": true,
                   "severity": {
                     "green": 5,
@@ -631,7 +631,7 @@
                   "name": "Time to Min SoC",
                   "unit": "Hours",
                   "min": 0,
-                  "max": 30,
+                  "max": 24,
                   "needle": true,
                   "severity": {
                     "green": 3,

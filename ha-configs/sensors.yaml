@@ -17,7 +17,7 @@
           
     # Calculate hours left to empty based on battery_max_capacity at 100% charge
     # Hours left = SOC% * battery_max_capacity (Ah) divided by Current in Amps eg. 86% at 11 Amps is (0.86*206)/11
-    # Condition 1 to check battery is discharging (current in Amps will be negative number), then use ABS of battery_current to make negative current flow, a positive float number
+    # Condition 1 to check battery is discharging (current in Amps will be negative number), then use ABS of battery_current to make negative current flow, a positive float number. Set this to -1 Amp (50W at 52V) instead of 0 Amps to prevent very small discharges when full, from projecting extremely long hours on gauge
     # Condition 2 to check if battery current is zero or charging, then calculate time left based on ac load (AC Watts converted to DC Amps current - because AC Watts = DC Watts)
     # Had to convert all to floats for precision of partial hours, then rounded to 2 decimals
     time_left_on_battery_zero:
@@ -29,7 +29,7 @@
           {% set battery_soc = states('sensor.battery_soc')|float %}
           {% set loads_current = states('sensor.ac_loads')|float/states('sensor.battery_voltage')|float %}
           {% set battery_max_capacity = states('sensor.solar_battery_maximum_capacity')|float %}
-          {% if battery_current < 0 %}
+          {% if battery_current < -1 %}
             {{ (((battery_soc*battery_max_capacity)/100)/battery_current|abs) | round(2) }}
           {% else %}
             {{ (((battery_soc*battery_max_capacity)/100)/loads_current|float ) | round(2) }}
@@ -38,7 +38,7 @@
     # Calculate hours left to current min Soc based on battery_max_capacity at 100% charge, ie. when it reverts back to grid power
     # Hours left = (SOC%-MinSOC) * battery_max_capacity (Ah) divided by Current in Amps eg. 86%-40% at 11 Amps is (0.46*206)/11
     # Condition 1 to check if SoC has not already reached MinSOC or below it, as then time to reach MinSOC has reached 0 hours, so make 0
-    # Condition 2 to check battery is discharging (current in Amps will be negative number), then use ABS of battery_current to make negative current flow, a positive float number
+    # Condition 2 to check battery is discharging (current in Amps will be negative number), then use ABS of battery_current to make negative current flow, a positive float number.  Set this to -1 Amp (50W at 52V) instead of 0 Amps to prevent very small discharges when full, from projecting extremely long hours on gauge
     # Condition 3 to check if battery current is zero or charging, then calculate time left based on ac load (AC Watts converted to DC Amps current - because AC Watts = DC Watts) 
     # Had to convert all to floats for precision of partial hours, then rounded to 2 decimals
     time_left_on_battery_min_soc:
@@ -53,7 +53,7 @@
         {% set battery_max_capacity = states('sensor.solar_battery_maximum_capacity')|float %}
         {% if (battery_soc-battery_min_soc) < 0 %}
           {{ 0 }}
-        {% elif battery_current < 0 %}
+        {% elif battery_current < -1 %}
           {{ ((((battery_soc-battery_min_soc)*battery_max_capacity)/100)/(battery_current|abs)) | round(2) }}
         {% else %}
           {{ ((((battery_soc-battery_min_soc)*battery_max_capacity)/100)/loads_current | float ) | round(2) }}
