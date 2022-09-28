@@ -23,7 +23,7 @@ You can watch a video at https://www.youtube.com/watch?v=dlvlhou70VA about my in
 The following are some notable features that this particular installation uses:
 * Modbus TCP interface to a Victron CCGX with a Multiplus II inverter/charger, and Victron SmartSolar charger
 * Balancell battery stats read - https://balancell.com/products/balancell-p26-solar/ (not all are readable)
-* Time left on battery to Empty (0 Ah) as well as to current Minimum SoC (based on current battery load in Amps). For zero current or charging, it now uses the AC Load (Watts) to calculate what the actual DC current load would be if the battery were not charging, and uses that value as a projected current load.
+* Time left on battery to Empty (0 Ah) as well as to current Minimum SoC (based on current battery load in Amps). Chnaged sensors.yaml to just work on AC Load wattage instead of switrching back and forth between charge and discharge. It now estimates time to go based on current load, whether charging or discharging, for consistency.
 * Gauges tuned for severity colours
 * Ellies Efergy Engage hub energy monitoring of grid power used at DB - https://engage.efergy.com/
 * Tasmota firmware on Sonoff WiFi switch via MQTT showing power usage stats, and switch control
@@ -81,7 +81,6 @@ Just for interest this is how I've done the basic calculation, based on the Bala
   * (74% * 206 Ah) / 13 Amps = 11.72 hours to battery cut-out
 * Time left to Minimum SoC basically is the same except it subtracts the Min SOC from Current SOC to arrive at the difference left to reach Min SOC (Delta %), so if Minimum SOC is say 40% then:
   * ((74%-40%) * 206 Ah) / 13 Amps = 5.38 hours to Min SOC and grid takes over
-  * Added conditions to allow for when charging by showing an estimated time left, which uses the current AC load as the estimated battery load if discharging
   * Added condition for time to Min SOC to keep showing 0 hours if the SOC has already fallen below Min SOC
 Detail is in the sensors.yaml file with comments.
 
