@@ -4,7 +4,7 @@
     it over lounge speaker
   trigger:
   - platform: zone
-    entity_id: device_tracker.danies_iphone_3_2
+    entity_id: person.danie
     zone: zone.canal_walk
     event: leave
   condition: []
@@ -158,7 +158,7 @@
   description: ''
   trigger:
   - platform: zone
-    entity_id: device_tracker.danies_iphone_3
+    entity_id: person.danie
     zone: zone.brown_annie_lawrence_home
     event: leave
   condition: []
