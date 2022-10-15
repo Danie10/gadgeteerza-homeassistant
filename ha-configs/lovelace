@@ -6,7 +6,14 @@
     "config": {
       "views": [
         {
+          "theme": "Backend-selected",
           "title": "Home",
+          "type": "custom:masonry-layout",
+          "layout": {
+            "width": 300,
+            "max_cols": 8
+          },
+          "badges": [],
           "cards": [
             {
               "type": "horizontal-stack",
@@ -15,7 +22,7 @@
                   "type": "gauge",
                   "entity": "sensor.monthly_energy_cost",
                   "name": "Monthly Cost",
-                  "unit": "Rand",
+                  "unit": "ZAR",
                   "min": 0,
                   "max": 1000,
                   "needle": true,
@@ -28,7 +35,7 @@
                 {
                   "type": "gauge",
                   "entity": "sensor.power_usage_696087",
-                  "name": "Eskom Grid Power",
+                  "name": "Grid Usage",
                   "unit": "W",
                   "min": 0,
                   "max": 8000,
@@ -53,13 +60,6 @@
               }
             },
             {
-              "show_current": true,
-              "show_forecast": true,
-              "type": "weather-forecast",
-              "entity": "weather.openweathermap",
-              "name": "Weather Forecast"
-            },
-            {
               "show_state": true,
               "show_name": true,
               "camera_view": "live",
@@ -70,13 +70,106 @@
               "type": "map",
               "entities": [
                 {
-                  "entity": "device_tracker.danies_iphone_3_2"
+                  "entity": "person.danie"
                 }
               ],
               "dark_mode": true,
               "title": "Where is Danie?",
               "hours_to_show": 1,
               "default_zoom": 14
+            },
+            {
+              "type": "vertical-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.battery_soc",
+                  "needle": true,
+                  "name": "Battery Charge",
+                  "severity": {
+                    "green": 50,
+                    "yellow": 25,
+                    "red": 0
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.ac_loads",
+                  "min": 0,
+                  "max": 5000,
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 1700,
+                    "red": 4000
+                  },
+                  "name": "AC loads on Inverter"
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.pv_power",
+                  "name": "Solar PV Power",
+                  "min": 0,
+                  "max": 2650,
+                  "needle": true,
+                  "severity": {
+                    "green": 850,
+                    "yellow": 300,
+                    "red": 0
+                  }
+                }
+              ]
+            },
+            {
+              "show_current": true,
+              "show_forecast": true,
+              "type": "weather-forecast",
+              "entity": "weather.openweathermap",
+              "name": "Weather Forecast"
+            },
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.time_left_on_battery_zero",
+                  "name": "Time to Empty",
+                  "unit": "Hours",
+                  "min": 0,
+                  "max": 24,
+                  "needle": true,
+                  "severity": {
+                    "green": 5,
+                    "yellow": 3,
+                    "red": 0
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.time_left_on_battery_min_soc",
+                  "name": "Time to Min SoC",
+                  "unit": "Hours",
+                  "min": 0,
+                  "max": 24,
+                  "needle": true,
+                  "severity": {
+                    "green": 3,
+                    "yellow": 1,
+                    "red": 0
+                  }
+                }
+              ],
+              "title": "Time Left on Battery"
+            },
+            {
+              "initial_view": "listDay",
+              "type": "calendar",
+              "entities": [
+                "calendar.dvdmerwe_gmail_com",
+                "calendar.chantel_swart",
+                "calendar.holidays_in_south_africa"
+              ],
+              "title": "Our Schedule"
             },
             {
               "type": "vertical-stack",
@@ -96,9 +189,6 @@
               ]
             },
             {
-              "type": "custom:sun-card"
-            },
-            {
               "show_name": true,
               "show_icon": true,
               "show_state": true,
@@ -114,16 +204,6 @@
                 }
               ],
               "title": "Our Weather Station Temperatures"
-            },
-            {
-              "initial_view": "listDay",
-              "type": "calendar",
-              "entities": [
-                "calendar.dvdmerwe_gmail_com",
-                "calendar.chantel_swart",
-                "calendar.holidays_in_south_africa"
-              ],
-              "title": "Our Schedule"
             },
             {
               "camera_view": "auto",
@@ -183,7 +263,11 @@
               "entity": "sensor.our_groceries",
               "show_crossed_off": false,
               "sort_by_name": true,
-              "hide_empty_lists": true
+              "hide_empty_lists": true,
+              "show_lists": [
+                "eBoCWpMfV05kqbazkbskGH",
+                "oNMZCUe2lhBGgIgqOhQHxP"
+              ]
             },
             {
               "type": "custom:list-card",
@@ -212,6 +296,266 @@
                   ]
                 }
               ]
+            },
+            {
+              "type": "vertical-stack",
+              "title": "Alarms",
+              "cards": [
+                {
+                  "type": "custom:button-card",
+                  "color_type": "icon",
+                  "entity": "sensor.active_input_source",
+                  "name": "Grid Status",
+                  "show_label": true,
+                  "size": "100%",
+                  "layout": "icon_name_state2nd",
+                  "styles": {
+                    "card": [
+                      {
+                        "height": "100px"
+                      }
+                    ]
+                  },
+                  "state": [
+                    {
+                      "value": 1,
+                      "icon": "mdi:transmission-tower",
+                      "label": "Ok",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "green"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 240,
+                      "icon": "mdi:transmission-tower-off",
+                      "label": "LOST",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 1s ease infinite"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "custom:button-card",
+                  "color_type": "icon",
+                  "entity": "sensor.solar_battery_general_alarm",
+                  "name": "Battery Status",
+                  "show_label": true,
+                  "size": "100%",
+                  "layout": "icon_name_state2nd",
+                  "state": [
+                    {
+                      "value": 0,
+                      "icon": "mdi:battery-charging",
+                      "label": "Ok",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "green"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 2,
+                      "icon": "mdi:battery-unknown",
+                      "label": "ALARM",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 1s ease infinite"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "styles": {
+                    "card": [
+                      {
+                        "height": "100px"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "custom:button-card",
+                  "color_type": "icon",
+                  "icon": "mdi:solar-power-variant",
+                  "entity": "sensor.solar_charger_error",
+                  "name": "Solar Charger Status",
+                  "show_label": true,
+                  "state": [
+                    {
+                      "value": 0,
+                      "label": "Ok",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "green"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 1,
+                      "label": "Battery Temp",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 2,
+                      "label": "Battery Voltage",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 3,
+                      "label": "Batt+ Wiring",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 4,
+                      "label": "Batt- Wiring",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 5,
+                      "label": "Batt Temp Sensor",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "size": "100%",
+                  "layout": "icon_name_state2nd",
+                  "styles": {
+                    "card": [
+                      {
+                        "height": "100px"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "custom:button-card",
+                  "color_type": "icon",
+                  "icon": "mdi:power-socket-fr",
+                  "entity": "sensor.ac_loads",
+                  "name": "AC Load Overload",
+                  "show_label": true,
+                  "size": "100%",
+                  "layout": "icon_name_state2nd",
+                  "styles": {
+                    "card": [
+                      {
+                        "height": "100px"
+                      }
+                    ]
+                  },
+                  "state": [
+                    {
+                      "value": 4700,
+                      "operator": ">",
+                      "color": "white",
+                      "label": "ALARM!",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "red"
+                          },
+                          {
+                            "animation": "blink 1s ease infinite"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 4000,
+                      "operator": ">",
+                      "color": "white",
+                      "label": "WARNING!",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "yellow"
+                          },
+                          {
+                            "animation": "blink 2s ease infinite"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "value": 4700,
+                      "operator": "<=",
+                      "color": "white",
+                      "label": "Ok",
+                      "styles": {
+                        "card": [
+                          {
+                            "background-color": "green"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -220,6 +564,11 @@
           "title": "Network",
           "path": "network",
           "icon": "",
+          "visible": [
+            {
+              "user": "716657a802fc4eca995929175c03c646"
+            }
+          ],
           "badges": [],
           "cards": [
             {
@@ -411,6 +760,11 @@
           "theme": "Backend-selected",
           "title": "HAM",
           "path": "ham",
+          "visible": [
+            {
+              "user": "716657a802fc4eca995929175c03c646"
+            }
+          ],
           "badges": [],
           "cards": [
             {
@@ -494,11 +848,27 @@
           "theme": "Backend-selected",
           "title": "SOLAR",
           "path": "solar",
+          "type": "custom:masonry-layout",
+          "layout": {
+            "width": 300,
+            "max_cols": 6
+          },
           "badges": [],
           "cards": [
             {
-              "type": "horizontal-stack",
+              "type": "vertical-stack",
               "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.battery_soc",
+                  "needle": true,
+                  "name": "Battery Charge",
+                  "severity": {
+                    "green": 50,
+                    "yellow": 25,
+                    "red": 0
+                  }
+                },
                 {
                   "type": "gauge",
                   "entity": "sensor.ac_loads",
@@ -522,17 +892,6 @@
                   "severity": {
                     "green": 850,
                     "yellow": 300,
-                    "red": 0
-                  }
-                },
-                {
-                  "type": "gauge",
-                  "entity": "sensor.battery_soc",
-                  "needle": true,
-                  "name": "Battery Charge",
-                  "severity": {
-                    "green": 50,
-                    "yellow": 25,
                     "red": 0
                   }
                 }

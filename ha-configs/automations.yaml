@@ -150,8 +150,13 @@
   action:
   - service: notify.mobile_app_iphone
     data:
-      message: Goodwood ZS1DCC beacon is offline fro 30 minutes!
+      message: Goodwood ZS1DCC beacon is offline for 30 minutes!
       title: Alert from Home Assistant
+  - device_id: 481db852e0bde9c0c5033828b2607ece
+    domain: mobile_app
+    type: notify
+    message: Goodwood ZS1DCC beacon is offline for 30 minutes!
+    title: Alert from Home Assistant
   mode: single
 - id: '1661197173507'
   alias: Danie leaves his Mom
@@ -217,9 +222,9 @@
         seconds: 0
       below: '1100'
     continue_on_timeout: false
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_sm_a135f
     data:
-      message: Shower hot water should be ready!
+      message: Shower hot water should be ready now!
       title: Alert from Home Assistant
   - service: media_player.play_media
     target:
