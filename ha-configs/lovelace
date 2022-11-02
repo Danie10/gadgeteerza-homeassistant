@@ -768,6 +768,24 @@
           "badges": [],
           "cards": [
             {
+              "type": "vertical-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.ham_radios_energy_power",
+                  "min": 0,
+                  "max": 360,
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 31,
+                    "red": 290
+                  },
+                  "name": "Ham Radio DC Power"
+                }
+              ]
+            },
+            {
               "type": "map",
               "entities": [
                 {

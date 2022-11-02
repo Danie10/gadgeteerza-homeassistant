@@ -62,10 +62,10 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_sm_a135f
     data:
-      message: Hey it has just started raining!
-      title: Alert from Home Assistant
+      title: Home Assistant Alert
+      message: Hey it just started raining!
   mode: single
 - id: '1660505820459'
   alias: VoIP Phone Offline
@@ -349,10 +349,10 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Warning%21+Power+usage+approaching+inverter+limit.+Check+Victron+display+on+kitchen+wall.
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_sm_a135f
     data:
-      message: AC load on inverter approaching limit!
-      title: Alert from Home Assistant
+      title: Home Assistant Alert
+      message: Warning! Power usage approaching inverter limit!
   mode: single
 - id: '1663233051485'
   alias: Notify grid power restored
@@ -453,4 +453,92 @@
       message: Attention Critical warning! Solar system battery just 10% and you need
         to urgency turn off devices and power will soon run out.
       title: Urgent Alert from Home Assistant
+  mode: single
+- id: '1667155895927'
+  alias: Ham Radio power usage is high
+  description: If it exceeds 290 Watts for over 30 seconds send an alert
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.ham_radios_energy_power
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+    above: 290
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.study_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+power+usage+is+high+for+30+seconds+already%21
+      media_content_type: provider
+    metadata:
+      title: Warning! Ham radio power usage is high for 30 seconds already!
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+power+usage+is+high+for+30+seconds+already%21
+  - service: notify.mobile_app_sm_a135f
+    data:
+      title: Home Assistant Alert
+      message: Warning! Ham radio power usage is high for 30 seconds already!
+  mode: single
+- id: '1667156854247'
+  alias: Check Ham radio transmit not stuck
+  description: Triggers if power usage higher than idle current exceeding 3 minutes
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.ham_radios_energy_power
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+    above: 45
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.study_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+may+have+been+in+transmit+longer+than+3+minutes%21
+      media_content_type: provider
+    metadata:
+      title: Warning! Ham radio may have been in transmit longer than 3 minutes!
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+may+have+been+in+transmit+longer+than+3+minutes%21
+  - service: notify.mobile_app_sm_a135f
+    data:
+      title: Home Assistant Alert
+      message: Warning! Ham radio may have been in transmit longer than 3 minutes!
+        Power exceeded 45W for 180 secs.
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.bedroom_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+may+have+been+in+transmit+longer+than+3+minutes%21
+      media_content_type: provider
+    metadata:
+      title: Warning! Ham radio may have been in transmit longer than 3 minutes!
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+may+have+been+in+transmit+longer+than+3+minutes%21
   mode: single
