@@ -8,6 +8,8 @@ A repository of the YAML files used to configure my Home Assistant instance. My 
 <img src="images/dashboard-screenshot2.jpg" style="width: 500px; max-width: 100%; height: auto" title="Front dashboard tab">
 
 <img src="images/HA-Solar-Status-2022-09-18.gif" style="width: 500px; max-width: 100%; height: auto" title="Video showing grid lost and battery time left">
+
+<img src="images/loadshedding.jpg" style="width: 500px; max-width: 100%; height: auto" title="Load Shedding card">
 </p>
 
 ## Description
@@ -29,10 +31,10 @@ The following are some notable features that this particular installation uses:
 * Tasmota firmware on Sonoff WiFi switch via MQTT showing power usage stats, and switch control
 * Glances performance stats from one loacl server, and a remote VPS server
 * Reolink WiFi IP cameras
-* Apple iPhone and iPad status, location, etc
+* Android Phone status, location, etc
 * Ambient weather station
 * Weather Underground Personal Weather Station stats
-* City of Cape Town load shedding
+* City of Cape Town load shedding via EskomSePush API
 * Ring doorbell
 * Google Cast for voice output alert notifications
 * Asus router for alerting VoIP phone left network (battery is flat)
@@ -58,13 +60,13 @@ The following are some notable features that this particular installation uses:
 * Some audio message alerts for Victron system alarms
 * Audible warning when AC load on the inverter exceeds 4,7 kWh
 * Voice alerts for when grid power has been lost, as well as when it is back on (it's a must is South Africa, and with a solar system you don't always know if the grid is back on, or when it has gone off)
+* Voice alert for 20 minutes before scheduled load shedding for our zone starts (just some time to put shower hot water on)
 
 ## Files
 * File in docker sub-folder is the docker-compose file I used to create the Home Assistant container
 * Other config files are inside the ha-configs subfolder for HA. All are as named. The lovelace file is a copy of the Lovelace dashboard UI config to see how the UI cards are configured, especially those with text replacement for numerical value data.
 
 ## ToDo Wishlist
-* Tweak load shedding card to show attributes and better status
 * Try link for click on Glances card to open full Glances web page
 * Automations for motion detected on cameras
 * Automation to adjust battery minimum SoC based on next day's weather forecast
@@ -98,3 +100,4 @@ Some resources I learnt a lot from include:
 * RGB colour chart - https://www.rapidtables.com/web/color/RGB_Color.html
 * Restriction card confirmation at https://smarthomepursuits.com/how-to-create-a-lovelace-restriction-card-in-home-assistant/
 * Home Assistant docker image at https://www.home-assistant.io/installation/linux#docker-compose
+* Load Shedding module integrates with EskomSePush - https://github.com/wernerhp/ha.integration.load_shedding
