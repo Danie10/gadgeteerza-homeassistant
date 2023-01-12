@@ -188,16 +188,17 @@
   mode: single
 - id: '1661198337205'
   alias: Shower hot water ready
-  description: Trigger if grid power exceeds 1,500W for 20 minutes. Any other device
-    is used less than 5 mins, and stove is usually running on solar or battery power.
-    Then when usage dropped to below 1100W for at least a minute, trigger action to
-    say water ready, but only if after 8am and before 11pm.
+  description: Trigger if grid power exceeds 1,500W for 20 minutes (chnaged to 10
+    mins for lower temp in Summer). Any other device is used less than 5 mins, and
+    stove is usually running on solar or battery power. Then when usage dropped to
+    below 1100W for at least a minute, trigger action to say water ready, but only
+    if after 8am and before 11pm.
   trigger:
   - platform: numeric_state
     entity_id: sensor.power_usage_696087
     for:
       hours: 0
-      minutes: 20
+      minutes: 10
       seconds: 0
     above: '1500'
   condition:
@@ -489,27 +490,28 @@
       title: Home Assistant Alert
       message: Warning! Ham radio power usage is high for 30 seconds already!
   mode: single
-- id: '1667156854247'
-  alias: Check Ham radio transmit not stuck
-  description: Triggers if power usage higher than idle current exceeding 3 minutes
+- id: '1671375936902'
+  alias: Doorbell online
+  description: Check if Ring doorbell is available
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.ham_radios_energy_power
+  - platform: state
+    entity_id:
+    - sensor.front_gate_wifi_signal_category
+    to: unavailable
     for:
       hours: 0
-      minutes: 3
+      minutes: 5
       seconds: 0
-    above: 45
   condition: []
   action:
   - service: media_player.play_media
     target:
-      entity_id: media_player.study_speaker
+      entity_id: media_player.lounge_speaker
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+may+have+been+in+transmit+longer+than+3+minutes%21
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Front+gate+doorbell+unavailable+for+5+minutes%2C+check+doorbell
       media_content_type: provider
     metadata:
-      title: Warning! Ham radio may have been in transmit longer than 3 minutes!
+      title: Warning! Front gate doorbell unavailable for 5 minutes, check doorbell
       thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
       media_class: app
       children_media_class:
@@ -518,20 +520,42 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+may+have+been+in+transmit+longer+than+3+minutes%21
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Front+gate+doorbell+unavailable+for+5+minutes%2C+check+doorbell
   - service: notify.mobile_app_sm_a135f
     data:
-      title: Home Assistant Alert
-      message: Warning! Ham radio may have been in transmit longer than 3 minutes!
-        Power exceeded 45W for 180 secs.
+      message: Warning! Front gate doorbell unavailable for 5 minutes, check doorbell
+      title: Home Assistant alert
+  mode: single
+- id: '1673525651708'
+  alias: Announce load shedding starting 20 mins
+  description: Gives warning of 20 minutes before scheduled load shedding starts
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.load_shedding_area_capetown_9_thornton
+    attribute: starts_in
+    to: '20'
+  condition:
+  - condition: time
+    after: 09:00:00
+    before: '23:01:00'
+    weekday:
+    - sat
+    - fri
+    - thu
+    - wed
+    - tue
+    - mon
+    - sun
+  action:
   - service: media_player.play_media
     target:
-      entity_id: media_player.bedroom_speaker
+      entity_id: media_player.lounge_speaker
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+may+have+been+in+transmit+longer+than+3+minutes%21
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+20+minutes
       media_content_type: provider
     metadata:
-      title: Warning! Ham radio may have been in transmit longer than 3 minutes!
+      title: Warning! Load Shedding starts in 20 minutes
       thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
       media_class: app
       children_media_class:
@@ -540,5 +564,22 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+may+have+been+in+transmit+longer+than+3+minutes%21
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+20+minutes
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.study_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+20+minutes
+      media_content_type: provider
+    metadata:
+      title: Warning! Load Shedding starts in 20 minutes
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+20+minutes
   mode: single
