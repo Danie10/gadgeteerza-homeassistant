@@ -19,7 +19,7 @@ A key focus is on the Modbus TCP interface with a Victron solar system, and a Ba
 
 This is not a 'how-to' guide, but intended more as a reference for others to learn from the syntax and formatting of the code, or for accessing Victron or Balancell battery Modbus address registers.
 
-You can watch a video at https://www.youtube.com/watch?v=dlvlhou70VA about my initial setup of the dashboards.
+You can watch my video at https://www.youtube.com/watch?v=dlvlhou70VA about my initial setup of the dashboards.
 
 ## Key features and Integrations
 The following are some notable features that this particular installation uses:
@@ -28,38 +28,38 @@ The following are some notable features that this particular installation uses:
 * Time left on battery to Empty (0 Ah) as well as to current Minimum SoC (based on current battery load in Amps). Chnaged sensors.yaml to just work on AC Load wattage instead of switrching back and forth between charge and discharge. It now estimates time to go based on current load, whether charging or discharging, for consistency.
 * Gauges tuned for severity colours
 * Ellies Efergy Engage hub energy monitoring of grid power used at DB - https://engage.efergy.com/
-* Tasmota firmware on Sonoff WiFi switch via MQTT showing power usage stats, and switch control
-* Glances performance stats from one loacl server, and a remote VPS server
+* Tasmota firmware on Sonoff POW2 WiFi switch via MQTT showing power usage stats, and switch control
+* Glances performance stats from one local server, and a remote VPS server
 * Reolink WiFi IP cameras
 * Android Phone status, location, etc
 * Ambient weather station
 * Weather Underground Personal Weather Station stats
-* City of Cape Town load shedding via EskomSePush API
+* City of Cape Town load shedding via EskomSePush API showing also time to start of next load shedding for our area
 * Ring doorbell
 * Google Cast for voice output alert notifications
 * Asus router for alerting VoIP phone left network (battery is flat)
 * UptimeRobot to monitor key websites
 * AdGuard Home for performance of DNS
-* Domain name certificate expiries
+* Domain name certificate expiries (removed as free access inadequate)
 * OurGroceries shopping application
 * Google Calendar showing next few days' schedule
 * RSS feed showing Netflix titles leaving soon
 * Mini graph showing actual solar charger yield comparted to weather station's actual measured radiation in W/m2, and adjusted for panel area and wattage. Also includes forecasted solar for the day, and the next day.
 * Restrictions (locks) set with warnings before some switches are toggled on the dashboard
 * Home Assistant Community Store (HACS) integrations and frontend UI
-* HA running in a Docker container
+* HA is running in a Docker container
 
 ## Automations
 * Voice alerting to start of rain (to take washing off the line) - unfortunately weather station takes a few minutues to report
 * Voice notification to home speaker for when I leave the shopping mall
-* Slider to set minimum state of charge back to Victron CCGX ESS ie. adjust Victron system
+* Slider to set battery minimum State of Charge back to Victron CCGX ESS ie. adjust Victron system
 * Ajust minimum SoC slider to match any changes made on Victron CCGX side ie. respond to changes made on Victron system remotely
 * Alerts when hot water cylinder reached temperature and is ready, based on timers looking at grid power usage dropping after 15 minutes of high usage
-* VoIP phone battery flat by checking when it's 'last_activity' is longer than 10 minutes ago
-* Ham radio APRS beacon going offline (can't use left Zone as coordinates never change to elsewhere) so looks at a status change to 'Away' for longer than 31 minutes (still weaking this)
+* VoIP phone battery flat by checking when it's 'last_activity' is longer than 10 minutes ago (is not working properly)
+* Ham radio APRS beacon going offline (can't use left Zone as coordinates never change to elsewhere) so looks at a status change to 'Away' for longer than 31 minutes (still tweaking this)
 * Some audio message alerts for Victron system alarms
-* Audible warning when AC load on the inverter exceeds 4,7 kWh
-* Voice alerts for when grid power has been lost, as well as when it is back on (it's a must is South Africa, and with a solar system you don't always know if the grid is back on, or when it has gone off)
+* Voice alert warning when AC load on the inverter exceeds 4,7 kWh
+* Voice alerts for when grid power has been lost, as well as when it is back on (it's a must in South Africa, and with a solar system you don't always know if the grid is back on, or when it has gone off)
 * Voice alert for 20 minutes before scheduled load shedding for our zone starts (just some time to put shower hot water on)
 
 ## Files
@@ -73,9 +73,8 @@ The following are some notable features that this particular installation uses:
 * Get Ambient weather card to show rain in mm instead of inches
 * Integration with Geyserwise hot water cylinder heating - no comms so may need a Geyserwise Max IoT device instead
 * Integration with Texecom burglar alarm system if possible
-* Our Groceries shopping lists are showing and working now, but filtering on specific lists seems broken upstream
 * Convert template sensors code format to newer format
-* Possible time left to full charge gauge
+* Possible time left to solar battery full charge gauge
 
 ## Time Left on Battery Calculations
 Just for interest this is how I've done the basic calculation, based on the Balancell battery pack having a 206 Ah max rated capacity at full ie. 100% SOC:
