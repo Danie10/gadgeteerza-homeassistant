@@ -530,11 +530,10 @@
   alias: Announce load shedding starting 20 mins
   description: Gives warning of 20 minutes before scheduled load shedding starts
   trigger:
-  - platform: state
-    entity_id:
-    - sensor.load_shedding_area_capetown_9_thornton
+  - platform: numeric_state
+    entity_id: sensor.load_shedding_area_capetown_9_thornton
     attribute: starts_in
-    to: '20'
+    below: 21
   condition:
   - condition: time
     after: 09:00:00
