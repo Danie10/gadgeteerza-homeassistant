@@ -25,7 +25,7 @@ You can watch my video at https://www.youtube.com/watch?v=dlvlhou70VA about my i
 The following are some notable features that this particular installation uses:
 * Modbus TCP interface to a Victron CCGX with a Multiplus II inverter/charger, and Victron SmartSolar charger
 * Balancell battery stats read - https://balancell.com/products/balancell-p26-solar/ (not all are readable)
-* Time left on battery to Empty (0 Ah) as well as to current Minimum SoC (based on current battery load in Amps). Chnaged sensors.yaml to just work on AC Load wattage instead of switrching back and forth between charge and discharge. It now estimates time to go based on current load, whether charging or discharging, for consistency.
+* Time left on battery to Empty (11% SOC) as well as to current Minimum SoC (based on current battery load in Amps). Chnaged sensors.yaml to just work on AC Load wattage instead of switrching back and forth between charge and discharge. It now estimates time to go based on current load, whether charging or discharging, for consistency.
 * Gauges tuned for severity colours
 * Ellies Efergy Engage hub energy monitoring of grid power used at DB - https://engage.efergy.com/
 * Tasmota firmware on Sonoff POW2 WiFi switch via MQTT showing power usage stats, and switch control
@@ -60,7 +60,8 @@ The following are some notable features that this particular installation uses:
 * Some audio message alerts for Victron system alarms
 * Voice alert warning when AC load on the inverter exceeds 4,7 kWh
 * Voice alerts for when grid power has been lost, as well as when it is back on (it's a must in South Africa, and with a solar system you don't always know if the grid is back on, or when it has gone off)
-* Voice alert for 20 minutes before scheduled load shedding for our zone starts (just some time to put shower hot water on)
+* Voice alert for 30 minutes before scheduled load shedding for our zone starts (just some time to put shower hot water on)
+* Critical alert when battery SOC gets down to 16%
 
 ## Files
 * File in docker sub-folder is the docker-compose file I used to create the Home Assistant container
@@ -77,9 +78,9 @@ The following are some notable features that this particular installation uses:
 * Possible time left to solar battery full charge gauge
 
 ## Time Left on Battery Calculations
-Just for interest this is how I've done the basic calculation, based on the Balancell battery pack having a 206 Ah max rated capacity at full ie. 100% SOC:
-* Hours left = SOC% multiplied by Max Rated Capacity and then divided by Battery Current draw in Amps (yes battery current varies but it recalculates on current usage)
-  * (74% * 206 Ah) / 13 Amps = 11.72 hours to battery cut-out
+Just for interest this is how I've done the basic calculation, based on the Balancell battery pack having a 206 Ah max rated capacity at full ie. 100% SOC. Note cut-off for my battery is 11% SOC so the time to empty now reflects time down to 11% and no longer to 0%:
+* Hours left = (SOC%-11%) multiplied by Max Rated Capacity and then divided by Battery Current draw in Amps (yes battery current varies but it recalculates on current usage)
+  * ((74%-11%) * 206 Ah) / 13 Amps = 11.72 hours to battery cut-out
 * Time left to Minimum SoC basically is the same except it subtracts the Min SOC from Current SOC to arrive at the difference left to reach Min SOC (Delta %), so if Minimum SOC is say 40% then:
   * ((74%-40%) * 206 Ah) / 13 Amps = 5.38 hours to Min SOC and grid takes over
   * Added condition for time to Min SOC to keep showing 0 hours if the SOC has already fallen below Min SOC

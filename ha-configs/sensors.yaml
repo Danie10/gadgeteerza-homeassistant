@@ -16,7 +16,8 @@
           {{ states('sensor.thornton_solar_rad')|int * 15.57 * 0.1697}}
           
     # Calculate hours left to empty based on battery_max_capacity at 100% charge
-    # Hours left = SOC% * battery_max_capacity (Ah) divided by Current in Amps eg. 86% at 11 Amps is (0.86*206)/11
+    # UPDATE MAY 2023: Empty is actually 11% SOC so adjusted formula to reach 11% instead of 0%
+    # Hours left = (SOC%-11) * battery_max_capacity (Ah) divided by Current in Amps eg. 86% at 11 Amps is (0.86*206)/11
     # Condition 1 to check battery is discharging (current in Amps will be negative number), then use ABS of battery_current to make negative current flow, a positive float number. Set this to -1 Amp (50W at 52V) instead of 0 Amps to prevent very small discharges when full, from projecting extremely long hours on gauge
     # Condition 2 to check if battery current is zero or charging, then calculate time left based on ac load (AC Watts converted to DC Amps current - because AC Watts = DC Watts)
     # Had to convert all to floats for precision of partial hours, then rounded to 2 decimals
@@ -29,16 +30,10 @@
           {% set battery_soc = states('sensor.battery_soc')|float %}
           {% set loads_current = states('sensor.ac_loads')|float/states('sensor.battery_voltage')|float %}
           {% set battery_max_capacity = states('sensor.solar_battery_maximum_capacity')|float %}
-          {{ (((battery_soc*battery_max_capacity)/100)/loads_current|float ) | round(2) }}
+          {{ ((((battery_soc-11)*battery_max_capacity)/100)/loads_current|float ) | round(2) }}
           
-    # Removed original IF statements below in favour of just using the AC Load Wattage as even just below -1 was throwing numbers out      
-    #      {% if battery_current < -1 %}
-    #        {{ (((battery_soc*battery_max_capacity)/100)/battery_current|abs) | round(2) }}
-    #      {% else %}
-    #        {{ (((battery_soc*battery_max_capacity)/100)/loads_current|float ) | round(2) }}
-    #      {% endif %}
-          
-    # Calculate hours left to current min Soc based on battery_max_capacity at 100% charge, ie. when it reverts back to grid power
+
+    # Calculate hours left to current min SOC based on battery_max_capacity at 100% charge, ie. when it reverts back to grid power
     # Hours left = (SOC%-MinSOC) * battery_max_capacity (Ah) divided by Current in Amps eg. 86%-40% at 11 Amps is (0.46*206)/11
     # Condition 1 to check if SoC has not already reached MinSOC or below it, as then time to reach MinSOC has reached 0 hours, so make 0
     # Condition 2 to check battery is discharging (current in Amps will be negative number), then use ABS of battery_current to make negative current flow, a positive float number.  Set this to -1 Amp (50W at 52V) instead of 0 Amps to prevent very small discharges when full, from projecting extremely long hours on gauge
@@ -60,15 +55,7 @@
           {{ ((((battery_soc-battery_min_soc)*battery_max_capacity)/100)/loads_current | float ) | round(2) }}
         {% endif %}
 
-    # Removed original IF statements below in favour of just using the AC Load Wattage as even just below -1 was throwing numbers out
-    #    {% if (battery_soc-battery_min_soc) < 0 %}
-    #      {{ 0 }}
-    #    {% elif battery_current < -1 %}
-    #      {{ ((((battery_soc-battery_min_soc)*battery_max_capacity)/100)/(battery_current|abs)) | round(2) }}
-    #    {% else %}
-    #      {{ ((((battery_soc-battery_min_soc)*battery_max_capacity)/100)/loads_current | float ) | round(2) }}
-    #    {% endif %}
-          
+        
 # Weather Underground PWS
 - platform: wundergroundpws
   api_key: !secret wunderground_api

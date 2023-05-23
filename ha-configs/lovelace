@@ -121,13 +121,6 @@
               ]
             },
             {
-              "show_current": true,
-              "show_forecast": true,
-              "type": "weather-forecast",
-              "entity": "weather.openweathermap",
-              "name": "Weather Forecast"
-            },
-            {
               "type": "horizontal-stack",
               "cards": [
                 {
@@ -160,33 +153,6 @@
                 }
               ],
               "title": "Time Left on Battery"
-            },
-            {
-              "initial_view": "listDay",
-              "type": "calendar",
-              "entities": [
-                "calendar.dvdmerwe_gmail_com",
-                "calendar.chantel_swart",
-                "calendar.holidays_in_south_africa"
-              ],
-              "title": "Our Schedule"
-            },
-            {
-              "type": "vertical-stack",
-              "cards": [
-                {
-                  "type": "media-control",
-                  "entity": "media_player.lounge_speaker"
-                },
-                {
-                  "type": "media-control",
-                  "entity": "media_player.googlehome1000"
-                },
-                {
-                  "type": "media-control",
-                  "entity": "media_player.lounge_tv"
-                }
-              ]
             },
             {
               "type": "vertical-stack",
@@ -228,6 +194,33 @@
               ]
             },
             {
+              "initial_view": "listWeek",
+              "type": "calendar",
+              "entities": [
+                "calendar.chantel_swart",
+                "calendar.holidays_in_south_africa",
+                "calendar.dvdmerwe_gmail_com"
+              ],
+              "title": "Our Schedule"
+            },
+            {
+              "type": "vertical-stack",
+              "cards": [
+                {
+                  "type": "media-control",
+                  "entity": "media_player.lounge_speaker"
+                },
+                {
+                  "type": "media-control",
+                  "entity": "media_player.googlehome1000"
+                },
+                {
+                  "type": "media-control",
+                  "entity": "media_player.lounge_tv"
+                }
+              ]
+            },
+            {
               "camera_view": "auto",
               "type": "picture-glance",
               "title": "WiFi Camera",
@@ -237,46 +230,6 @@
                 }
               ],
               "camera_image": "camera.wifi_camera"
-            },
-            {
-              "type": "entities",
-              "entities": [
-                {
-                  "entity": "sensor.wupws_weather_1n"
-                },
-                {
-                  "entity": "sensor.wupws_weather_2d"
-                },
-                {
-                  "entity": "sensor.wupws_heatindex"
-                },
-                {
-                  "entity": "sensor.wupws_temp_high_1d"
-                },
-                {
-                  "entity": "sensor.wupws_temp_high_2d"
-                },
-                {
-                  "entity": "sensor.wupws_temp_low_1d"
-                },
-                {
-                  "entity": "sensor.wupws_temp_low_2d"
-                },
-                {
-                  "entity": "sensor.wupws_precip_1d"
-                },
-                {
-                  "entity": "sensor.wupws_preciptotal"
-                },
-                {
-                  "entity": "sensor.wupws_precip_2d"
-                },
-                {
-                  "entity": "sensor.wupws_solarradiation"
-                }
-              ],
-              "title": "Weather Underground",
-              "state_color": true
             },
             {
               "type": "custom:our-groceries-card",
@@ -578,6 +531,124 @@
                   ]
                 }
               ]
+            }
+          ]
+        },
+        {
+          "theme": "Backend-selected",
+          "title": "WEATHER",
+          "path": "weather",
+          "badges": [],
+          "cards": [
+            {
+              "show_current": true,
+              "show_forecast": true,
+              "type": "weather-forecast",
+              "entity": "weather.openweathermap",
+              "name": "Weather Forecast"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.thornton_abs_pressure",
+                  "name": "Abs pressure"
+                },
+                {
+                  "entity": "sensor.thornton_dew_point",
+                  "name": "Dew point"
+                },
+                {
+                  "entity": "sensor.thornton_event_rain",
+                  "name": "Event rain"
+                },
+                {
+                  "entity": "sensor.thornton_feels_like",
+                  "name": "Feels like"
+                },
+                {
+                  "entity": "sensor.thornton_hourly_rain_rate",
+                  "name": "Hourly rain rate"
+                },
+                {
+                  "entity": "sensor.thornton_humidity",
+                  "name": "Humidity"
+                },
+                {
+                  "entity": "sensor.thornton_humidity_in",
+                  "name": "Humidity in"
+                },
+                {
+                  "entity": "sensor.thornton_inside_temp",
+                  "name": "Inside temp"
+                },
+                {
+                  "entity": "sensor.thornton_last_rain",
+                  "name": "Last rain"
+                },
+                {
+                  "entity": "sensor.thornton_lifetime_rain",
+                  "name": "Lifetime rain"
+                },
+                {
+                  "entity": "sensor.thornton_max_gust",
+                  "name": "Max gust"
+                },
+                {
+                  "entity": "sensor.thornton_monthly_rain",
+                  "name": "Monthly rain"
+                },
+                "sensor.thornton_temp",
+                "sensor.thornton_daily_rain",
+                {
+                  "entity": "sensor.thornton_rel_pressure",
+                  "name": "Rel pressure"
+                },
+                {
+                  "entity": "sensor.thornton_solar_rad",
+                  "name": "Solar rad"
+                },
+                {
+                  "entity": "sensor.thornton_solar_rad_lx",
+                  "name": "Solar rad"
+                },
+                {
+                  "entity": "sensor.thornton_uv_index",
+                  "name": "UV index"
+                },
+                {
+                  "entity": "sensor.thornton_weekly_rain",
+                  "name": "Weekly rain"
+                },
+                {
+                  "entity": "sensor.thornton_wind_dir",
+                  "name": "Wind dir"
+                },
+                {
+                  "entity": "sensor.thornton_wind_gust",
+                  "name": "Wind gust"
+                },
+                {
+                  "entity": "sensor.thornton_wind_speed",
+                  "name": "Wind speed"
+                }
+              ],
+              "title": "Our Weather Station"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.thornton_battery",
+                  "name": "Battery"
+                },
+                {
+                  "entity": "binary_sensor.thornton_co2_battery",
+                  "name": "CO2 battery"
+                }
+              ],
+              "title": "Our Weather Station",
+              "state_color": true
             }
           ]
         },
@@ -1457,9 +1528,6 @@
                   ]
                 }
               ]
-            },
-            {
-              "type": "custom:sun-card"
             },
             {
               "show_name": true,
