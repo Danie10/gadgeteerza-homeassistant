@@ -245,34 +245,6 @@
               ]
             },
             {
-              "type": "custom:list-card",
-              "entity": "sensor.leaving_netflix",
-              "title": "Leaving Netflix 2",
-              "icon": "mdi:rss",
-              "row_limit": 12,
-              "feed_attribute": "entries",
-              "columns": [
-                {
-                  "title": "Image",
-                  "type": "image",
-                  "width": 60,
-                  "height": 60,
-                  "add_link": "link",
-                  "field": "image"
-                },
-                {
-                  "title": "Title",
-                  "field": "title",
-                  "add_link": "link",
-                  "style": [
-                    {
-                      "white-space": "wrap"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
               "type": "vertical-stack",
               "title": "Alarms",
               "cards": [

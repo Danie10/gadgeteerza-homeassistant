@@ -19,13 +19,15 @@ A key focus is on the Modbus TCP interface with a Victron solar system, and a Ba
 
 This is not a 'how-to' guide, but intended more as a reference for others to learn from the syntax and formatting of the code, or for accessing Victron or Balancell battery Modbus address registers.
 
+I have expanded some information about the Modbus registers inside the modbus.yaml config file (and in my video). But if things break with regards to Victron Modbus readings, it is always best to start troubleshooting at the source, by running the mbpoll command from the CLI to see what data is returned from a Modbus register eg. to read register 840 (battery voltage) from slave device 100 (main Multiplus system) you'd run it as `mbpoll -a 100 -r 841 -c 1 192.168.1.205` where you'll see we add +1 for the registering number probing, and the 192.168.1.205 is my Victron CCGX's LAN IP address (you'd use your device's IP address).
+
 You can watch my video at https://www.youtube.com/watch?v=dlvlhou70VA about my initial setup of the dashboards.
 
 ## Key features and Integrations
 The following are some notable features that this particular installation uses:
 * Modbus TCP interface to a Victron CCGX with a Multiplus II inverter/charger, and Victron SmartSolar charger
 * Balancell battery stats read - https://balancell.com/products/balancell-p26-solar/ (not all are readable)
-* Time left on battery to Empty (11% SOC) as well as to current Minimum SoC (based on current battery load in Amps). Chnaged sensors.yaml to just work on AC Load wattage instead of switrching back and forth between charge and discharge. It now estimates time to go based on current load, whether charging or discharging, for consistency.
+* Time left on battery to Empty (11% SOC) as well as to current Minimum SoC (based on current battery load in Amps). Changed sensors.yaml to just work on AC Load wattage instead of switching back and forth between charge and discharge. It now estimates time to go based on current load, whether charging or discharging, for consistency.
 * Gauges tuned for severity colours
 * Ellies Efergy Engage hub energy monitoring of grid power used at DB - https://engage.efergy.com/
 * Tasmota firmware on Sonoff POW2 WiFi switch via MQTT showing power usage stats, and switch control
@@ -40,11 +42,11 @@ The following are some notable features that this particular installation uses:
 * Asus router for alerting VoIP phone left network (battery is flat)
 * UptimeRobot to monitor key websites
 * AdGuard Home for performance of DNS
-* Domain name certificate expiries (removed as free access inadequate)
+* Domain name certificate expires (removed as free access inadequate)
 * OurGroceries shopping application
 * Google Calendar showing next few days' schedule
-* RSS feed showing Netflix titles leaving soon
-* Mini graph showing actual solar charger yield comparted to weather station's actual measured radiation in W/m2, and adjusted for panel area and wattage. Also includes forecasted solar for the day, and the next day.
+* RSS feed showing Netflix titles leaving soon (removed widget as no longer using Netflix)
+* Mini graph showing actual solar charger yield compared to weather station's actual measured radiation in W/m2, and adjusted for panel area and wattage. Also includes forecasted solar for the day, and the next day.
 * Restrictions (locks) set with warnings before some switches are toggled on the dashboard
 * Home Assistant Community Store (HACS) integrations and frontend UI
 * HA is running in a Docker container
@@ -53,7 +55,7 @@ The following are some notable features that this particular installation uses:
 * Voice alerting to start of rain (to take washing off the line) - unfortunately weather station takes a few minutues to report
 * Voice notification to home speaker for when I leave the shopping mall
 * Slider to set battery minimum State of Charge back to Victron CCGX ESS ie. adjust Victron system
-* Ajust minimum SoC slider to match any changes made on Victron CCGX side ie. respond to changes made on Victron system remotely
+* Adjust minimum SoC slider to match any changes made on Victron CCGX side ie. respond to changes made on Victron system remotely
 * Alerts when hot water cylinder reached temperature and is ready, based on timers looking at grid power usage dropping after 15 minutes of high usage
 * VoIP phone battery flat by checking when it's 'last_activity' is longer than 10 minutes ago (is not working properly)
 * Ham radio APRS beacon going offline (can't use left Zone as coordinates never change to elsewhere) so looks at a status change to 'Away' for longer than 31 minutes (still tweaking this)
@@ -65,7 +67,7 @@ The following are some notable features that this particular installation uses:
 
 ## Files
 * File in docker sub-folder is the docker-compose file I used to create the Home Assistant container
-* Other config files are inside the ha-configs subfolder for HA. All are as named. The lovelace file is a copy of the Lovelace dashboard UI config to see how the UI cards are configured, especially those with text replacement for numerical value data.
+* Other config files are inside the ha-configs subfolder for HA. All are as named. The lovelace file is a copy of the Lovelace dashboard UI config to see how the UI cards are configured, especially those with text replacement for numerical value data (it is found inside /.storage/ on the server).
 
 ## ToDo Wishlist
 * Try link for click on Glances card to open full Glances web page
