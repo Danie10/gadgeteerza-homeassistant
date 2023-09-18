@@ -302,7 +302,8 @@
       hours: 0
       minutes: 0
       seconds: 15
-    above: '4700'
+    above: 4850
+    alias: When AC load is above 4950 for 15 secs
   condition: []
   action:
   - service: media_player.play_media
@@ -463,42 +464,6 @@
       title: Home Assistant Alert
       message: Warning! Ham radio power usage is high for 30 seconds already!
   mode: single
-- id: '1671375936902'
-  alias: Doorbell online
-  description: Check if Ring doorbell is available
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.front_gate_wifi_signal_category
-    to: unavailable
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
-    data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Front+gate+doorbell+unavailable+for+5+minutes%2C+check+doorbell
-      media_content_type: provider
-    metadata:
-      title: Warning! Front gate doorbell unavailable for 5 minutes, check doorbell
-      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
-      media_class: app
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://tts
-      - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Front+gate+doorbell+unavailable+for+5+minutes%2C+check+doorbell
-  - service: notify.mobile_app_sm_a135f
-    data:
-      message: Warning! Front gate doorbell unavailable for 5 minutes, check doorbell
-      title: Home Assistant alert
-  mode: single
 - id: '1673525651708'
   alias: Announce load shedding starting 30 mins
   description: Gives warning of 30 minutes before scheduled load shedding starts
@@ -610,4 +575,77 @@
       message: Warning! Solar system battery just 20%. System shuts off automatically
         at 11%
       title: Urgent from Solar System
+  mode: single
+- id: '1694981526504'
+  alias: Front Gate Bell Ringing
+  description: Audible announcement about gate bell ringing
+  trigger:
+  - type: occupied
+    platform: device
+    device_id: 1c8f0d5f466fe3d178891584ac650d7c
+    entity_id: 7d14b022501e3a46bfc0cad688ed04a6
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: 09:00:00
+    before: '20:00:00'
+    weekday:
+    - sat
+    - fri
+    - thu
+    - wed
+    - tue
+    - mon
+    - sun
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.study_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Someone+is+ringing+the+Front+Gate+bell%21&language=en-za
+      media_content_type: provider
+    metadata:
+      title: Someone is ringing the Front Gate bell!
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Someone+is+ringing+the+Front+Gate+bell%21&language=en-za
+  mode: single
+- id: '1694981953108'
+  alias: Ring Doorbell Battery Low
+  description: ''
+  trigger: []
+  condition:
+  - type: is_battery_level
+    condition: device
+    device_id: 1c8f0d5f466fe3d178891584ac650d7c
+    entity_id: aeeb555188b1d505d76df9495a9601fa
+    domain: sensor
+    below: 60
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.study_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Front+gate+bell+battery+level+check+as+it+is+low&language=en-za
+      media_content_type: provider
+    metadata:
+      title: Front gate bell battery level check as it is low
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Front+gate+bell+battery+level+check+as+it+is+low&language=en-za
+  - service: notify.mobile_app_sm_s918b
+    data:
+      message: 'HA: Ring Doorbell Battery May Be Low'
   mode: single

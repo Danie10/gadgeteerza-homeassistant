@@ -1,16 +1,18 @@
-# Victron Configuration.  // If you require stats from your victron system you must have a Venus device installed as part of your Victron installation. This does not use VRM.This users MODBUS
-# com.victronenergy.system  slave: 100
+# Victron Configuration.  // If you require stats from your victron system you must have a Venus device installed as part of your
+# Victron installation. This does not use VRM.This uses MODBUS sp Modbus TCP must be active on your CCGX.
+# Slave IDs can be found at Settings / Services / Modbus TCP / Available services
+# com.victronenergy.system hub slave: 100
 # Multiplus slave: 246
 # Smartsolar Charger slave: 247
 # BalancelCell Battery slave: 225
 # Download Modbus spreadsheet from https://www.victronenergy.com/support-and-downloads/technical-information called 'Modbus-TCP register list'
-# Note HA probes one register above so reg 840 will be probed here as reg 841
+# Note HA probes the ACTUAL register number. Mbpoll polls one register ABOVE so reg 840 will be probed here as reg 841
 # Start Troubleshooting by probing a register eg. 840 batt voltage on slave 100 with `mbpoll -a 100 -r 841 -c 1 192.168.1.205`
 #modbus:
   - name: victron
     type: tcp
     retry_on_empty: true
-    close_comm_on_error: true
+    close_comm_on_error: false
     delay: 5
     timeout: 5
     retries: 10
@@ -22,14 +24,16 @@
         scale: 1
         precision: 0
         slave: 100
-        address: 844
+        address: 843
+        data_type: uint16
         
       - name: "Battery Voltage"  # // Battery Voltage determined from different measurements. In order of preference: BMV-voltage (V), Multi-DC-Voltage (CV), MPPT-DC-Voltage (ScV), Charger voltage //com.victronenergy.system
         unit_of_measurement: "V"
         scale: 0.1
         precision: 1
         slave: 100
-        address: 841
+        address: 840
+        data_type: uint16
         
       - name: "Battery Current" # // Positive: battery begin charged. Negative: battery being discharged read from //com.victronenergy.system
         unit_of_measurement: "A"
@@ -37,7 +41,7 @@
         precision: 1
         scan_interval: 5
         slave: 100
-        address: 842
+        address: 841
         
       - name: "Battery Power" # // Postive: battery begin charged. Negative: battery being discharged read from //com.victronenergy.system
         unit_of_measurement: "W"
@@ -45,21 +49,22 @@
         precision: 1
         scan_interval: 5
         slave: 100
-        address: 843
+        address: 842
         device_class: energy
         
       - name: "Battery State"
         scale: 1
         precision: 1
         slave: 100
-        address: 845
+        address: 844
         
       - name: "Battery Consumed Amphours"
         unit_of_measurement: "Ah"
         scale: -10
         precision: 1
         slave: 100
-        address: 846
+        address: 845
+        data_type: uint16
         
       - name: "Battery Time to Go (System)"  #\\ Special value: 0 = charging read from //com.victronenergy.system
         unit_of_measurement: "s"
@@ -67,7 +72,7 @@
         precision: 0
         scan_interval: 60
         slave: 100
-        address: 847
+        address: 846
         
       - name: "Eskom Grid"  #\\ Power supplied by Grid to system. read from //com.victronenergy.system
         unit_of_measurement: "W"
@@ -75,7 +80,7 @@
         precision: 0
         scan_interval: 5
         slave: 100
-        address: 821
+        address: 820
         device_class: energy
 
       - name: "AC Loads"  #\\ Power supplied by Inverter to loads. read from //com.victronenergy.system
@@ -84,7 +89,8 @@
         precision: 0
         scan_interval: 5
         slave: 100
-        address: 818
+        address: 817
+        data_type: uint16
         device_class: energy
 
       - name: "Active input source"  #\\ Power supplied by Grid to system. read from //com.victronenergy.system
@@ -92,7 +98,7 @@
         scale: 1
         precision: 1
         slave: 100
-        address: 827
+        address: 826
 
       - name: "PV Power" # \\ Solar PV Power taken from Multiplus unit
         unit_of_measurement: "W"
@@ -100,48 +106,49 @@
         precision: 0
         scan_interval: 5
         slave: 100
-        address: 851
+        address: 850
+        data_type: uint16
         device_class: energy
         
       - name: "Grid Lost Alarm" # \\ 0=Ok;2=Alarm - does not seem to work but try use active input source != 1 or = 240
         scale: 1
         precision: 0
         slave: 246
-        address: 65
+        address: 64
         data_type: 'uint16'
         
       - name: "Temp alarm" # \\ 0=Ok;1=Warning;2=Alarm
         scale: 1
         precision: 1
         slave: 246
-        address: 35
+        address: 34
         data_type: uint16
         
       - name: "Low bat alarm" # \\ 0=Ok;1=Warning;2=Alarm
         scale: 1
         precision: 1
         slave: 246
-        address: 36
+        address: 35
         
       - name: "Overload alarm" # \\ 0=Ok;1=Warning;2=Alarm
         scale: 1
         precision: 1
         slave: 246
-        address: 37
+        address: 36
 
       - name: "VE.Bus state" # \\ 0=Off;1=Low Power;2=Fault;3=Bulk;4=Absorption;5=Float;6=Storage;7=Equalize;8=Passthru;9=Inverting;10=Power assist;11=Power supply;252=Bulk protection (displays Ext.Control)
         scale: 1
         precision: 1
         scan_interval: 5
         slave: 246
-        address: 32
+        address: 31
         
       - name: "VE.Bus error state" # \\ 0=No error;1=VE.Bus Error 1: Device is switched off because one of the other phases in the system has switched off;2=VE.Bus Error 2: New and old types MK2 are mixed in the system;3=VE.Bus Error 3: Not all- or more than- the expected devices were found in the system;4=VE.Bus Error 4: No other device whatsoever detected;5=VE.Bus Error 5: Overvoltage on AC-out;6=VE.Bus Error 6: Error in DDC Program;7=VE.Bus BMS connected- which requires an Assistant- but no assistant found;10=VE.Bus Error 10: System time synchronisation problem occurred;14=VE.Bus Error 14: Device cannot transmit data;16=VE.Bus Error 16: Dongle missing;17=VE.Bus Error 17: One of the devices assumed master status because the original master failed;18=VE.Bus Error 18: AC Overvoltage on the output of a slave has occurred while already switched off;22=VE.Bus Error 22: This device cannot function as slave;24=VE.Bus Error 24: Switch-over system protection initiated;25=VE.Bus Error 25: Firmware incompatibility. The firmware of one of the connected device is not sufficiently up to date to operate in conjunction with this device;26=VE.Bus Error 26: Internal error
         scale: 1
         precision: 1
         scan_interval: 5
         slave: 246
-        address: 33
+        address: 32
         
       - name: "Victron battery min SoC"
         unit_of_measurement: "%"
@@ -149,7 +156,7 @@
         precision: 0
         scan_interval: 5
         slave: 100
-        address: 2902
+        address: 2901
         data_type: 'uint16'
         
       - name: "Victron ESS battery life state" # \\ 0=Unused, BL disabled;1=Restarting;2=Self-consumption;3=Self-consumption;4=Self-consumption;5=Discharge disabled;6=Force charge;7=Sustain;8=Low Soc Recharge;9=Keep batteries charged;10=BL Disabled;11=BL Disabled (Low SoC);12=BL Disabled (Low SOC recharge)
@@ -157,7 +164,7 @@
         precision: 0
         scan_interval: 10
         slave: 100
-        address: 2901
+        address: 2900
 
 ###############################################################
 #                                                             #
@@ -170,27 +177,27 @@
         precision: 1
         scan_interval: 60
         slave: 225
-        address: 263
+        address: 262
         
       - name: "Solar Battery General Alarm"  # \\ 0=No alarm;2=Alarm
         scale: 1
         precision: 0
         slave: 225
-        address: 268
+        address: 267
         
       - name: "Solar Battery Low Temp"  # \\ 0=No alarm;2=Alarm
         scale: 1
         precision: 0
         scan_interval: 60
         slave: 225
-        address: 274
+        address: 273
         
       - name: "Solar Battery High Temp"  # \\ 0=No alarm;2=Alarm
         scale: 1
         precision: 0
         scan_interval: 60
         slave: 225
-        address: 275
+        address: 274
         
       - name: "Solar Battery Deepest Discharge"  # \\ Ah
         unit_of_measurement: "Ah"
@@ -198,14 +205,14 @@
         precision: 1
         scan_interval: 60
         slave: 225
-        address: 282
+        address: 281
         
       - name: "Solar Battery Cycles"
         scale: 1
         precision: 0
         scan_interval: 3600
         slave: 225
-        address: 285
+        address: 284
         
       - name: "Solar Battery Last Full Charge" # \\ Seconds
         unit_of_measurement: "Secs"
@@ -213,14 +220,14 @@
         precision: 0
         scan_interval: 3600
         slave: 225
-        address: 290
+        address: 289
         
       - name: "Solar Battery Time To Go"  # \\ Seconds
         scale: 0.01
         precision: 0
         scan_interval: 60
         slave: 225
-        address: 304
+        address: 303
         
       - name: "Solar Battery Health"   # \\ Percent
         unit_of_measurement: "%"
@@ -228,7 +235,7 @@
         precision: 1
         scan_interval: 3600
         slave: 225
-        address: 305
+        address: 304
         
       - name: "Solar Battery Maximum Capacity"  # \\ Ah
         unit_of_measurement: "Ah"
@@ -236,14 +243,14 @@
         precision: 1
         scan_interval: 300
         slave: 225
-        address: 310
+        address: 309
         
       - name: "Solar Battery Cell Imbalance Alarm"  #  \\ 0=No alarm;2=Alarm
         scale: 1
         precision: 0
         scan_interval: 60
         slave: 225
-        address: 323
+        address: 322
 
         
 ###############################################################
@@ -263,7 +270,7 @@
         unit_of_measurement: "V"
         scale: 0.01
         slave: 247
-        address: 777
+        address: 776
 
       - name: "PV Power Charger" # \\ Not available if multiple VE.Can chargers are combined
         unit_of_measurement: "W"
@@ -271,7 +278,7 @@
         precision: 0
         scan_interval: 5
         slave: 247
-        address: 790
+        address: 789
         device_class: energy
                 
       - name: "Yield so far today" # \\ Today's yield
@@ -279,30 +286,30 @@
         scale: 0.1
         precision: 3
         slave: 247
-        address: 785
+        address: 784
         
       - name: "Maximum charge power today" # \\ Today's maximum power
         unit_of_measurement: "W"
         scale: 1
         precision: 0
         slave: 247
-        address: 786
+        address: 785
 
       - name: "Yield total yesterday" # \\ Yesterdays's yield
         unit_of_measurement: "kWh"
         scale: 0.1
         precision: 3
         slave: 247
-        address: 787
+        address: 786
 
       - name: "Maximum charge power yesterday" # \\ Yesterdays's maximum power
         unit_of_measurement: "W"
         scale: 1
         precision: 0
         slave: 247
-        address: 788
+        address: 787
 
       - name: "Solar charger error" # \\ 0=No error;1=Battery temperature too high;2=Battery voltage too high;3=Battery temperature sensor miswired (+);4=Battery temperature sensor miswired (-);5=Battery temperature sensor disconnected;6=Battery voltage sense miswired (+);7=Battery voltage sense miswired (-);8=Battery voltage sense disconnected;9=Battery voltage wire losses too high;17=Charger temperature too high;18=Charger over-current;19=Charger current polarity reversed;20=Bulk time limit reached;22=Charger temperature sensor miswired;23=Charger temperature sensor disconnected;34=Input current too high
         precision: 0
         slave: 247
-        address: 789
+        address: 788

@@ -221,30 +221,6 @@
               ]
             },
             {
-              "camera_view": "auto",
-              "type": "picture-glance",
-              "title": "WiFi Camera",
-              "entities": [
-                {
-                  "entity": "camera.wifi_camera"
-                }
-              ],
-              "camera_image": "camera.wifi_camera"
-            },
-            {
-              "type": "custom:our-groceries-card",
-              "title": "Shopping Lists (click name to open list)",
-              "show_header": true,
-              "entity": "sensor.our_groceries",
-              "show_crossed_off": false,
-              "sort_by_name": true,
-              "hide_empty_lists": true,
-              "show_lists": [
-                "eBoCWpMfV05kqbazkbskGH",
-                "oNMZCUe2lhBGgIgqOhQHxP"
-              ]
-            },
-            {
               "type": "vertical-stack",
               "title": "Alarms",
               "cards": [
@@ -502,6 +478,30 @@
                     }
                   ]
                 }
+              ]
+            },
+            {
+              "camera_view": "auto",
+              "type": "picture-glance",
+              "title": "WiFi Camera",
+              "entities": [
+                {
+                  "entity": "camera.wifi_camera"
+                }
+              ],
+              "camera_image": "camera.wifi_camera"
+            },
+            {
+              "type": "custom:our-groceries-card",
+              "title": "Shopping Lists (click name to open list)",
+              "show_header": true,
+              "entity": "sensor.our_groceries",
+              "show_crossed_off": false,
+              "sort_by_name": true,
+              "hide_empty_lists": true,
+              "show_lists": [
+                "eBoCWpMfV05kqbazkbskGH",
+                "oNMZCUe2lhBGgIgqOhQHxP"
               ]
             }
           ]
