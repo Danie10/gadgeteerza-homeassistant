@@ -54,6 +54,23 @@
         {% else %}
           {{ ((((battery_soc-battery_min_soc)*battery_max_capacity)/100)/loads_current | float ) | round(2) }}
         {% endif %}
+    
+    # This calculates the difference in whole days since the solar battery was last fully charged. It calculates based on the
+    # value of the Helper called Battery Last Full Date's state. There is an Automation that triggers a reset of the Helper
+    # when SOC is 100% and the battery current has changed from Charging to Idle. Less than a day will output 0.
+    battery_last_full_days:
+      unit_of_measurement: "Hours"
+      icon_template: mdi:battery-charging-100
+      value_template: >-
+        {% set battery_last_full_date = as_timestamp(states.input_datetime.battery_last_full_date.state)|int %}
+        {% set now_full_date = as_timestamp(now())|int %}
+        {{ ((now_full_date - battery_last_full_date)/86400) | int }}
+
+
+# Set date format        
+- platform: time_date
+  display_options:
+    - 'date_time_iso'
 
         
 # Weather Underground PWS

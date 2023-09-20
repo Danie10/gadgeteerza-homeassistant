@@ -19,48 +19,48 @@ A key focus is on the Modbus TCP interface with a Victron solar system, and a Ba
 
 This is not a 'how-to' guide, but intended more as a reference for others to learn from the syntax and formatting of the code, or for accessing Victron or Balancell battery Modbus address registers.
 
-I have expanded some information about the Modbus registers inside the modbus.yaml config file (and in my video). But if things break with regards to Victron Modbus readings, it is always best to start troubleshooting at the source, by running the mbpoll command from the CLI to see what data is returned from a Modbus register eg. to read register 840 (battery voltage) from slave device 100 (main Multiplus system) you'd run it as `mbpoll -a 100 -r 841 -c 1 192.168.1.205` where you'll see we add +1 for the registering number probing, and the 192.168.1.205 is my Victron CCGX's LAN IP address (you'd use your device's IP address).
+I have expanded some information about the Modbus registers inside the modbus.yaml config file (and in my video). But if things break with regards to Victron Modbus readings, it is always best to start troubleshooting at the source, by running the mbpoll command from your computer terminal to see what data is returned from a Modbus register eg. to read register 840 (battery voltage) from slave device 100 (main Multiplus system) you'd run it as `mbpoll -a 100 -r 841 -c 1 192.168.1.205` where you'll see we add +1 for the register number being probed, and the 192.168.1.205 is my Victron CCGX's LAN IP address (you'd use your device's IP address).
 
 You can watch my video at https://www.youtube.com/watch?v=dlvlhou70VA about my initial setup of the dashboards.
 
 ## Key features and Integrations
 The following are some notable features that this particular installation uses:
 * Modbus TCP interface to a Victron CCGX with a Multiplus II inverter/charger, and Victron SmartSolar charger
-* Balancell battery stats read - https://balancell.com/products/balancell-p26-solar/ (not all are readable)
-* Time left on battery to Empty (11% SOC) as well as to current Minimum SoC (based on current battery load in Amps). Changed sensors.yaml to just work on AC Load wattage instead of switching back and forth between charge and discharge. It now estimates time to go based on current load, whether charging or discharging, for consistency.
+* Balancell battery stats read - https://balancell.com/products/balancell-p26-solar/ (not all are readable unfortunately)
+* Time left on battery to Empty (My Victron is set to cut-off at 11% SOC so I have empty as 11% SOC) as well as to the current Minimum SoC (based on current battery load in Amps as it changes in real-time). Changed sensors.yaml to just work on AC Load wattage instead of switching back and forth between charge and discharge. It now estimates time to go based on current load, whether charging or discharging, for consistency.
+* Batteries need to be fully charged at least weekly to prevent cell imbalance, so there is automation to set a timer when the battery reaches full charge, and then warn if 7 days has passed since that time, with a dashboard gauge showing the day count (see detail in discussion at https://github.com/Danie10/gadgeteerza-homeassistant/discussions/6).
 * Gauges tuned for severity colours
 * Ellies Efergy Engage hub energy monitoring of grid power used at DB - https://engage.efergy.com/
 * Tasmota firmware on Sonoff POW2 WiFi switch via MQTT showing power usage stats, and switch control
 * Glances performance stats from one local server, and a remote VPS server
 * Reolink WiFi IP cameras
-* Android Phone status, location, etc
-* Ambient weather station
+* Android Phone status, location, battery level, etc
+* Ambient weather station data
 * Weather Underground Personal Weather Station stats
 * City of Cape Town load shedding via EskomSePush API showing also time to start of next load shedding for our area
-* Ring doorbell
+* Ring doorbell including last video captured and low battery warning
 * Google Cast for voice output alert notifications
 * Asus router for alerting VoIP phone left network (battery is flat)
 * UptimeRobot to monitor key websites
 * AdGuard Home for performance of DNS
-* Domain name certificate expires (removed as free access inadequate)
-* OurGroceries shopping application
 * Google Calendar showing next few days' schedule
-* RSS feed showing Netflix titles leaving soon (removed widget as no longer using Netflix)
-* Mini graph showing actual solar charger yield compared to weather station's actual measured radiation in W/m2, and adjusted for panel area and wattage. Also includes forecasted solar for the day, and the next day.
+* RSS feed showing Netflix titles leaving soon (removed widget as no longer using Netflix, but could also be a news feed)
+* Mini graph showing actual solar charger yield compared to weather station's actual measured radiation in W/m2, and adjusted for panel area and wattage. Also includes forecasted solar for the day, and the following day.
 * Restrictions (locks) set with warnings before some switches are toggled on the dashboard
+* Dashboard switches to turn Tasmota switch on/off, and to adjust Victron ECC Minimum SOC level
 * Home Assistant Community Store (HACS) integrations and frontend UI
 * HA is running in a Docker container
 
 ## Automations
-* Voice alerting to start of rain (to take washing off the line) - unfortunately weather station takes a few minutues to report
+* Voice alerting to start of rain (to take washing off the line) - unfortunately weather station takes a few minutes to report
 * Voice notification to home speaker for when I leave the shopping mall
 * Slider to set battery minimum State of Charge back to Victron CCGX ESS ie. adjust Victron system
 * Adjust minimum SoC slider to match any changes made on Victron CCGX side ie. respond to changes made on Victron system remotely
 * Alerts when hot water cylinder reached temperature and is ready, based on timers looking at grid power usage dropping after 15 minutes of high usage
-* VoIP phone battery flat by checking when it's 'last_activity' is longer than 10 minutes ago (is not working properly)
+* VoIP phone battery flat by checking when it's 'last_activity' is longer than 10 minutes ago (is not working properly as it is checking presence of the phone's base station)
 * Ham radio APRS beacon going offline (can't use left Zone as coordinates never change to elsewhere) so looks at a status change to 'Away' for longer than 31 minutes (still tweaking this)
 * Some audio message alerts for Victron system alarms
-* Voice alert warning when AC load on the inverter exceeds 4,7 kWh
+* Voice alert warning when AC load on the inverter exceeds 4,9 kWh
 * Voice alerts for when grid power has been lost, as well as when it is back on (it's a must in South Africa, and with a solar system you don't always know if the grid is back on, or when it has gone off)
 * Voice alert for 30 minutes before scheduled load shedding for our zone starts (just some time to put shower hot water on)
 * Critical alert when battery SOC gets down to 16%
@@ -73,11 +73,12 @@ The following are some notable features that this particular installation uses:
 * Try link for click on Glances card to open full Glances web page
 * Automations for motion detected on cameras
 * Automation to adjust battery minimum SoC based on next day's weather forecast
+* Automation to fully charge battery if 7 days passed without a full charge
 * Get Ambient weather card to show rain in mm instead of inches
 * Integration with Geyserwise hot water cylinder heating - no comms so may need a Geyserwise Max IoT device instead
 * Integration with Texecom burglar alarm system if possible
 * Convert template sensors code format to newer format
-* Possible time left to solar battery full charge gauge
+* Possible time left to solar battery full charge gauge (problematic as 100% SOC is not full charge - see discussion at https://github.com/Danie10/gadgeteerza-homeassistant/discussions/5)
 
 ## Time Left on Battery Calculations
 Just for interest this is how I've done the basic calculation, based on the Balancell battery pack having a 206 Ah max rated capacity at full ie. 100% SOC. Note cut-off for my battery is 11% SOC so the time to empty now reflects time down to 11% and no longer to 0%:

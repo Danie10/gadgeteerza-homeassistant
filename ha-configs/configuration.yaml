@@ -39,19 +39,20 @@ modbus: !include modbus.yaml
 #monitor_docker: !include monitor_docker.yaml
 
 # Load OurGroceries app API
-ourgroceries:
-  username: !secret our_groceries_username
-  password: !secret our_groceries_password
+#ourgroceries:
+#  username: !secret our_groceries_username
+#  password: !secret our_groceries_password
+  
 
 # Uncomment below to generate debug logging
 logger:
-#  default: warning
-  default: critical
-  logs:
+  default: warning
+  # default: critical
+  #logs:
     # Modbus debug lines
-    homeassistant.components.modbus: debug
-    pymodbus: debug
+    #homeassistant.components.modbus: debug
+    #pymodbus: debug
     # Glances debug lines
-    homeassistant.components.glances: debug
-    glances_api: debug
-    aiohttp: debug
+    #homeassistant.components.glances: debug
+    #glances_api: debug
+    #aiohttp: debug

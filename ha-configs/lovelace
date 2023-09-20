@@ -180,7 +180,7 @@
                 {
                   "type": "custom:mushroom-template-card",
                   "primary": "Quota {{state_attr(entity, \"count\")}}/{{state_attr(entity, \"limit\")}}",
-                  "secondary": "",
+                  "secondary": "API Allowed Quota",
                   "icon": "mdi:lightning-bolt",
                   "entity": "sensor.load_shedding_sepush_api_quota",
                   "tap_action": {
@@ -489,20 +489,7 @@
                   "entity": "camera.wifi_camera"
                 }
               ],
-              "camera_image": "camera.wifi_camera"
-            },
-            {
-              "type": "custom:our-groceries-card",
-              "title": "Shopping Lists (click name to open list)",
-              "show_header": true,
-              "entity": "sensor.our_groceries",
-              "show_crossed_off": false,
-              "sort_by_name": true,
-              "hide_empty_lists": true,
-              "show_lists": [
-                "eBoCWpMfV05kqbazkbskGH",
-                "oNMZCUe2lhBGgIgqOhQHxP"
-              ]
+              "camera_image": "camera.nvr_sub_7"
             }
           ]
         },
@@ -739,14 +726,14 @@
                 },
                 {
                   "type": "gauge",
-                  "entity": "sensor.glances_ram_used_percent_2",
-                  "name": "VPS RAM Used",
+                  "entity": "sensor.glances_etc_resolv_conf_used_percent",
+                  "name": "OMV Disk Used",
                   "min": 0,
                   "max": 100,
                   "needle": true,
                   "severity": {
                     "green": 0,
-                    "yellow": 70,
+                    "yellow": 80,
                     "red": 90
                   }
                 }
@@ -867,10 +854,6 @@
                 {
                   "entity": "sensor.ham_radios_energy_total",
                   "name": "ENERGY Total"
-                },
-                {
-                  "entity": "sensor.ham_radios_energy_totalstarttime",
-                  "name": "ENERGY TotalStartTime"
                 },
                 {
                   "entity": "sensor.ham_radios_energy_yesterday",
@@ -1705,6 +1688,20 @@
                   "hours_to_show": 72
                 }
               ]
+            },
+            {
+              "type": "gauge",
+              "entity": "sensor.battery_last_full_days",
+              "name": "Battery Last Fully Charged",
+              "unit": "Days",
+              "min": 0,
+              "max": 14,
+              "needle": true,
+              "severity": {
+                "green": 0,
+                "yellow": 6,
+                "red": 10
+              }
             }
           ]
         }

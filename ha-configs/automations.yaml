@@ -649,3 +649,61 @@
     data:
       message: 'HA: Ring Doorbell Battery May Be Low'
   mode: single
+- id: '1695058240227'
+  alias: Restart Battery Last Full Timer
+  description: Watches for when battery is above 99% (fully charged to 100%) SOC and
+    battery current changed to Idle for 10 secs. Then resets the Battery Last Full
+    Date helper.
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.battery_state
+    to: '0'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 9
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.battery_soc
+    above: 99
+  action:
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{ now() }}'
+    target:
+      entity_id: input_datetime.battery_last_full_date
+  mode: single
+- id: '1695144032830'
+  alias: Solar Battery Full Charge Needed Alert
+  description: Alerts that solar battery has not been fully charged for a week
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.battery_last_full_days
+    above: 6
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.bedroom_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Solar+Battery+has+not+been+fully+charged+for+a+week+now.+Please+fully+charge+the+battery%21&language=en-gb
+      media_content_type: provider
+    metadata:
+      title: Solar Battery has not been fully charged for a week now. Please fully
+        charge the battery!
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Solar+Battery+has+not+been+fully+charged+for+a+week+now.+Please+fully+charge+the+battery%21&language=en-gb
+  - service: notify.mobile_app_sm_s918b
+    data:
+      message: Solar Battery has not been fully charged for a week now. Please fully
+        charge the battery!
+      title: Alert from Home Assistant
+  mode: single

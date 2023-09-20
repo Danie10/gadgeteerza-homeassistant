@@ -11,9 +11,10 @@
 #modbus:
   - name: victron
     type: tcp
-    retry_on_empty: true
-    close_comm_on_error: false
-    delay: 5
+    retry_on_empty: false
+    close_comm_on_error: true
+    delay: 0
+    message_wait_milliseconds: 30
     timeout: 5
     retries: 10
     host: 192.168.1.205
@@ -26,6 +27,7 @@
         slave: 100
         address: 843
         data_type: uint16
+        lazy_error_count: 5
         
       - name: "Battery Voltage"  # // Battery Voltage determined from different measurements. In order of preference: BMV-voltage (V), Multi-DC-Voltage (CV), MPPT-DC-Voltage (ScV), Charger voltage //com.victronenergy.system
         unit_of_measurement: "V"
@@ -54,9 +56,10 @@
         
       - name: "Battery State"
         scale: 1
-        precision: 1
+        precision: 0
         slave: 100
         address: 844
+        data_type: uint16
         
       - name: "Battery Consumed Amphours"
         unit_of_measurement: "Ah"
