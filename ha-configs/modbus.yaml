@@ -61,13 +61,13 @@
         address: 844
         data_type: uint16
         
-      - name: "Battery Consumed Amphours"
-        unit_of_measurement: "Ah"
-        scale: -10
-        precision: 1
-        slave: 100
-        address: 845
-        data_type: uint16
+#      - name: "Battery Consumed Amphours"
+#        unit_of_measurement: "Ah"
+#        scale: -10
+#        precision: 1
+#        slave: 100
+#        address: 845
+#        data_type: uint16
         
       - name: "Battery Time to Go (System)"  #\\ Special value: 0 = charging read from //com.victronenergy.system
         unit_of_measurement: "s"
