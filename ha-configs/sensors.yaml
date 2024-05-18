@@ -12,8 +12,8 @@
       value_template: >-
         {{ states('sensor.ac_loads') | int }}
       unit_of_measurement: "W"
+      # Change value in this line below for the icon change threshold
       icon_template: >-
-        # Change value in this line below for the icon change threshold
         {% if int(states('sensor.ac_loads')) >= 600 %}
           mdi:alert
         {%- else -%}
