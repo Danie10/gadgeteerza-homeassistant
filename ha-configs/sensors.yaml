@@ -7,6 +7,18 @@
 # Total (W) = W/m2 * panel area * efficiency
 - platform: template
   sensors:
+    custom_ac_loads:
+      friendly_name: "AC Loads Custom"
+      value_template: >-
+        {{ states('sensor.ac_loads') | int }}
+      unit_of_measurement: "W"
+      icon_template: >-
+        # Change value in this line below for the icon change threshold
+        {% if int(states('sensor.ac_loads')) >= 600 %}
+          mdi:alert
+        {%- else -%}
+          mdi:power-socket-fr
+        {%- endif %}
     radiation_converted:
       friendly_name: "Forecasted solar radiation W/m2 converted to Total"
       unit_of_measurement: "W"
@@ -66,7 +78,7 @@
         {% set now_full_date = as_timestamp(now())|int %}
         {{ ((now_full_date - battery_last_full_date)/86400) | int }}
 
-
+        
 # Set date format        
 - platform: time_date
   display_options:
