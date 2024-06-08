@@ -500,13 +500,6 @@
           "badges": [],
           "cards": [
             {
-              "show_current": true,
-              "show_forecast": true,
-              "type": "weather-forecast",
-              "entity": "weather.openweathermap",
-              "name": "Weather Forecast"
-            },
-            {
               "type": "entities",
               "entities": [
                 {
@@ -740,6 +733,38 @@
               ]
             },
             {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.glances_gadgeteer_co_za_memory_usage",
+                  "name": "VPS RAM Used",
+                  "unit": "%",
+                  "min": 0,
+                  "max": 100,
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 80,
+                    "red": 90
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.glances_gadgeteer_co_za_etc_hosts_disk_usage",
+                  "name": "VPS Disk Used",
+                  "min": 0,
+                  "max": 100,
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 80,
+                    "red": 90
+                  }
+                }
+              ]
+            },
+            {
               "type": "custom:mini-graph-card",
               "name": "Speedtest Stats - 7 Days",
               "entities": [
@@ -763,6 +788,73 @@
                 "extrema": true
               },
               "hours_to_show": 168
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "button.rt_ac88u_check_for_updates"
+                },
+                {
+                  "entity": "light.rt_ac88u_led"
+                },
+                {
+                  "entity": "button.rt_ac88u_reboot"
+                },
+                {
+                  "entity": "button.rt_ac88u_restart_wireless"
+                },
+                {
+                  "entity": "button.rt_ac88u_restart_wired"
+                },
+                {
+                  "entity": "button.rt_ac88u_refresh_clients"
+                },
+                {
+                  "entity": "button.rt_ac88u_restart_firewall"
+                },
+                {
+                  "entity": "button.rt_ac88u_restart_http_daemon"
+                },
+                {
+                  "entity": "sensor.rt_ac88u_connected_devices"
+                },
+                {
+                  "entity": "sensor.rt_ac88u_wan_download_speed"
+                },
+                {
+                  "entity": "sensor.rt_ac88u_wan_upload_speed"
+                }
+              ],
+              "title": "Home Router",
+              "state_color": true
+            },
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.rt_ac88u_temperature_cpu",
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 55,
+                    "red": 85
+                  },
+                  "name": "Router CPU"
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.rt_ac88u_ram",
+                  "name": "Router RAM",
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 65,
+                    "red": 85
+                  }
+                }
+              ]
             }
           ]
         },
@@ -1491,16 +1583,20 @@
               "type": "glance",
               "entities": [
                 {
-                  "entity": "sensor.openweathermap_cloud_coverage",
+                  "entity": "sensor.home_cloud_ceiling",
+                  "name": "Cloud Cover"
+                },
+                {
+                  "entity": "sensor.home_cloud_cover",
                   "name": "Today"
                 },
                 {
-                  "entity": "sensor.openweathermap_forecast_cloud_coverage",
+                  "entity": "sensor.home_cloud_cover_day_1",
                   "name": "Tomorrow"
                 },
                 {
-                  "entity": "sensor.openweathermap_forecast_condition",
-                  "name": "Forecast Tomorrow"
+                  "entity": "sensor.home_cloud_cover_day_2",
+                  "name": "Next"
                 }
               ],
               "title": "Cloud Coverage"
@@ -1702,6 +1798,17 @@
                 "yellow": 6,
                 "red": 10
               }
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.ac_loads"
+                },
+                {
+                  "entity": "sensor.custom_ac_loads"
+                }
+              ]
             }
           ]
         }

@@ -303,7 +303,7 @@
       minutes: 0
       seconds: 15
     above: 4850
-    alias: When AC load is above 4950 for 15 secs
+    alias: When AC load is above 4850 for 15 secs
   condition: []
   action:
   - service: media_player.play_media
@@ -465,13 +465,13 @@
       message: Warning! Ham radio power usage is high for 30 seconds already!
   mode: single
 - id: '1673525651708'
-  alias: Announce load shedding starting 30 mins
-  description: Gives warning of 30 minutes before scheduled load shedding starts
+  alias: Announce load shedding starting 45 mins
+  description: Gives warning of 45 minutes before scheduled load shedding starts
   trigger:
   - platform: numeric_state
     entity_id: sensor.load_shedding_area_capetown_9_thornton
     attribute: starts_in
-    below: 31
+    below: 46
   condition:
   - condition: time
     after: 09:00:00
@@ -489,10 +489,10 @@
     target:
       entity_id: media_player.study_speaker
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+30+minutes
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+45+minutes
       media_content_type: provider
     metadata:
-      title: Warning! Load Shedding starts in 30 minutes
+      title: Warning! Load Shedding starts in 45 minutes
       thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
       media_class: app
       children_media_class:
@@ -501,15 +501,15 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+30+minutes
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+45+minutes
   - service: media_player.play_media
     target:
       entity_id: media_player.bedroom_speaker
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+30+minutes
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+45+minutes
       media_content_type: provider
     metadata:
-      title: Warning! Load Shedding starts in 30 minutes
+      title: Warning! Load Shedding starts in 45 minutes
       thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
       media_class: app
       children_media_class:
@@ -518,7 +518,7 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+30+minutes
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+45+minutes
   mode: single
 - id: '1684852313278'
   alias: Warning battery at 20%
@@ -585,9 +585,13 @@
     device_id: 1c8f0d5f466fe3d178891584ac650d7c
     entity_id: 7d14b022501e3a46bfc0cad688ed04a6
     domain: binary_sensor
+  - platform: state
+    entity_id:
+    - binary_sensor.front_gate_ding
+    to: 'on'
   condition:
   - condition: time
-    after: 09:00:00
+    after: 08:30:00
     before: '20:00:00'
     weekday:
     - sat
@@ -706,4 +710,41 @@
       message: Solar Battery has not been fully charged for a week now. Please fully
         charge the battery!
       title: Alert from Home Assistant
+  mode: single
+- id: '1717839605291'
+  alias: Weather station battery
+  description: Announces if battery changes to low
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.thornton_battery
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.lounge_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Check+the+weather+station+battery&language=en-za
+      media_content_type: provider
+    metadata:
+      title: Check the weather station battery
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Check+the+weather+station+battery&language=en-za
+  - service: notify.persistent_notification
+    metadata: {}
+    data:
+      message: Check weather station battery
+      title: Weather Station
   mode: single
