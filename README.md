@@ -17,11 +17,13 @@ These are the YAML config files from my own installation of Home Assistant. Ever
 
 A key focus is on the Modbus TCP interface with a Victron solar system, and a Balancell battery. This instance of HA is running in a Docker container (docker-compose.yaml also included).
 
-This is not a 'how-to' guide, but intended more as a reference for others to learn from the syntax and formatting of the code, or for accessing Victron or Balancell battery Modbus address registers.
+This is not a 'how-to' guide (nor intended to be config files to copy straight into your own HA hence no releases here), but intended more as a reference for others to learn from the syntax and formatting of the code, or for accessing Victron or Balancell battery Modbus address registers.
 
 I have expanded some information about the Modbus registers inside the modbus.yaml config file (and in my video). But if things break with regards to Victron Modbus readings, it is always best to start troubleshooting at the source, by running the mbpoll command from your computer terminal to see what data is returned from a Modbus register eg. to read register 840 (battery voltage) from slave device 100 (main Multiplus system) you'd run it as `mbpoll -a 100 -r 841 -c 1 192.168.1.205` where you'll see we add +1 for the register number being probed, and the 192.168.1.205 is my Victron CCGX's LAN IP address (you'd use your device's IP address).
 
 You can watch my video at https://www.youtube.com/watch?v=dlvlhou70VA about my initial setup of the dashboards.
+
+NOTE: There is now a Victron GX module available in HA under HACS since 2024 so you can also consider using that instead of my Modbus configs - see https://github.com/sfstar/hass-victron.
 
 ## Key features and Integrations
 The following are some notable features that this particular installation uses:

@@ -56,3 +56,6 @@ logger:
     #homeassistant.components.glances: debug
     #glances_api: debug
     #aiohttp: debug
+
+battery_notes:
+

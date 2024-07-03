@@ -729,6 +729,17 @@
                     "yellow": 80,
                     "red": 90
                   }
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.glances_cpu_used",
+                  "name": "OMV CPU",
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 80,
+                    "red": 90
+                  }
                 }
               ]
             },
@@ -957,6 +968,88 @@
                 }
               ],
               "title": "Ham Radios Power Usage"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_hf_12_10_day",
+                  "name": "HF Conditions 12m-10m Day"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_hf_12_10_night",
+                  "name": "HF Conditions 12m-10m Night"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_hf_17_15_day",
+                  "name": "HF Conditions 17m-15m Day"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_hf_17_15_night",
+                  "name": "HF Conditions 17m-15m Night"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_hf_30_20_day",
+                  "name": "HF Conditions 30m-20m Day"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_hf_30_20_night",
+                  "name": "HF Conditions 30m-20m Night"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_hf_80_40_day",
+                  "name": "HF Conditions 80m-40m Day"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_hf_80_40_night",
+                  "name": "HF Conditions 80m-40m Night"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_geomag_field",
+                  "name": "HF Conditions Geomag Field"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_sig_noise_lvl",
+                  "name": "HF Conditions Noise Level"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_a_index",
+                  "name": "Solar A-Index"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_bz",
+                  "name": "Solar Bz"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_flux_index",
+                  "name": "Solar Flux Index"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_fof2",
+                  "name": "Solar foF2"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_k_index",
+                  "name": "Solar K-Index"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_sunspots",
+                  "name": "Solar Sunspots"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_wind",
+                  "name": "Solar Wind"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_xray",
+                  "name": "Solar X-Ray Class"
+                },
+                {
+                  "entity": "sensor.ham_radio_propagation_solar_xray_scale",
+                  "name": "Solar X-Ray Scale"
+                }
+              ],
+              "title": "Solar Data"
             }
           ]
         },
@@ -1050,7 +1143,7 @@
                 {
                   "type": "gauge",
                   "entity": "sensor.solar_battery_temperature",
-                  "name": "Battery Temp",
+                  "name": "Battery Temp (-15 to 55)",
                   "unit": "C",
                   "min": 0,
                   "max": 55,
@@ -1061,19 +1154,19 @@
                       "color": "#b83c2c"
                     },
                     {
-                      "from": 10,
+                      "from": 2,
                       "color": "yellow"
                     },
                     {
-                      "from": 15,
+                      "from": 5,
                       "color": "green"
                     },
                     {
-                      "from": 40,
+                      "from": 30,
                       "color": "yellow"
                     },
                     {
-                      "from": 45,
+                      "from": 50,
                       "color": "#b83c2c"
                     }
                   ]
