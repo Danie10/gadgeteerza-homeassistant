@@ -77,7 +77,39 @@
         {% set battery_last_full_date = as_timestamp(states.input_datetime.battery_last_full_date.state)|int %}
         {% set now_full_date = as_timestamp(now())|int %}
         {{ ((now_full_date - battery_last_full_date)/86400) | int }}
-
+    # Convert raw imperial measurements from weather station into metric readings
+    ambientweather_wind_kmh:
+      friendly_name: Wind Speed
+      unit_of_measurement: "km/h"
+      icon_template: mdi:weather-windy
+      value_template: >-
+        {{(states('sensor.thornton_wind_speed')|int*1.609) | int}}
+    ambientweather_wind_gust_kmh:
+      friendly_name: Wind Gust
+      unit_of_measurement: "km/h"
+      icon_template: mdi:weather-windy
+      value_template: >-
+        {{(states('sensor.thornton_wind_gust')|int*1.609) | int}}
+    ambientweather_max_gust_kmh:
+      friendly_name: Max Gust
+      unit_of_measurement: "km/h"
+      icon_template: mdi:weather-windy
+      value_template: >-
+        {{(states('sensor.thornton_max_gust')|int*1.609) | int}}
+    ambientweather_daily_rain_mm:
+      friendly_name: Rain Today
+      unit_of_measurement: "mm"
+      icon_template: mdi:weather-rainy
+      value_template: >-
+        {{(states('sensor.thornton_daily_rain')|int*25.4) | int}}
+    ambientweather_event_rain_mm:
+      friendly_name: Rain Event
+      unit_of_measurement: "mm"
+      icon_template: mdi:weather-rainy
+      value_template: >-
+        {{(states('sensor.thornton_event_rain')|int*25.4) | int}}
+        
+        
         
 # Set date format        
 - platform: time_date
@@ -86,35 +118,35 @@
 
         
 # Weather Underground PWS
-- platform: wundergroundpws
-  api_key: !secret wunderground_api
-  pws_id: !secret wunderground_station
-  numeric_precision: decimal
-  monitored_conditions:
-    - temp
-    - dewpt
-    - heatIndex
-    - solarRadiation
-    - uv
-    - windChill
-    - precipTotal
-    - precipRate
-    - windGust
-    - windSpeed
-    - weather_1d
-    - weather_1n
-    - weather_2d
-    - weather_2n
-    - precip_1d
-    - precip_chance_1d
-    - temp_high_1d
-    - temp_low_1d
-    - wind_1d
-    - precip_2d
-    - precip_chance_2d
-    - temp_high_2d
-    - temp_low_2d
-    - wind_2d
+#- platform: wundergroundpws
+#  api_key: !secret wunderground_api
+#  pws_id: !secret wunderground_station
+#  numeric_precision: decimal
+#  monitored_conditions:
+#    - temp
+#    - dewpt
+#    - heatIndex
+#    - solarRadiation
+#    - uv
+#    - windChill
+#    - precipTotal
+#    - precipRate
+#    - windGust
+#    - windSpeed
+#    - weather_1d
+#    - weather_1n
+#    - weather_2d
+#    - weather_2n
+#    - precip_1d
+#    - precip_chance_1d
+#    - temp_high_1d
+#    - temp_low_1d
+#    - wind_1d
+#    - precip_2d
+#    - precip_chance_2d
+#    - temp_high_2d
+#    - temp_low_2d
+#    - wind_2d
 
 # RSS Feed from https://expiringonnetflix.blogspot.com/
 #- platform: feedparser
