@@ -1,15 +1,17 @@
 # GadgeteerZA Home Assistant
 A repository of the YAML files used to configure my Home Assistant instance. My instance is hosted in a Docker container on an Intel NUC inside the home.
 
-## Screnshots
-<p align="center">
-<img src="images/dashboard-screenshot.jpg" style="width: 500px; max-width: 100%; height: auto" title="Solar dashboard tab">
+## Screenshots
+<p align="center"><img src="images/dashboard-screenshot.jpg" style="width: 500px; max-width: 100%; height: auto" title="Solar dashboard tab">
 
-<img src="images/dashboard-screenshot2.jpg" style="width: 500px; max-width: 100%; height: auto" title="Front dashboard tab">
+<p align="center"><img src="images/dashboard-screenshot2.jpg" style="width: 500px; max-width: 100%; height: auto" title="Front dashboard tab">
 
-<img src="images/HA-Solar-Status-2022-09-18.gif" style="width: 500px; max-width: 100%; height: auto" title="Video showing grid lost and battery time left">
+<p align="center"><img src="images/HA-Solar-Status-2022-09-18.gif" style="width: 500px; max-width: 100%; height: auto" title="Video showing grid lost and battery time left">
 
-<img src="images/loadshedding.jpg" style="width: 500px; max-width: 100%; height: auto" title="Load Shedding card">
+<p align="center"><img src="images/loadshedding.jpg" style="width: 500px; max-width: 100%; height: auto" title="Load Shedding card">
+</p>
+
+<p align="center"><img src="images/warning-solar-charge.gif" style="width: 500px; max-width: 100%; height: auto" title="Elgato Stream Deck displaying live status from HA">
 </p>
 
 ## Description
@@ -24,6 +26,8 @@ I have expanded some information about the Modbus registers inside the modbus.ya
 You can watch my video at https://www.youtube.com/watch?v=dlvlhou70VA about my initial setup of the dashboards.
 
 NOTE: There is now a Victron GX module available in HA under HACS since 2024 so you can also consider using that instead of my Modbus configs - see https://github.com/sfstar/hass-victron.
+
+The video clip above of the Elgato Stream Deck is an example of how you can further display your HA data to other devices. This was done on Linux using the Bitfocus Companion app.
 
 ## Key features and Integrations
 The following are some notable features that this particular installation uses:
