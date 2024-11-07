@@ -31,22 +31,21 @@
   alias: Say it started raining
   description: If hourly rainfall moves above 0 then say it started raining now (only
     when sun above horizon)
-  trigger:
+  triggers:
   - type: value
-    platform: device
     device_id: 678c05c3b91925a60db50c480d33c096
-    entity_id: sensor.thornton_hourly_rain_rate
+    entity_id: sensor.thornton_cape_town_precipitation_intensity
     domain: sensor
     above: 0
-  condition:
+    trigger: device
+  conditions:
   - condition: and
     conditions:
     - condition: sun
       before: sunset
       after: sunrise
-  action:
-  - service: media_player.play_media
-    target:
+  actions:
+  - target:
       entity_id: media_player.study_speaker
     data:
       media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now
@@ -62,10 +61,7 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now
-  - service: notify.mobile_app_sm_a135f
-    data:
-      title: Home Assistant Alert
-      message: Hey it just started raining!
+    action: media_player.play_media
   mode: single
 - id: '1660505820459'
   alias: VoIP Phone Offline
@@ -74,6 +70,16 @@
   - platform: state
     entity_id:
     - device_tracker.voip_phone
+    enabled: false
+  - type: turned_off
+    platform: device
+    device_id: 08ac16ff426af2e65ba6b904defe2cc8
+    entity_id: b5437b6ec7824b53f8862be325a6b855
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
   condition:
   - condition: template
     value_template: '{{ (now() - state_attr(''device_tracker.voip_phone'', ''last_activity'')
@@ -579,17 +585,17 @@
 - id: '1694981526504'
   alias: Front Gate Bell Ringing
   description: Audible announcement about gate bell ringing
-  trigger:
+  triggers:
   - type: occupied
-    platform: device
     device_id: 1c8f0d5f466fe3d178891584ac650d7c
     entity_id: 7d14b022501e3a46bfc0cad688ed04a6
     domain: binary_sensor
-  - platform: state
-    entity_id:
+    trigger: device
+  - entity_id:
     - binary_sensor.front_gate_ding
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: time
     after: 08:30:00
     before: '20:00:00'
@@ -601,9 +607,8 @@
     - tue
     - mon
     - sun
-  action:
-  - service: media_player.play_media
-    target:
+  actions:
+  - target:
       entity_id: media_player.study_speaker
     data:
       media_content_id: media-source://tts/google_translate?message=Someone+is+ringing+the+Front+Gate+bell%21&language=en-za
@@ -619,6 +624,7 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Someone+is+ringing+the+Front+Gate+bell%21&language=en-za
+    action: media_player.play_media
   mode: single
 - id: '1694981953108'
   alias: Ring Doorbell Battery Low
@@ -747,4 +753,129 @@
     data:
       message: Check weather station battery
       title: Weather Station
+  mode: single
+- id: '1721499853765'
+  alias: Internet speed slow
+  description: When Speedtest falls below 200
+  trigger:
+  - type: data_rate
+    platform: device
+    device_id: 726bb73cb353676b256f6800aeca4a43
+    entity_id: 7655eb3908cc148ed484412cf853b84b
+    domain: sensor
+    below: 200
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  condition:
+  - condition: time
+    after: 09:00:00
+    before: '23:00:00'
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.study_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Internet+speed+is+slow
+      media_content_type: provider
+    metadata:
+      title: Internet speed is slow
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Internet+speed+is+slow
+  mode: single
+- id: '1721500572230'
+  alias: Router getting hot
+  description: Router has been over 80C for 5 minutes
+  trigger:
+  - type: temperature
+    platform: device
+    device_id: a3af9700d85e4e4ca392029d67f810ea
+    entity_id: 9b3f872944daf070926f321e7438dd1c
+    domain: sensor
+    above: 79
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: time
+    before: '23:00:00'
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    after: 09:00:00
+  action:
+  - alias: Play router temperature is over 80 degrees
+    service: media_player.play_media
+    target:
+      entity_id: media_player.study_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Router+temperature+is+getting+very+hot%21
+      media_content_type: provider
+    metadata:
+      title: Warning! Router temperature is getting very hot!
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Router+temperature+is+getting+very+hot%21
+  mode: single
+- id: '1721500967626'
+  alias: Internet connection lost
+  description: If Internet lost for 15 seconds
+  trigger:
+  - type: not_connected
+    platform: device
+    device_id: a3af9700d85e4e4ca392029d67f810ea
+    entity_id: b41f741634232de15a2fec9c36aedd3b
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+  condition: []
+  action:
+  - alias: Play Internet has been lost
+    service: media_player.play_media
+    target:
+      entity_id: media_player.study_speaker
+    data:
+      media_content_id: media-source://tts/google_translate?message=Hey+the+Internet+connection+has+been+lost%21
+      media_content_type: provider
+    metadata:
+      title: Hey the Internet connection has been lost!
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: provider
+        media_content_id: media-source://tts/google_translate?message=Hey+the+Internet+connection+has+been+lost%21
   mode: single

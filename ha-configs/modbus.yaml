@@ -11,12 +11,9 @@
 #modbus:
   - name: victron
     type: tcp
-    retry_on_empty: false
-    close_comm_on_error: true
     delay: 0
     message_wait_milliseconds: 30
     timeout: 5
-    retries: 10
     host: 192.168.1.205
     port: 502
     sensors:
@@ -27,7 +24,6 @@
         slave: 100
         address: 843
         data_type: uint16
-        lazy_error_count: 5
         
       - name: "Battery Voltage"  # // Battery Voltage determined from different measurements. In order of preference: BMV-voltage (V), Multi-DC-Voltage (CV), MPPT-DC-Voltage (ScV), Charger voltage //com.victronenergy.system
         unit_of_measurement: "V"
@@ -68,14 +64,15 @@
 #        slave: 100
 #        address: 845
 #        data_type: uint16
-        
-      - name: "Battery Time to Go (System)"  #\\ Special value: 0 = charging read from //com.victronenergy.system
-        unit_of_measurement: "s"
-        scale: 0.01
-        precision: 0
-        scan_interval: 60
-        slave: 100
-        address: 846
+
+# No data returned
+#      - name: "Battery Time to Go (System)"  #\\ Special value: 0 = charging read from //com.victronenergy.system
+#        unit_of_measurement: "s"
+#        scale: 0.01
+#        precision: 0
+#        scan_interval: 60
+#        slave: 100
+#        address: 846
         
       - name: "Eskom Grid"  #\\ Power supplied by Grid to system. read from //com.victronenergy.system
         unit_of_measurement: "W"
@@ -95,6 +92,7 @@
         address: 817
         data_type: uint16
         device_class: energy
+        unique_id: ac_loads_id
 
       - name: "Active input source"  #\\ Power supplied by Grid to system. read from //com.victronenergy.system
         unit_of_measurement: "W"  # \\ 0=Not available;1=Grid;2=Generator;3=Eskom power;240=Not connected
@@ -225,13 +223,14 @@
         slave: 225
         address: 289
         
-      - name: "Solar Battery Time To Go"  # \\ Seconds
-        scale: 0.01
-        precision: 0
-        scan_interval: 60
-        slave: 225
-        address: 303
-        
+# No data returned
+#        - name: "Solar Battery Time To Go"  # \\ Seconds
+#        scale: 0.01
+#        precision: 0
+#        scan_interval: 60
+#        slave: 225
+#        address: 303
+
       - name: "Solar Battery Health"   # \\ Percent
         unit_of_measurement: "%"
         scale: 0.1

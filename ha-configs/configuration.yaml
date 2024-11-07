@@ -19,11 +19,6 @@ script: !include scripts.yaml
 scene: !include scenes.yaml
 sensor: !include sensors.yaml
 
-# Load Ambient weather station API data
-ambient_station:
-  api_key: !secret ambient_api_key
-  app_key: !secret ambient_app_key
-
 # APRS tracker devices
 device_tracker:
   - platform: aprs
@@ -57,5 +52,4 @@ logger:
     #glances_api: debug
     #aiohttp: debug
 
-battery_notes:
 
