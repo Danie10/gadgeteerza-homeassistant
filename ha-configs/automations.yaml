@@ -2,21 +2,20 @@
   alias: Danie leaving Canal Walk
   description: Will trigger when Danie's iPhone leaves Canal Walk zone, and announce
     it over lounge speaker
-  trigger:
-  - platform: zone
-    entity_id: person.danie
+  triggers:
+  - entity_id: person.danie
     zone: zone.canal_walk
     event: leave
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+    trigger: zone
+  conditions: []
+  actions:
+  - target:
+      entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=Hey+Chantel%2C+Danie+has+just+left+Canal+Walk
+      media_content_id: media-source://tts/google_translate?message=Hello%2C+Danie+just+left+Canal+Walk&language=en-za
       media_content_type: provider
     metadata:
-      title: Hey Chantel, Danie has just left Canal Walk
+      title: Hello, Danie just left Canal Walk
       thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
       media_class: app
       children_media_class:
@@ -25,7 +24,8 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Hey+Chantel%2C+Danie+has+just+left+Canal+Walk
+        media_content_id: media-source://tts/google_translate?message=Hello%2C+Danie+just+left+Canal+Walk&language=en-za
+    action: media_player.play_media
   mode: single
 - id: '1660475333188'
   alias: Say it started raining
@@ -46,9 +46,9 @@
       after: sunrise
   actions:
   - target:
-      entity_id: media_player.study_speaker
+      entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now
+      media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now&language=en-za
       media_content_type: provider
     metadata:
       title: Hey it just started to rain just now
@@ -60,52 +60,8 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now
+        media_content_id: media-source://tts/google_translate?message=Hey+it+just+started+to+rain+just+now&language=en-za
     action: media_player.play_media
-  mode: single
-- id: '1660505820459'
-  alias: VoIP Phone Offline
-  description: If presence lost from router notify it is offline
-  trigger:
-  - platform: state
-    entity_id:
-    - device_tracker.voip_phone
-    enabled: false
-  - type: turned_off
-    platform: device
-    device_id: 08ac16ff426af2e65ba6b904defe2cc8
-    entity_id: b5437b6ec7824b53f8862be325a6b855
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition:
-  - condition: template
-    value_template: '{{ (now() - state_attr(''device_tracker.voip_phone'', ''last_activity'')
-      | as_local > timedelta(minutes=10)) }}'
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
-    data:
-      media_content_id: media-source://tts/google_translate?message=Hey+the+voice+over+IP+phone+has+gone+offline
-      media_content_type: provider
-    metadata:
-      title: Hey the voice over IP phone has gone offline
-      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
-      media_class: app
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://tts
-      - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Hey+the+voice+over+IP+phone+has+gone+offline
-  - service: notify.mobile_app_danies_iphone
-    data:
-      message: Hey the VoIP phone has gone offline. Check it's battery.
-      title: Alert from Home Assistant
   mode: single
 - id: '1660744900739'
   alias: Victron Modbus Write min SOC manual
@@ -140,18 +96,23 @@
 - id: '1661197173507'
   alias: Danie leaves his Mom
   description: ''
-  trigger:
-  - platform: zone
-    entity_id: person.danie
+  triggers:
+  - entity_id: person.danie
     zone: zone.brown_annie_lawrence_home
     event: leave
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+    trigger: zone
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    metadata: {}
     data:
-      media_content_id: media-source://tts/google_translate?message=Hello%2C+Danie+just+left+his+mom%27s+place
+      volume_level: 0.55
+    target:
+      device_id: 62c586b36e036a2abaffd6dc29c3cdec
+  - target:
+      entity_id: media_player.googlehome9254
+    data:
+      media_content_id: media-source://tts/google_translate?message=Hello%2C+Danie+just+left+his+mom%27s+place&language=en-za
       media_content_type: provider
     metadata:
       title: Hello, Danie just left his mom's place
@@ -163,24 +124,26 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Hello%2C+Danie+just+left+his+mom%27s+place
+        media_content_id: media-source://tts/google_translate?message=Hello%2C+Danie+just+left+his+mom%27s+place&language=en-za
+    action: media_player.play_media
   mode: single
 - id: '1661198337205'
   alias: Shower hot water ready
-  description: Trigger if grid power exceeds 1,500W for 20 minutes (chnaged to 10
+  description: Trigger if grid power exceeds 1,500W for 10 minutes (changed to 10
     mins for lower temp in Summer). Any other device is used less than 5 mins, and
     stove is usually running on solar or battery power. Then when usage dropped to
     below 1100W for at least a minute, trigger action to say water ready, but only
     if after 8am and before 11pm.
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.power_usage_696087
+  triggers:
+  - entity_id:
+    - sensor.sonoff_10023a625a_power
     for:
       hours: 0
       minutes: 10
       seconds: 0
     above: '1500'
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: time
     after: 08:00:00
     before: '23:00:00'
@@ -192,26 +155,28 @@
     - wed
     - tue
     - mon
-  action:
+  actions:
   - wait_for_trigger:
-    - platform: numeric_state
-      entity_id: sensor.power_usage_696087
+    - entity_id: sensor.sonoff_10023a625a_power
       for:
         hours: 0
         minutes: 1
         seconds: 0
       below: '1100'
+      trigger: numeric_state
     continue_on_timeout: false
-  - service: notify.mobile_app_sm_a135f
+  - action: media_player.volume_set
+    metadata: {}
     data:
-      message: Shower hot water should be ready now!
-      title: Alert from Home Assistant
-  - service: media_player.play_media
+      volume_level: 0.66
     target:
-      entity_id: media_player.study_speaker
+      device_id: 62c586b36e036a2abaffd6dc29c3cdec
+  - action: media_player.play_media
+    target:
+      entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=Shower+hot+water+should+be+ready+now%21
-      media_content_type: provider
+      media_content_id: media-source://tts/google_translate?message=Shower+hot+water+should+be+ready+now%21&language=en-za
+      media_content_type: audio/mp3
     metadata:
       title: Shower hot water should be ready now!
       thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
@@ -221,24 +186,23 @@
       - {}
       - media_content_type: app
         media_content_id: media-source://tts
-      - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Shower+hot+water+should+be+ready+now%21
+      - media_content_type: audio/mp3
+        media_content_id: media-source://tts/google_translate?message=Shower+hot+water+should+be+ready+now%21&language=en-za
   mode: single
 - id: '1661610916620'
   alias: Victron AC Overload Alarm
   description: 'Notification if AC overload alarm is triggered any time '
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.overload_alarm
     to: '2'
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+    trigger: state
+  conditions: []
+  actions:
+  - target:
+      entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=Caution+an+alarm+has+been+triggered%21+You+are+using+too+much+power+off+the+inverter%21
+      media_content_id: media-source://tts/google_translate?message=Caution+an+alarm+has+been+triggered%21+You+are+using+too+much+power+off+the+inverter%21&language=en-za
       media_content_type: provider
     metadata:
       title: Caution an alarm has been triggered! You are using too much power off
@@ -251,22 +215,23 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Caution+an+alarm+has+been+triggered%21+You+are+using+too+much+power+off+the+inverter%21
+        media_content_id: media-source://tts/google_translate?message=Caution+an+alarm+has+been+triggered%21+You+are+using+too+much+power+off+the+inverter%21&language=en-za
+    action: media_player.play_media
   mode: single
 - id: '1661611188926'
   alias: Grid Lost Notification
   description: Notify if grid power lost during normal daily usage hours. Input source
     240 = unavailable grid, whilst 1 is grid available
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.active_input_source
     to: '240.0'
     for:
       hours: 0
       minutes: 0
       seconds: 15
-  condition:
+    trigger: state
+  conditions:
   - condition: time
     after: 08:30:00
     before: '23:00:00'
@@ -278,12 +243,17 @@
     - fri
     - sat
     - sun
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+  actions:
+  - action: media_player.volume_set
+    metadata: {}
     data:
-      media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+lost...+use+power+sparingly+please
+      volume_level: 0.6
+    target:
+      device_id: 62c586b36e036a2abaffd6dc29c3cdec
+  - target:
+      entity_id: media_player.googlehome9254
+    data:
+      media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+lost...+use+power+sparingly+please&language=en-za
       media_content_type: provider
     metadata:
       title: The grid power has just been lost... use power sparingly please
@@ -295,28 +265,28 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+lost...+use+power+sparingly+please
+        media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+lost...+use+power+sparingly+please&language=en-za
+    action: media_player.play_media
   mode: single
 - id: '1661611664417'
   alias: Warn of high AC load
   description: Audible warning if power usage approaching 5 kW inverter average load
     limit. Let amount exceed for 15 seconds as peaks can be higher for short periods.
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.ac_loads
+  triggers:
+  - entity_id: sensor.ac_loads
     for:
       hours: 0
       minutes: 0
       seconds: 15
     above: 4850
     alias: When AC load is above 4850 for 15 secs
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - target:
+      entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Power+usage+approaching+inverter+limit.+Check+Victron+display+on+kitchen+wall
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Power+usage+approaching+inverter+limit.+Check+Victron+display+on+kitchen+wall&language=en-za
       media_content_type: provider
     metadata:
       title: Warning! Power usage approaching inverter limit. Check Victron display
@@ -329,26 +299,27 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Power+usage+approaching+inverter+limit.+Check+Victron+display+on+kitchen+wall
-  - service: notify.mobile_app_sm_a135f
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Power+usage+approaching+inverter+limit.+Check+Victron+display+on+kitchen+wall&language=en-za
+    action: media_player.play_media
+  - action: notify.mobile_app_daniephone
     data:
-      title: Home Assistant Alert
-      message: Warning! Power usage approaching inverter limit!
+      message: Warning! Power usage approaching inverter limit. Check Victron display
+        on kitchen wall on Lounge speaker
   mode: single
 - id: '1663233051485'
   alias: Notify grid power restored
   description: Notify if grid power restored during normal daily usage hours. Input
     source 240 = unavailable grid, whilst 1 is grid available
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.active_input_source
     to: '1.0'
     for:
       hours: 0
       minutes: 0
       seconds: 15
-  condition:
+    trigger: state
+  conditions:
   - condition: time
     after: 08:30:00
     before: '23:00:00'
@@ -360,12 +331,11 @@
     - fri
     - sat
     - sun
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+  actions:
+  - target:
+      entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+restored...+enjoy%21
+      media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+restored...+enjoy%21&language=en-za
       media_content_type: provider
     metadata:
       title: The grid power has just been restored... enjoy!
@@ -377,27 +347,35 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+restored...+enjoy%21
+        media_content_id: media-source://tts/google_translate?message=The+grid+power+has+just+been+restored...+enjoy%21&language=en-za
+    action: media_player.play_media
   mode: single
 - id: '1663425895514'
   alias: Urgent notification for low solar battery
   description: Urgent notification for 24/7 if solar system battery gets down to 16%
     warning of an imminent shut down
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.battery_soc
+  triggers:
+  - entity_id: sensor.battery_soc
     for:
       hours: 0
       minutes: 1
       seconds: 0
     below: 17
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    metadata: {}
     data:
-      media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+16%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out
+      volume_level: 0.6
+    target:
+      device_id:
+      - 62c586b36e036a2abaffd6dc29c3cdec
+      - 52662601b7bec60000f4da3d2a9ed090
+  - target:
+      entity_id: media_player.googlehome9254
+    data:
+      media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+16%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out&language=en-za
       media_content_type: provider
     metadata:
       title: Attention Critical warning! Solar system battery just 16% and you need
@@ -410,12 +388,12 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+16%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.bedroom_speaker
+        media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+16%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out&language=en-za
+    action: media_player.play_media
+  - target:
+      entity_id: media_player.googlehome1404
     data:
-      media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+16%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out
+      media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+16%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out&language=en-za
       media_content_type: provider
     metadata:
       title: Attention Critical warning! Solar system battery just 16% and you need
@@ -428,31 +406,31 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+16%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out
-  - service: notify.mobile_app_sm_a135f
+        media_content_id: media-source://tts/google_translate?message=Attention+Critical+warning%21+Solar+system+battery+just+16%25+and+you+need+to+urgency+turn+off+devices+and+power+will+soon+run+out&language=en-za
+    action: media_player.play_media
+  - action: notify.mobile_app_sm_s918b
     data:
       message: Attention Critical warning! Solar system battery just 16% and you need
         to urgency turn off devices and power will soon run out
-      title: Critical message from Solar System
+      title: Urgent message from solar system
   mode: single
 - id: '1667155895927'
   alias: Ham Radio power usage is high
   description: If it exceeds 290 Watts for over 30 seconds send an alert
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.ham_radios_energy_power
+  triggers:
+  - entity_id: sensor.ham_radios_energy_power
     for:
       hours: 0
       minutes: 0
       seconds: 30
     above: 290
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - target:
+      entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+power+usage+is+high+for+30+seconds+already%21
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+power+usage+is+high+for+30+seconds+already%21&language=en-za
       media_content_type: provider
     metadata:
       title: Warning! Ham radio power usage is high for 30 seconds already!
@@ -464,21 +442,22 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+power+usage+is+high+for+30+seconds+already%21
-  - service: notify.mobile_app_sm_a135f
-    data:
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Ham+radio+power+usage+is+high+for+30+seconds+already%21&language=en-za
+    action: media_player.play_media
+  - data:
       title: Home Assistant Alert
       message: Warning! Ham radio power usage is high for 30 seconds already!
+    action: notify.mobile_app_sm_a135f
   mode: single
 - id: '1673525651708'
   alias: Announce load shedding starting 45 mins
   description: Gives warning of 45 minutes before scheduled load shedding starts
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.load_shedding_area_capetown_9_thornton
+  triggers:
+  - entity_id: sensor.load_shedding_area_capetown_9_thornton
     attribute: starts_in
     below: 46
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: time
     after: 09:00:00
     before: '23:01:00'
@@ -490,15 +469,22 @@
     - tue
     - mon
     - sun
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+  actions:
+  - action: media_player.volume_set
+    metadata: {}
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+45+minutes
+      volume_level: 0.6
+    target:
+      device_id:
+      - 62c586b36e036a2abaffd6dc29c3cdec
+      - 52662601b7bec60000f4da3d2a9ed090
+  - target:
+      entity_id: media_player.googlehome9254
+    data:
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Load+shedding+starts+in+45+minutes&language=en-za
       media_content_type: provider
     metadata:
-      title: Warning! Load Shedding starts in 45 minutes
+      title: Warning! Load shedding starts in 45 minutes
       thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
       media_class: app
       children_media_class:
@@ -507,15 +493,15 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+45+minutes
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.bedroom_speaker
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Load+shedding+starts+in+45+minutes&language=en-za
+    action: media_player.play_media
+  - target:
+      entity_id: media_player.googlehome1404
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+45+minutes
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Load+shedding+starts+in+45+minutes&language=en-za
       media_content_type: provider
     metadata:
-      title: Warning! Load Shedding starts in 45 minutes
+      title: Warning! Load shedding starts in 45 minutes
       thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
       media_class: app
       children_media_class:
@@ -524,27 +510,35 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Load+Shedding+starts+in+45+minutes
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Load+shedding+starts+in+45+minutes&language=en-za
+    action: media_player.play_media
   mode: single
 - id: '1684852313278'
   alias: Warning battery at 20%
   description: Warning for 20% battery left
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.battery_soc
+  triggers:
+  - entity_id: sensor.battery_soc
     for:
       hours: 0
       minutes: 1
       seconds: 0
     below: 21
     alias: Warning when battery at 20% SOC
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.bedroom_speaker
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    metadata: {}
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Solar+system+battery+just+20%25.+System+shuts+off+automatically+at+11%25
+      volume_level: 0.6
+    target:
+      device_id:
+      - 62c586b36e036a2abaffd6dc29c3cdec
+      - 52662601b7bec60000f4da3d2a9ed090
+  - target:
+      entity_id: media_player.googlehome1404
+    data:
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Solar+system+battery+just+20%25.+System+shuts+off+automatically+at+11%25&language=en-za
       media_content_type: provider
     metadata:
       title: Warning! Solar system battery just 20%. System shuts off automatically
@@ -557,12 +551,12 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Solar+system+battery+just+20%25.+System+shuts+off+automatically+at+11%25
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Solar+system+battery+just+20%25.+System+shuts+off+automatically+at+11%25&language=en-za
+    action: media_player.play_media
+  - target:
+      entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Solar+system+battery+just+20%25.+System+shuts+off+automatically+at+11%25
+      media_content_id: media-source://tts/google_translate?message=Warning%21+Solar+system+battery+just+20%25.+System+shuts+off+automatically+at+11%25&language=en-za
       media_content_type: provider
     metadata:
       title: Warning! Solar system battery just 20%. System shuts off automatically
@@ -575,12 +569,12 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Solar+system+battery+just+20%25.+System+shuts+off+automatically+at+11%25
-  - service: notify.mobile_app_sm_a135f
+        media_content_id: media-source://tts/google_translate?message=Warning%21+Solar+system+battery+just+20%25.+System+shuts+off+automatically+at+11%25&language=en-za
+    action: media_player.play_media
+  - action: notify.mobile_app_daniephone
     data:
       message: Warning! Solar system battery just 20%. System shuts off automatically
-        at 11%
-      title: Urgent from Solar System
+        at 11% on Bedroom speaker
   mode: single
 - id: '1694981526504'
   alias: Front Gate Bell Ringing
@@ -591,10 +585,6 @@
     entity_id: 7d14b022501e3a46bfc0cad688ed04a6
     domain: binary_sensor
     trigger: device
-  - entity_id:
-    - binary_sensor.front_gate_ding
-    to: 'on'
-    trigger: state
   conditions:
   - condition: time
     after: 08:30:00
@@ -608,13 +598,19 @@
     - mon
     - sun
   actions:
-  - target:
-      entity_id: media_player.study_speaker
+  - action: media_player.volume_set
+    metadata: {}
     data:
-      media_content_id: media-source://tts/google_translate?message=Someone+is+ringing+the+Front+Gate+bell%21&language=en-za
+      volume_level: 0.55
+    target:
+      device_id: 62c586b36e036a2abaffd6dc29c3cdec
+  - target:
+      entity_id: media_player.googlehome9254
+    data:
+      media_content_id: media-source://tts/google_translate?message=There+is+someone+at+the+front+gate&language=en-za
       media_content_type: provider
     metadata:
-      title: Someone is ringing the Front Gate bell!
+      title: There is someone at the front gate
       thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
       media_class: app
       children_media_class:
@@ -623,24 +619,23 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Someone+is+ringing+the+Front+Gate+bell%21&language=en-za
+        media_content_id: media-source://tts/google_translate?message=There+is+someone+at+the+front+gate&language=en-za
     action: media_player.play_media
   mode: single
 - id: '1694981953108'
   alias: Ring Doorbell Battery Low
   description: ''
-  trigger: []
-  condition:
+  triggers: []
+  conditions:
   - type: is_battery_level
     condition: device
     device_id: 1c8f0d5f466fe3d178891584ac650d7c
     entity_id: aeeb555188b1d505d76df9495a9601fa
     domain: sensor
     below: 60
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+  actions:
+  - target:
+      entity_id: media_player.googlehome9254
     data:
       media_content_id: media-source://tts/google_translate?message=Front+gate+bell+battery+level+check+as+it+is+low&language=en-za
       media_content_type: provider
@@ -655,9 +650,10 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Front+gate+bell+battery+level+check+as+it+is+low&language=en-za
-  - service: notify.mobile_app_sm_s918b
-    data:
+    action: media_player.play_media
+  - data:
       message: 'HA: Ring Doorbell Battery May Be Low'
+    action: notify.mobile_app_sm_s918b
   mode: single
 - id: '1695058240227'
   alias: Restart Battery Last Full Timer
@@ -687,17 +683,22 @@
 - id: '1695144032830'
   alias: Solar Battery Full Charge Needed Alert
   description: Alerts that solar battery has not been fully charged for a week
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.battery_last_full_days
+  triggers:
+  - entity_id: sensor.battery_last_full_days
     above: 6
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.bedroom_speaker
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    metadata: {}
     data:
-      media_content_id: media-source://tts/google_translate?message=Solar+Battery+has+not+been+fully+charged+for+a+week+now.+Please+fully+charge+the+battery%21&language=en-gb
+      volume_level: 0.55
+    target:
+      device_id: 62c586b36e036a2abaffd6dc29c3cdec
+  - target:
+      entity_id: media_player.googlehome9254
+    data:
+      media_content_id: media-source://tts/google_translate?message=Solar+Battery+has+not+been+fully+charged+for+a+week+now.+Please+fully+charge+the+battery%21&language=en-za
       media_content_type: provider
     metadata:
       title: Solar Battery has not been fully charged for a week now. Please fully
@@ -710,30 +711,25 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Solar+Battery+has+not+been+fully+charged+for+a+week+now.+Please+fully+charge+the+battery%21&language=en-gb
-  - service: notify.mobile_app_sm_s918b
-    data:
-      message: Solar Battery has not been fully charged for a week now. Please fully
-        charge the battery!
-      title: Alert from Home Assistant
+        media_content_id: media-source://tts/google_translate?message=Solar+Battery+has+not+been+fully+charged+for+a+week+now.+Please+fully+charge+the+battery%21&language=en-za
+    action: media_player.play_media
   mode: single
 - id: '1717839605291'
   alias: Weather station battery
   description: Announces if battery changes to low
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.thornton_battery
     to: 'on'
     for:
       hours: 0
       minutes: 30
       seconds: 0
-  condition: []
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.lounge_speaker
+    trigger: state
+  conditions: []
+  actions:
+  - target:
+      entity_id: media_player.googlehome9254
     data:
       media_content_id: media-source://tts/google_translate?message=Check+the+weather+station+battery&language=en-za
       media_content_type: provider
@@ -748,18 +744,18 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Check+the+weather+station+battery&language=en-za
-  - service: notify.persistent_notification
-    metadata: {}
+    action: media_player.play_media
+  - metadata: {}
     data:
       message: Check weather station battery
       title: Weather Station
+    action: notify.persistent_notification
   mode: single
 - id: '1721499853765'
   alias: Internet speed slow
   description: When Speedtest falls below 200
-  trigger:
+  triggers:
   - type: data_rate
-    platform: device
     device_id: 726bb73cb353676b256f6800aeca4a43
     entity_id: 7655eb3908cc148ed484412cf853b84b
     domain: sensor
@@ -768,7 +764,8 @@
       hours: 0
       minutes: 10
       seconds: 0
-  condition:
+    trigger: device
+  conditions:
   - condition: time
     after: 09:00:00
     before: '23:00:00'
@@ -780,12 +777,11 @@
     - thu
     - fri
     - sat
-  action:
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
+  actions:
+  - target:
+      entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=Internet+speed+is+slow
+      media_content_id: media-source://tts/google_translate?message=Internet+speed+is+slow&language=en-za
       media_content_type: provider
     metadata:
       title: Internet speed is slow
@@ -797,44 +793,30 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Internet+speed+is+slow
+        media_content_id: media-source://tts/google_translate?message=Internet+speed+is+slow&language=en-za
+    action: media_player.play_media
   mode: single
-- id: '1721500572230'
-  alias: Router getting hot
-  description: Router has been over 80C for 5 minutes
-  trigger:
-  - type: temperature
-    platform: device
-    device_id: a3af9700d85e4e4ca392029d67f810ea
-    entity_id: 9b3f872944daf070926f321e7438dd1c
-    domain: sensor
-    above: 79
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-  condition:
+- id: '1740750516236'
+  alias: Friday Pizza time at 16:00
+  description: ''
+  triggers:
+  - trigger: time
+    at: '16:00:00'
+  conditions:
   - condition: time
-    before: '23:00:00'
     weekday:
-    - sun
-    - mon
-    - tue
-    - wed
-    - thu
     - fri
-    - sat
-    after: 09:00:00
-  action:
-  - alias: Play router temperature is over 80 degrees
-    service: media_player.play_media
+    after: '15:58:00'
+    before: '16:05:00'
+  actions:
+  - action: media_player.play_media
     target:
-      entity_id: media_player.study_speaker
+      entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=Warning%21+Router+temperature+is+getting+very+hot%21
+      media_content_id: media-source://tts/google_translate?message=Hey%21+It%27s+Friday+and+is+now+Pizza+time%21&language=en-za
       media_content_type: provider
     metadata:
-      title: Warning! Router temperature is getting very hot!
+      title: Hey! It's Friday and is now Pizza time!
       thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
       media_class: app
       children_media_class:
@@ -843,39 +825,5 @@
       - media_content_type: app
         media_content_id: media-source://tts
       - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Warning%21+Router+temperature+is+getting+very+hot%21
-  mode: single
-- id: '1721500967626'
-  alias: Internet connection lost
-  description: If Internet lost for 15 seconds
-  trigger:
-  - type: not_connected
-    platform: device
-    device_id: a3af9700d85e4e4ca392029d67f810ea
-    entity_id: b41f741634232de15a2fec9c36aedd3b
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 15
-  condition: []
-  action:
-  - alias: Play Internet has been lost
-    service: media_player.play_media
-    target:
-      entity_id: media_player.study_speaker
-    data:
-      media_content_id: media-source://tts/google_translate?message=Hey+the+Internet+connection+has+been+lost%21
-      media_content_type: provider
-    metadata:
-      title: Hey the Internet connection has been lost!
-      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
-      media_class: app
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://tts
-      - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Hey+the+Internet+connection+has+been+lost%21
+        media_content_id: media-source://tts/google_translate?message=Hey%21+It%27s+Friday+and+is+now+Pizza+time%21&language=en-za
   mode: single

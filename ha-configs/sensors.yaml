@@ -19,6 +19,11 @@
         {%- else -%}
           mdi:power-socket-fr
         {%- endif %}
+    monthly_grid_cost:
+      friendly_name: "Monthly Grid Cost"
+      value_template: >-
+        {{ (states('sensor.sonoff_10023a625a_energy_month') | float * 3.44) | round(2) }}
+      unit_of_measurement: "R"
     radiation_converted:
       friendly_name: "Forecasted solar radiation W/m2 converted to Total"
       unit_of_measurement: "W"
@@ -109,8 +114,6 @@
       value_template: >-
         {{(states('sensor.thornton_event_rain')|int*25.4) | int}}
         
-        
-        
 # Set date format        
 - platform: time_date
   display_options:
@@ -169,16 +172,16 @@
 # Then import it as a new resource in HA's Settings / Dashboards / 3 dot menu top right, 
 # add resource, and a Javascript module, specify relative path to that .js file
 # eg. `/hacsfiles/list-card.js`, and then clear browser cache, and refresh browser
-- platform: feedparser
-  name: Leaving Netflix
-  feed_url: 'https://www.whats-on-netflix.com/leaving-soon/feed/'
-  date_format: '%a, %d %b %Y %H:%M:%S %Z'
-  scan_interval:
-    hours: 6
-  inclusions:
-    - title
-    - link
-    - description
-    - image
-    - pubDate
+#- platform: feedparser
+#  name: Leaving Netflix
+#  feed_url: 'https://www.whats-on-netflix.com/leaving-soon/feed/'
+#  date_format: '%a, %d %b %Y %H:%M:%S %Z'
+#  scan_interval:
+#    hours: 6
+#  inclusions:
+#    - title
+#    - link
+#    - description
+#    - image
+#    - pubDate
 

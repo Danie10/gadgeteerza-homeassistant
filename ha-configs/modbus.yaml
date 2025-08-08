@@ -14,7 +14,7 @@
     delay: 0
     message_wait_milliseconds: 30
     timeout: 5
-    host: 192.168.1.205
+    host: 192.168.80.2
     port: 502
     sensors:
       - name: "Battery SOC"   # // Best battery state of charge, determined from different measurements. read from //com.victronenergy.system

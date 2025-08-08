@@ -52,4 +52,16 @@ logger:
     #glances_api: debug
     #aiohttp: debug
 
-
+# Exports to InfluxDB for Grafana display of graphs etc
+influxdb:
+  api_version: 2
+  ssl: false
+  host: localhost
+  port: 8086
+  token: !secret influxdb_token
+  organization: 74fa36561df3a7c0
+  bucket: Home Assistant
+  max_retries: 5
+  precision: ms
+  measurement_attr: unit_of_measurement
+  

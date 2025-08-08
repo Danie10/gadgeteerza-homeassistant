@@ -20,21 +20,21 @@
               "cards": [
                 {
                   "type": "gauge",
-                  "entity": "sensor.monthly_energy_cost",
                   "name": "Monthly Cost",
                   "unit": "ZAR",
                   "min": 0,
-                  "max": 1000,
+                  "max": 1500,
                   "needle": true,
                   "severity": {
                     "green": 0,
-                    "yellow": 600,
-                    "red": 800
-                  }
+                    "yellow": 700,
+                    "red": 900
+                  },
+                  "entity": "sensor.monthly_grid_cost"
                 },
                 {
                   "type": "gauge",
-                  "entity": "sensor.power_usage_696087",
+                  "entity": "sensor.sonoff_10023a625a_power",
                   "name": "Grid Usage",
                   "unit": "W",
                   "min": 0,
@@ -208,11 +208,11 @@
               "cards": [
                 {
                   "type": "media-control",
-                  "entity": "media_player.lounge_speaker"
+                  "entity": "media_player.googlehome9254"
                 },
                 {
                   "type": "media-control",
-                  "entity": "media_player.googlehome1000"
+                  "entity": "media_player.googlehome3156"
                 },
                 {
                   "type": "media-control",
@@ -481,15 +481,42 @@
               ]
             },
             {
-              "camera_view": "auto",
-              "type": "picture-glance",
-              "title": "WiFi Camera",
+              "type": "entities",
               "entities": [
                 {
-                  "entity": "camera.wifi_camera"
+                  "entity": "sensor.asmr_cyra_latest_upload",
+                  "name": "Latest upload"
+                },
+                {
+                  "entity": "sensor.asmr_cyra_subscribers",
+                  "name": "Subscribers"
                 }
               ],
-              "camera_image": "camera.nvr_sub_7"
+              "title": "ASMR CYRA"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.furniture_flipping_rush_latest_upload",
+                  "name": "Latest upload"
+                },
+                {
+                  "entity": "sensor.furniture_flipping_rush_subscribers",
+                  "name": "Subscribers"
+                }
+              ],
+              "title": "Furniture Flipping Rush"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.web_scrape",
+                  "name": "Web scrape"
+                }
+              ],
+              "title": "Web scrape"
             }
           ]
         },
@@ -503,86 +530,95 @@
               "type": "entities",
               "entities": [
                 {
-                  "entity": "sensor.thornton_abs_pressure",
-                  "name": "Abs pressure"
+                  "entity": "sensor.thornton_cape_town_absolute_pressure",
+                  "name": "Absolute pressure"
                 },
                 {
-                  "entity": "sensor.thornton_dew_point",
+                  "entity": "sensor.thornton_cape_town_daily_rain",
+                  "name": "Daily rain"
+                },
+                {
+                  "entity": "sensor.thornton_cape_town_dew_point",
                   "name": "Dew point"
                 },
                 {
-                  "entity": "sensor.thornton_event_rain",
+                  "entity": "sensor.thornton_cape_town_event_rain",
                   "name": "Event rain"
                 },
                 {
-                  "entity": "sensor.thornton_feels_like",
+                  "entity": "sensor.thornton_cape_town_feels_like",
                   "name": "Feels like"
                 },
                 {
-                  "entity": "sensor.thornton_hourly_rain_rate",
-                  "name": "Hourly rain rate"
-                },
-                {
-                  "entity": "sensor.thornton_humidity",
+                  "entity": "sensor.thornton_cape_town_humidity",
                   "name": "Humidity"
                 },
                 {
-                  "entity": "sensor.thornton_humidity_in",
-                  "name": "Humidity in"
+                  "entity": "sensor.thornton_cape_town_humidity_indoor",
+                  "name": "Humidity indoor"
                 },
                 {
-                  "entity": "sensor.thornton_inside_temp",
-                  "name": "Inside temp"
+                  "entity": "sensor.thornton_cape_town_solar_rad_lx",
+                  "name": "Illuminance"
                 },
                 {
-                  "entity": "sensor.thornton_last_rain",
+                  "entity": "sensor.thornton_cape_town_inside_temperature",
+                  "name": "Inside temperature"
+                },
+                {
+                  "entity": "sensor.thornton_cape_town_irradiance",
+                  "name": "Irradiance"
+                },
+                {
+                  "entity": "sensor.thornton_cape_town_last_rain",
                   "name": "Last rain"
                 },
                 {
-                  "entity": "sensor.thornton_lifetime_rain",
+                  "entity": "sensor.thornton_cape_town_lifetime_rain",
                   "name": "Lifetime rain"
                 },
                 {
-                  "entity": "sensor.thornton_max_gust",
+                  "entity": "sensor.thornton_cape_town_max_gust",
                   "name": "Max gust"
                 },
                 {
-                  "entity": "sensor.thornton_monthly_rain",
+                  "entity": "sensor.thornton_cape_town_monthly_rain",
                   "name": "Monthly rain"
                 },
-                "sensor.thornton_temp",
-                "sensor.thornton_daily_rain",
                 {
-                  "entity": "sensor.thornton_rel_pressure",
-                  "name": "Rel pressure"
+                  "entity": "sensor.thornton_cape_town_precipitation_intensity",
+                  "name": "Precipitation intensity"
                 },
                 {
-                  "entity": "sensor.thornton_solar_rad",
-                  "name": "Solar rad"
+                  "entity": "sensor.thornton_cape_town_relative_pressure",
+                  "name": "Relative pressure"
                 },
                 {
-                  "entity": "sensor.thornton_solar_rad_lx",
-                  "name": "Solar rad"
+                  "entity": "sensor.thornton_cape_town_temperature",
+                  "name": "Temperature"
                 },
                 {
-                  "entity": "sensor.thornton_uv_index",
+                  "entity": "sensor.thornton_cape_town_uv_index",
                   "name": "UV index"
                 },
                 {
-                  "entity": "sensor.thornton_weekly_rain",
+                  "entity": "sensor.thornton_cape_town_weekly_rain",
                   "name": "Weekly rain"
                 },
                 {
-                  "entity": "sensor.thornton_wind_dir",
-                  "name": "Wind dir"
+                  "entity": "sensor.thornton_cape_town_wind_direction",
+                  "name": "Wind direction"
                 },
                 {
-                  "entity": "sensor.thornton_wind_gust",
+                  "entity": "sensor.thornton_cape_town_wind_gust",
                   "name": "Wind gust"
                 },
                 {
-                  "entity": "sensor.thornton_wind_speed",
+                  "entity": "sensor.thornton_cape_town_wind_speed",
                   "name": "Wind speed"
+                },
+                {
+                  "entity": "sensor.home_cloud_cover"
                 }
               ],
               "title": "Our Weather Station"
@@ -591,16 +627,23 @@
               "type": "entities",
               "entities": [
                 {
-                  "entity": "binary_sensor.thornton_battery",
+                  "entity": "binary_sensor.thornton_cape_town_battery",
                   "name": "Battery"
                 },
                 {
-                  "entity": "binary_sensor.thornton_co2_battery",
-                  "name": "CO2 battery"
+                  "entity": "binary_sensor.thornton_cape_town_carbon_dioxide_battery",
+                  "name": "Carbon dioxide battery"
                 }
               ],
-              "title": "Our Weather Station",
-              "state_color": true
+              "title": "Our Weather Station"
+            },
+            {
+              "show_current": true,
+              "show_forecast": true,
+              "type": "weather-forecast",
+              "entity": "weather.pirateweather",
+              "forecast_type": "daily",
+              "secondary_info_attribute": "cloud_coverage"
             }
           ]
         },
@@ -614,7 +657,43 @@
               "user": "716657a802fc4eca995929175c03c646"
             }
           ],
-          "badges": [],
+          "badges": [
+            {
+              "type": "entity",
+              "show_name": true,
+              "show_state": true,
+              "show_icon": true,
+              "entity": "sensor.omv_disk",
+              "name": "OMV RAID"
+            },
+            {
+              "type": "entity",
+              "show_name": true,
+              "show_state": true,
+              "show_icon": true,
+              "entity": "binary_sensor.omv_system_reboot_pending",
+              "name": "OMV Reboot?",
+              "show_entity_picture": false
+            },
+            {
+              "type": "entity",
+              "show_name": true,
+              "show_state": true,
+              "show_icon": true,
+              "entity": "binary_sensor.omv_system_update_available",
+              "name": "OMV Update?",
+              "show_entity_picture": false
+            },
+            {
+              "type": "entity",
+              "show_name": true,
+              "show_state": true,
+              "show_icon": true,
+              "entity": "sensor.system_monitor_processor_temperature",
+              "name": "OMV CPU",
+              "show_entity_picture": false
+            }
+          ],
           "cards": [
             {
               "type": "horizontal-stack",
@@ -630,82 +709,43 @@
                     "yellow": 25,
                     "red": 60
                   },
-                  "name": "Ping"
+                  "name": "SpeedTest Ping"
                 },
                 {
                   "type": "gauge",
                   "entity": "sensor.speedtest_download",
                   "min": 0,
-                  "max": 250,
+                  "max": 500,
                   "severity": {
                     "green": 190,
                     "yellow": 130,
                     "red": 0
                   },
                   "needle": true,
-                  "name": "Download Speed"
+                  "name": "SpeedTest Download"
                 }
               ]
+            },
+            {
+              "type": "gauge",
+              "entity": "sensor.omv_filesystem",
+              "name": "OMV RAID Disk Used",
+              "needle": true,
+              "severity": {
+                "green": 0,
+                "yellow": 80,
+                "red": 90
+              },
+              "tap_action": {
+                "action": "more-info"
+              }
             },
             {
               "type": "horizontal-stack",
               "cards": [
                 {
                   "type": "gauge",
-                  "entity": "sensor.adguard_home_average_processing_speed",
-                  "needle": true,
-                  "severity": {
-                    "green": 0,
-                    "yellow": 100,
-                    "red": 150
-                  },
-                  "min": 0,
-                  "max": 200
-                },
-                {
-                  "show_name": true,
-                  "show_icon": true,
-                  "type": "button",
-                  "tap_action": {
-                    "action": "more-info"
-                  },
-                  "entity": "switch.adguard_home_protection",
-                  "show_state": true,
-                  "hold_action": {
-                    "action": "toggle"
-                  }
-                }
-              ]
-            },
-            {
-              "show_name": true,
-              "show_icon": true,
-              "show_state": true,
-              "type": "glance",
-              "entities": [
-                {
-                  "entity": "sensor.gadgeteer_wordpress"
-                },
-                {
-                  "entity": "sensor.photos"
-                },
-                {
-                  "entity": "sensor.openwebrx"
-                },
-                {
-                  "entity": "sensor.nextcloud"
-                }
-              ],
-              "state_color": true,
-              "columns": 2,
-              "title": "Web Services"
-            },
-            {
-              "type": "horizontal-stack",
-              "cards": [
-                {
-                  "type": "gauge",
-                  "entity": "sensor.glances_ram_used_percent",
+                  "entity": "sensor.glances_gadgeteer_co_za_memory_usage",
                   "name": "OMV RAM Used",
                   "unit": "%",
                   "min": 0,
@@ -719,7 +759,7 @@
                 },
                 {
                   "type": "gauge",
-                  "entity": "sensor.glances_etc_resolv_conf_used_percent",
+                  "entity": "sensor.omv_filesystem_2",
                   "name": "OMV Disk Used",
                   "min": 0,
                   "max": 100,
@@ -732,7 +772,7 @@
                 },
                 {
                   "type": "gauge",
-                  "entity": "sensor.glances_cpu_used",
+                  "entity": "sensor.system_monitor_processor_use",
                   "name": "OMV CPU",
                   "needle": true,
                   "severity": {
@@ -772,6 +812,19 @@
                     "yellow": 80,
                     "red": 90
                   }
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.glances_gadgeteer_co_za_cpu_usage",
+                  "name": "VPS CPU Usage",
+                  "unit": "%",
+                  "min": 0,
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 80,
+                    "red": 90
+                  }
                 }
               ]
             },
@@ -804,68 +857,15 @@
               "type": "entities",
               "entities": [
                 {
-                  "entity": "button.rt_ac88u_check_for_updates"
+                  "entity": "sensor.danie_van_der_merwe_latest_upload",
+                  "name": "Latest upload"
                 },
                 {
-                  "entity": "light.rt_ac88u_led"
-                },
-                {
-                  "entity": "button.rt_ac88u_reboot"
-                },
-                {
-                  "entity": "button.rt_ac88u_restart_wireless"
-                },
-                {
-                  "entity": "button.rt_ac88u_restart_wired"
-                },
-                {
-                  "entity": "button.rt_ac88u_refresh_clients"
-                },
-                {
-                  "entity": "button.rt_ac88u_restart_firewall"
-                },
-                {
-                  "entity": "button.rt_ac88u_restart_http_daemon"
-                },
-                {
-                  "entity": "sensor.rt_ac88u_connected_devices"
-                },
-                {
-                  "entity": "sensor.rt_ac88u_wan_download_speed"
-                },
-                {
-                  "entity": "sensor.rt_ac88u_wan_upload_speed"
+                  "entity": "sensor.danie_van_der_merwe_subscribers",
+                  "name": "Subscribers"
                 }
               ],
-              "title": "Home Router",
-              "state_color": true
-            },
-            {
-              "type": "horizontal-stack",
-              "cards": [
-                {
-                  "type": "gauge",
-                  "entity": "sensor.rt_ac88u_temperature_cpu",
-                  "needle": true,
-                  "severity": {
-                    "green": 0,
-                    "yellow": 55,
-                    "red": 85
-                  },
-                  "name": "Router CPU"
-                },
-                {
-                  "type": "gauge",
-                  "entity": "sensor.rt_ac88u_ram",
-                  "name": "Router RAM",
-                  "needle": true,
-                  "severity": {
-                    "green": 0,
-                    "yellow": 65,
-                    "red": 85
-                  }
-                }
-              ]
+              "title": "Danie van der Merwe"
             }
           ]
         },
@@ -881,24 +881,6 @@
           "badges": [],
           "cards": [
             {
-              "type": "vertical-stack",
-              "cards": [
-                {
-                  "type": "gauge",
-                  "entity": "sensor.ham_radios_energy_power",
-                  "min": 0,
-                  "max": 360,
-                  "needle": true,
-                  "severity": {
-                    "green": 0,
-                    "yellow": 31,
-                    "red": 290
-                  },
-                  "name": "Ham Radio DC Power"
-                }
-              ]
-            },
-            {
               "type": "map",
               "entities": [
                 {
@@ -906,68 +888,6 @@
                 }
               ],
               "title": "APRS Devices"
-            },
-            {
-              "type": "vertical-stack",
-              "cards": [
-                {
-                  "type": "custom:restriction-card",
-                  "duration": 10,
-                  "restrictions": {
-                    "confirm": {
-                      "text": "Are you SURE? This will turn off radios!"
-                    }
-                  },
-                  "card": {
-                    "type": "entities",
-                    "entities": [
-                      {
-                        "entity": "switch.ham_radios_ham_radios",
-                        "name": "Ham Radios"
-                      }
-                    ]
-                  }
-                }
-              ],
-              "title": "Ham Radios Power Switch"
-            },
-            {
-              "type": "entities",
-              "entities": [
-                {
-                  "entity": "sensor.ham_radios_energy_power",
-                  "name": "ENERGY Power"
-                },
-                {
-                  "entity": "sensor.ham_radios_energy_current",
-                  "name": "ENERGY Current"
-                },
-                {
-                  "entity": "sensor.ham_radios_energy_apparentpower",
-                  "name": "ENERGY ApparentPower"
-                },
-                {
-                  "entity": "sensor.ham_radios_energy_voltage",
-                  "name": "ENERGY Voltage"
-                },
-                {
-                  "entity": "sensor.ham_radios_energy_today",
-                  "name": "ENERGY Today"
-                },
-                {
-                  "entity": "sensor.ham_radios_energy_total",
-                  "name": "ENERGY Total"
-                },
-                {
-                  "entity": "sensor.ham_radios_energy_yesterday",
-                  "name": "ENERGY Yesterday"
-                },
-                {
-                  "entity": "sensor.ham_radios_status",
-                  "name": "Status"
-                }
-              ],
-              "title": "Ham Radios Power Usage"
             },
             {
               "type": "entities",
@@ -1050,6 +970,52 @@
                 }
               ],
               "title": "Solar Data"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.none_ham_radios_energy_apparentpower",
+                  "name": "Ham Radios ENERGY ApparentPower"
+                },
+                {
+                  "entity": "sensor.none_ham_radios_energy_current",
+                  "name": "Ham Radios ENERGY Current"
+                },
+                {
+                  "entity": "sensor.none_ham_radios_energy_factor",
+                  "name": "Ham Radios ENERGY Factor"
+                },
+                {
+                  "entity": "sensor.none_ham_radios_energy_power",
+                  "name": "Ham Radios ENERGY Power"
+                },
+                {
+                  "entity": "sensor.none_ham_radios_energy_reactivepower",
+                  "name": "Ham Radios ENERGY ReactivePower"
+                },
+                {
+                  "entity": "sensor.none_ham_radios_energy_today",
+                  "name": "Ham Radios ENERGY Today"
+                },
+                {
+                  "entity": "sensor.none_ham_radios_energy_total",
+                  "name": "Ham Radios ENERGY Total"
+                },
+                {
+                  "entity": "sensor.none_ham_radios_energy_voltage",
+                  "name": "Ham Radios ENERGY Voltage"
+                },
+                {
+                  "entity": "sensor.none_ham_radios_energy_yesterday",
+                  "name": "Ham Radios ENERGY Yesterday"
+                },
+                {
+                  "entity": "sensor.ham_radios_ham_radios_status",
+                  "name": "Ham Radios status"
+                }
+              ],
+              "title": "Ham Radios"
             }
           ]
         },
@@ -1213,7 +1179,7 @@
                 {
                   "type": "custom:button-card",
                   "icon": "mdi:transmission-tower",
-                  "entity": "sensor.power_usage",
+                  "entity": "sensor.sonoff_10023a625a_power",
                   "label": "Eskom Grid Power",
                   "show_state": true,
                   "show_name": false,
@@ -1222,6 +1188,16 @@
                   "styles": null,
                   "height": "100px",
                   "state": [
+                    {
+                      "value": 1,
+                      "operator": "<=",
+                      "color": "red"
+                    },
+                    {
+                      "value": 100,
+                      "operator": "<=",
+                      "color": "green"
+                    },
                     {
                       "value": 1500,
                       "operator": "<=",
@@ -1237,7 +1213,7 @@
                 {
                   "type": "custom:button-card",
                   "icon": "mdi:cash-multiple",
-                  "entity": "sensor.monthly_energy_cost",
+                  "entity": "sensor.monthly_grid_cost",
                   "label": "Monthly Cost",
                   "show_state": true,
                   "show_name": false,
@@ -1676,23 +1652,12 @@
               "type": "glance",
               "entities": [
                 {
-                  "entity": "sensor.home_cloud_ceiling",
-                  "name": "Cloud Cover"
-                },
-                {
-                  "entity": "sensor.home_cloud_cover",
-                  "name": "Today"
-                },
-                {
-                  "entity": "sensor.home_cloud_cover_day_1",
-                  "name": "Tomorrow"
-                },
-                {
-                  "entity": "sensor.home_cloud_cover_day_2",
-                  "name": "Next"
+                  "entity": "weather.pirateweather"
                 }
               ],
-              "title": "Cloud Coverage"
+              "title": "Cloud Coverage",
+              "columns": 1,
+              "state_color": false
             },
             {
               "type": "entities",
@@ -1836,12 +1801,6 @@
                   }
                 }
               ]
-            },
-            {
-              "type": "iframe",
-              "url": "http://192.168.1.205/",
-              "aspect_ratio": "50%",
-              "title": "Victron CCGX"
             },
             {
               "type": "vertical-stack",
