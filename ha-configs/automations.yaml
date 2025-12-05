@@ -585,41 +585,31 @@
     entity_id: 7d14b022501e3a46bfc0cad688ed04a6
     domain: binary_sensor
     trigger: device
-  conditions:
-  - condition: time
-    after: 08:30:00
-    before: '20:00:00'
-    weekday:
-    - sat
-    - fri
-    - thu
-    - wed
-    - tue
-    - mon
-    - sun
+  conditions: []
   actions:
   - action: media_player.volume_set
     metadata: {}
     data:
-      volume_level: 0.55
+      volume_level: 0.65
     target:
       device_id: 62c586b36e036a2abaffd6dc29c3cdec
   - target:
       entity_id: media_player.googlehome9254
     data:
-      media_content_id: media-source://tts/google_translate?message=There+is+someone+at+the+front+gate&language=en-za
-      media_content_type: provider
-    metadata:
-      title: There is someone at the front gate
-      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
-      media_class: app
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://tts
-      - media_content_type: provider
+      media:
         media_content_id: media-source://tts/google_translate?message=There+is+someone+at+the+front+gate&language=en-za
+        media_content_type: provider
+        metadata:
+          title: There is someone at the front gate
+          thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+          media_class: app
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://tts
+          - media_content_type: provider
+            media_content_id: media-source://tts/google_translate?message=There+is+someone+at+the+front+gate&language=en-za
     action: media_player.play_media
   mode: single
 - id: '1694981953108'
@@ -826,4 +816,81 @@
         media_content_id: media-source://tts
       - media_content_type: provider
         media_content_id: media-source://tts/google_translate?message=Hey%21+It%27s+Friday+and+is+now+Pizza+time%21&language=en-za
+  mode: single
+- id: '1755552331631'
+  alias: UPS battery below 85% charge
+  description: ''
+  triggers:
+  - type: battery_level
+    device_id: b2ca9b8d520362ce0dc85b29ee243bd8
+    entity_id: 34af996861d6a525f481e00921d2036e
+    domain: sensor
+    trigger: device
+    below: 85
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  conditions: []
+  actions:
+  - action: media_player.play_media
+    target:
+      entity_id: media_player.googlehome9254
+    data:
+      media_content_id: media-source://tts/google_translate?message=Attention%21+UPS+battery+just+dropped+to+85%25+charge&language=en-uk
+      media_content_type: audio/mp3
+    metadata:
+      title: Attention! UPS battery just dropped to 85% charge
+      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+      media_class: app
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://tts
+      - media_content_type: audio/mp3
+        media_content_id: media-source://tts/google_translate?message=Attention%21+UPS+battery+just+dropped+to+85%25+charge&language=en-uk
+  - device_id: c68cd724e81c86581a3992253dbe936e
+    domain: mobile_app
+    type: notify
+    message: UPS battery below 85%
+    title: UPS Battery
+  mode: single
+- id: '1764687812387'
+  alias: Supper time at 5pm
+  description: ''
+  triggers:
+  - trigger: time
+    at: '17:00:00'
+  conditions:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - sat
+    - sun
+    after: '16:59:00'
+    before: '17:01:00'
+  actions:
+  - action: media_player.play_media
+    target:
+      entity_id: media_player.googlehome9254
+    data:
+      media:
+        media_content_id: media-source://tts/google_translate?message=Hey%21+It%27s+supper+time%21&language=en-za
+        media_content_type: audio/mp3
+        metadata:
+          title: Hey! It's supper time!
+          thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
+          media_class: app
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://tts
+          - media_content_type: audio/mp3
+            media_content_id: media-source://tts/google_translate?message=Hey%21+It%27s+supper+time%21&language=en-za
+          browse_entity_id: media_player.googlehome9254
   mode: single

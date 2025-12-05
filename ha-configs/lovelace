@@ -484,39 +484,15 @@
               "type": "entities",
               "entities": [
                 {
-                  "entity": "sensor.asmr_cyra_latest_upload",
+                  "entity": "sensor.danie_van_der_merwe_latest_upload",
                   "name": "Latest upload"
                 },
                 {
-                  "entity": "sensor.asmr_cyra_subscribers",
+                  "entity": "sensor.danie_van_der_merwe_subscribers",
                   "name": "Subscribers"
                 }
               ],
-              "title": "ASMR CYRA"
-            },
-            {
-              "type": "entities",
-              "entities": [
-                {
-                  "entity": "sensor.furniture_flipping_rush_latest_upload",
-                  "name": "Latest upload"
-                },
-                {
-                  "entity": "sensor.furniture_flipping_rush_subscribers",
-                  "name": "Subscribers"
-                }
-              ],
-              "title": "Furniture Flipping Rush"
-            },
-            {
-              "type": "entities",
-              "entities": [
-                {
-                  "entity": "sensor.web_scrape",
-                  "name": "Web scrape"
-                }
-              ],
-              "title": "Web scrape"
+              "title": "Danie van der Merwe"
             }
           ]
         },
@@ -616,9 +592,6 @@
                 {
                   "entity": "sensor.thornton_cape_town_wind_speed",
                   "name": "Wind speed"
-                },
-                {
-                  "entity": "sensor.home_cloud_cover"
                 }
               ],
               "title": "Our Weather Station"
@@ -829,6 +802,62 @@
               ]
             },
             {
+              "type": "vertical-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.ups_load",
+                  "needle": true,
+                  "severity": {
+                    "green": 0,
+                    "yellow": 50,
+                    "red": 75
+                  },
+                  "name": "UPS Load"
+                },
+                {
+                  "type": "gauge",
+                  "entity": "sensor.ups_battery_charge",
+                  "needle": true,
+                  "severity": {
+                    "green": 90,
+                    "yellow": 65,
+                    "red": 0
+                  },
+                  "name": "UPS Battery Charge"
+                },
+                {
+                  "type": "custom:mini-graph-card",
+                  "name": "UPS Voltages Last Hour",
+                  "lower_bound": 220,
+                  "upper_bound": 240,
+                  "hours_to_show": 1,
+                  "points_per_hour": 120,
+                  "entities": [
+                    "sensor.ups_input_voltage",
+                    "sensor.ups_output_voltage"
+                  ],
+                  "show": {
+                    "icon": false
+                  }
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.ups_ups_temperature"
+                    },
+                    {
+                      "entity": "sensor.ups_status"
+                    },
+                    {
+                      "entity": "sensor.ups_status_data"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
               "type": "custom:mini-graph-card",
               "name": "Speedtest Stats - 7 Days",
               "entities": [
@@ -852,20 +881,6 @@
                 "extrema": true
               },
               "hours_to_show": 168
-            },
-            {
-              "type": "entities",
-              "entities": [
-                {
-                  "entity": "sensor.danie_van_der_merwe_latest_upload",
-                  "name": "Latest upload"
-                },
-                {
-                  "entity": "sensor.danie_van_der_merwe_subscribers",
-                  "name": "Subscribers"
-                }
-              ],
-              "title": "Danie van der Merwe"
             }
           ]
         },
