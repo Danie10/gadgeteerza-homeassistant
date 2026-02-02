@@ -1,6 +1,20 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
+recorder:
+  commit_interval: 30       # Batches writes every 30s instead of 5s
+  purge_keep_days: 7        # Reduces DB size on the RAID
+  exclude:
+    domains:
+      - automation
+      - updater
+    entity_globs:
+      - sensor.sun*
+      - sensor.uptime*
+    entities:
+      - sensor.date_time     # This writes every single minute!
+      - sensor.ac_loads      # If this is extremely noisy, consider excluding
+
 # Allows local Nginx Proxy Manager
 # 2FA enabled already too
 http:
@@ -64,6 +78,17 @@ influxdb:
   max_retries: 5
   precision: ms
   measurement_attr: unit_of_measurement
+  include:
+    domains:
+      - sensor
+      - binary_sensor
+    entities:
+      - sensor.ac_loads
+      - sensor.battery_soc
+      - sensor.thornton_solar_rad
+  exclude:
+    entities:
+      - sensor.date_time
   
 # Create custom sensor to output conversion as total potential max of forecast for panel area
 # Panel is 330W max for 1.94628m2 (8 panels = 15.57 m2 and 2,640 W max)
@@ -72,31 +97,74 @@ influxdb:
 # Total (W) = W/m2 * panel area * efficiency
 
 template:
-- sensor:
-  - name: AC Loads Custom
-    default_entity_id: sensor.custom_ac_loads
-    state: >-
-      {{ states('sensor.ac_loads') | int }}
+  # 1. SCHEDULED SENSORS (Updates every 5 minutes)
+  - trigger:
+      - platform: time_pattern
+        minutes: "/5"
+    sensor:
+      - name: "Forecasted solar radiation W/m2 converted to Total"
+        unique_id: radiation_converted_batched
+        unit_of_measurement: "W"
+        icon: mdi:sun-wireless
+        device_class: power
+        state: >-
+          {{ states('sensor.thornton_solar_rad') | int(0) * 15.57 * 0.1697 }}
+          
+      - name: "Wind Speed"
+        unique_id: wind_speed_batched
+        unit_of_measurement: "km/h"
+        icon: mdi:weather-windy
+        state: >-
+          {{ (states('sensor.thornton_wind_speed') | int(0) * 1.609) | int }}
+
+      - name: "Wind Gust"
+        unique_id: wind_gust_batched
+        unit_of_measurement: "km/h"
+        icon: mdi:weather-windy
+        state: >-
+          {{ (states('sensor.thornton_wind_gust') | int(0) * 1.609) | int }}
+
+      - name: "Max Gust"
+        unique_id: max_gust_batched
+        unit_of_measurement: "km/h"
+        icon: mdi:weather-windy
+        state: >-
+          {{ (states('sensor.thornton_max_gust') | int(0) * 1.609) | int }}
+
+      - name: "Rain Today"
+        unique_id: rain_today_batched
+        unit_of_measurement: "mm"
+        icon: mdi:weather-rainy
+        state: >-
+          {{ (states('sensor.thornton_daily_rain') | int(0) * 25.4) | int }}
+
+      - name: "Rain Event"
+        unique_id: rain_event_batched
+        unit_of_measurement: "mm"
+        icon: mdi:weather-rainy
+        state: >-
+          {{ (states('sensor.thornton_event_rain') | int(0) * 25.4) | int }}
+
+    # 2. REAL-TIME SENSORS
+  - sensor:
+    - name: AC Loads Custom
+      unique_id: ac_loads_custom_realtime
+      default_entity_id: sensor.custom_ac_loads
       unit_of_measurement: "W"
-      # Change value in this line below for the icon change threshold
-    icon: >-
-      {% if int(states('sensor.ac_loads')) >= 600 %}
-        mdi:alert
-      {%- else -%}
-        mdi:power-socket-fr
-      {%- endif %}
-  - name: Monthly Grid Cost
-    default_entity_id: sensor.monthly_grid_cost
-    state: >-
-      {{ (states('sensor.sonoff_10023a625a_energy_month') | float * 3.44) | round(2) }}
-    unit_of_measurement: "R"
-  - name: Forecasted solar radiation W/m2 converted to Total
-    default_entity_id: sensor.radiation_converted
-    unit_of_measurement: "W"
-    icon: mdi:sun-wireless
-    device_class: power
-    state: >-
-      {{ states('sensor.thornton_solar_rad')|int * 15.57 * 0.1697}}
+      state: "{{ states('sensor.ac_loads') | int(0) }}"
+        # Change value in this line below for the icon change threshold
+      icon: >-
+        {% if int(states('sensor.ac_loads')) >= 600 %}
+          mdi:alert
+        {%- else -%}
+          mdi:power-socket-fr
+        {%- endif %}
+    - name: Monthly Grid Cost
+      unique_id: monthly_grid_cost
+      default_entity_id: sensor.monthly_grid_cost
+      state: "{{ (states('sensor.sonoff_10023a625a_energy_month') | float(0) * 3.44) | round(2) }}"
+      unit_of_measurement: "R"
+  
           
   # Calculate hours left to empty based on battery_max_capacity at 100% charge
   # UPDATE MAY 2023: Empty is actually 11% SOC so adjusted formula to reach 11% instead of 0%
@@ -107,16 +175,16 @@ template:
   # Condition 2 to check if battery current is zero or charging, then calculate time left based on ac load
   # (AC Watts converted to DC Amps current - because AC Watts = DC Watts)
   # Had to convert all to floats for precision of partial hours, then rounded to 2 decimals
-  - name: Time left on Battery to Empty
-    default_entity_id: sensor.time_left_on_battery_zero
-    unit_of_measurement: "Hours"
-    icon: mdi:sort-clock-ascending-outline
-    state: >-
-        {% set battery_current = states('sensor.battery_current')|float %}
-        {% set battery_soc = states('sensor.battery_soc')|float %}
-        {% set loads_current = states('sensor.ac_loads')|float/states('sensor.battery_voltage')|float %}
-        {% set battery_max_capacity = states('sensor.solar_battery_maximum_capacity')|float %}
-        {{ ((((battery_soc-11)*battery_max_capacity)/100)/loads_current|float ) | round(2) }}
+    - name: Time left on Battery to Empty
+      unique_id: battery_time_left_zero
+      default_entity_id: sensor.time_left_on_battery_zero
+      unit_of_measurement: "Hours"
+      icon: mdi:sort-clock-ascending-outline
+      state: >-
+          {% set battery_soc = states('sensor.battery_soc') | float(0) %}
+          {% set loads_current = states('sensor.ac_loads') | float(0) / states('sensor.battery_voltage') | float(1) %}
+          {% set battery_max_capacity = states('sensor.solar_battery_maximum_capacity') | float(0) %}
+          {{ ((((battery_soc - 11) * battery_max_capacity) / 100) / (loads_current if loads_current > 0 else 1)) | round(2) }}
           
 
   # Calculate hours left to current min SOC based on battery_max_capacity at 100% charge, ie. when it reverts back to grid power
@@ -128,63 +196,34 @@ template:
   # Condition 3 to check if battery current is zero or charging, then calculate time left based on ac load (AC Watts converted to
   # DC Amps current - because AC Watts = DC Watts) 
   # Had to convert all to floats for precision of partial hours, then rounded to 2 decimals
-  - name: Time left on Battery to Min SoC
-    default_entity_id: sensor.time_left_on_battery_min_soc
-    unit_of_measurement: "Hours"
-    icon: mdi:sort-clock-ascending
-    state: >-
-      {% set battery_current = states('sensor.battery_current')|float %}
-      {% set battery_soc = states('sensor.battery_soc')|float %}
-      {% set loads_current = states('sensor.ac_loads')|float/states('sensor.battery_voltage')|float %}
-      {% set battery_min_soc = states('sensor.victron_battery_min_soc')|float %}
-      {% set battery_max_capacity = states('sensor.solar_battery_maximum_capacity')|float %}
-      {% if (battery_soc-battery_min_soc) < 0 %}
-        {{ 0 }}
-      {% else %}
-        {{ ((((battery_soc-battery_min_soc)*battery_max_capacity)/100)/loads_current | float ) | round(2) }}
-      {% endif %}
+    - name: Time left on Battery to Min SoC
+      unique_id: battery_time_left_min
+      default_entity_id: sensor.time_left_on_battery_min_soc
+      unit_of_measurement: "Hours"
+      icon: mdi:sort-clock-ascending
+      state: >-
+        {% set battery_soc = states('sensor.battery_soc') | float(0) %}
+          {% set loads_current = states('sensor.ac_loads') | float(0) / states('sensor.battery_voltage') | float(1) %}
+          {% set battery_min_soc = states('sensor.victron_battery_min_soc') | float(0) %}
+          {% set battery_max_capacity = states('sensor.solar_battery_maximum_capacity') | float(0) %}
+          {% if (battery_soc - battery_min_soc) < 0 %}
+            0
+          {% else %}
+            {{ ((((battery_soc - battery_min_soc) * battery_max_capacity) / 100) / (loads_current if loads_current > 0 else 1)) | round(2) }}
+          {% endif %}
     
   # This calculates the difference in whole days since the solar battery was last fully charged. It calculates based on the
   # value of the Helper called Battery Last Full Date's state. There is an Automation that triggers a reset of the Helper
   # when SOC is 100% and the battery current has changed from Charging to Idle. Less than a day will output 0.
-  - default_entity_id: sensor.battery_last_full_days
-    unit_of_measurement: "Hours"
-    icon: mdi:battery-charging-100
-    state: >-
-      {% set battery_last_full_date = as_timestamp(states.input_datetime.battery_last_full_date.state)|int %}
-      {% set now_full_date = as_timestamp(now())|int %}
-      {{ ((now_full_date - battery_last_full_date)/86400) | int }}
-  # Convert raw imperial measurements from weather station into metric readings
-  - name: Wind Speed
-    default_entity_id: sensor.ambientweather_wind_kmh
-    unit_of_measurement: "km/h"
-    icon: mdi:weather-windy
-    state: >-
-      {{(states('sensor.thornton_wind_speed')|int*1.609) | int}}
-  - name: Wind Gust
-    default_entity_id: sensor.ambientweather_wind_gust_kmh
-    unit_of_measurement: "km/h"
-    icon: mdi:weather-windy
-    state: >-
-      {{(states('sensor.thornton_wind_gust')|int*1.609) | int}}
-  - name: Max Gust
-    default_entity_id: sensor.ambientweather_max_gust_kmh
-    unit_of_measurement: "km/h"
-    icon: mdi:weather-windy
-    state: >-
-      {{(states('sensor.thornton_max_gust')|int*1.609) | int}}
-  - name: Rain Today
-    default_entity_id: sensor.ambientweather_daily_rain_mm
-    unit_of_measurement: "mm"
-    icon: mdi:weather-rainy
-    state: >-
-      {{(states('sensor.thornton_daily_rain')|int*25.4) | int}}
-  - name: Rain Event
-    default_entity_id: sensor.ambientweather_event_rain_mm
-    unit_of_measurement: "mm"
-    icon: mdi:weather-rainy
-    state: >-
-      {{(states('sensor.thornton_event_rain')|int*25.4) | int}}
+    - default_entity_id: sensor.battery_last_full_days
+      unique_id: battery_days_since_full
+      unit_of_measurement: "Hours"
+      icon: mdi:battery-charging-100
+      state: >-
+        {% set battery_last_full_date = as_timestamp(states('input_datetime.battery_last_full_date')) | int(0) %}
+          {% set now_full_date = as_timestamp(now()) | int %}
+          {{ ((now_full_date - battery_last_full_date) / 86400) | int }}
+  
 
         
 # Weather Underground PWS
