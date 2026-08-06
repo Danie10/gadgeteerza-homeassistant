@@ -15,15 +15,6 @@ recorder:
       - sensor.date_time     # This writes every single minute!
       - sensor.ac_loads      # If this is extremely noisy, consider excluding
 
-# Allows local Nginx Proxy Manager
-# 2FA enabled already too
-http:
-  use_x_forwarded_for: true
-  trusted_proxies:
-    - 172.17.0.0/24
-  ip_ban_enabled: true
-  login_attempts_threshold: 5
-
 # Text to speech
 tts:
   - platform: google_translate
@@ -67,28 +58,71 @@ logger:
     #aiohttp: debug
 
 # Exports to InfluxDB for Grafana display of graphs etc
-influxdb:
-  api_version: 2
-  ssl: false
-  host: localhost
-  port: 8086
-  token: !secret influxdb_token
-  organization: 74fa36561df3a7c0
-  bucket: Home Assistant
-  max_retries: 5
-  precision: ms
-  measurement_attr: unit_of_measurement
-  include:
-    domains:
-      - sensor
-      - binary_sensor
-    entities:
-      - sensor.ac_loads
-      - sensor.battery_soc
-      - sensor.thornton_solar_rad
-  exclude:
-    entities:
-      - sensor.date_time
+#influxdb:
+#  max_retries: 5
+#  precision: s
+#  measurement_attr: unit_of_measurement
+#  include:
+#    domains:
+#      - sensor
+#      - binary_sensor
+#    entities:
+#      - sensor.ac_loads
+#      - sensor.battery_soc
+#      - sensor.thornton_solar_rad
+#  exclude:
+#    entities:
+#      - sensor.date_time
+
+# This fetches data from Speedtest Tracker
+rest:
+  - resource: "http://192.168.20.2:8089/api/v1/results/latest"
+    scan_interval: 1800
+    headers:
+      Authorization: !secret speedtest_bearer_token
+      Accept: "application/json"
+    sensor:
+      - name: "Speedtest Download"
+        unique_id: "speedtest_trckr_download"
+        value_template: "{{ (value_json.data.download_bits | float / 1000000) | round(1) }}"
+        unit_of_measurement: "Mbit/s"
+        device_class: data_rate
+        state_class: measurement
+        json_attributes_path: "$.data"
+        json_attributes:
+          - "id"
+          - "created_at"
+
+      - name: "Speedtest Upload"
+        unique_id: "speedtest_trckr_upload"
+        value_template: "{{ (value_json.data.upload_bits | float / 1000000) | round(1) }}"
+        unit_of_measurement: "Mbit/s"
+        device_class: data_rate
+        state_class: measurement
+
+      - name: "Speedtest Ping"
+        unique_id: "speedtest_trckr_ping"
+        value_template: "{{ value_json.data.ping | round(1) }}"
+        unit_of_measurement: "ms"
+        device_class: duration
+        state_class: measurement
+        
+      - name: "Speedtest Packet Loss"
+        unique_id: "speedtest_trckr_loss"
+        # Nested path discovered in curl: data -> data -> packetLoss
+        value_template: "{{ value_json.data.data.packetLoss | round(2) }}"
+        unit_of_measurement: "%"
+        state_class: measurement
+
+      - name: "Speedtest Last Run"
+        unique_id: "speedtest_trckr_last_run"
+        # We manually shift the 20:06 UTC to 22:06 SAST 
+        # as a string so HA displays exactly what we want.
+        value_template: >
+          {% set utc_time = value_json.data.data.timestamp %}
+          {{ (utc_time | as_datetime | as_local).isoformat() }}
+
+        
   
 # Create custom sensor to output conversion as total potential max of forecast for panel area
 # Panel is 330W max for 1.94628m2 (8 panels = 15.57 m2 and 2,640 W max)
@@ -217,7 +251,7 @@ template:
   # when SOC is 100% and the battery current has changed from Charging to Idle. Less than a day will output 0.
     - default_entity_id: sensor.battery_last_full_days
       unique_id: battery_days_since_full
-      unit_of_measurement: "Hours"
+      unit_of_measurement: "Days"
       icon: mdi:battery-charging-100
       state: >-
         {% set battery_last_full_date = as_timestamp(states('input_datetime.battery_last_full_date')) | int(0) %}

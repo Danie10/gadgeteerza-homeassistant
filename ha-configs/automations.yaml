@@ -70,7 +70,10 @@
   - platform: state
     entity_id:
     - input_number.multiplus_minimum_soc
-  condition: []
+  condition:
+  - condition: template
+    value_template: >-
+      {{ trigger.to_state.state | int(0) != states('sensor.victron_battery_min_soc') | int(0) }}
   action:
   - service: modbus.write_register
     data_template:
@@ -82,16 +85,22 @@
 - id: '1660829853910'
   alias: Set slider from minimum SoC
   description: Sets slider to actual minimum SoC
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.victron_battery_min_soc
-  condition: []
-  action:
-  - service: input_number.set_value
-    data_template:
+    trigger: state
+  conditions:
+  - condition: template
+    value_template: >-
+      {{ states('sensor.victron_battery_min_soc') not in ['unknown','unavailable']
+         and states('sensor.victron_battery_min_soc') | int(0) >= 20
+         and states('sensor.victron_battery_min_soc') | int(0) <= 100
+         and states('sensor.victron_battery_min_soc') | int(0) != states('input_number.multiplus_minimum_soc') | int(0) }}
+  actions:
+  - data_template:
       entity_id: input_number.multiplus_minimum_soc
-      value: '{{ states(''sensor.victron_battery_min_soc'')|int }}'
+      value: '{{ states(''sensor.victron_battery_min_soc'') | int(0) }}'
+    action: input_number.set_value
   mode: single
 - id: '1661197173507'
   alias: Danie leaves his Mom
@@ -453,7 +462,7 @@
   alias: Announce load shedding starting 45 mins
   description: Gives warning of 45 minutes before scheduled load shedding starts
   triggers:
-  - entity_id: sensor.load_shedding_area_capetown_9_thornton
+  - entity_id: sensor.load_shedding_area_za_wc_cpt_thornton_e9a8
     attribute: starts_in
     below: 46
     trigger: numeric_state
@@ -741,51 +750,6 @@
       title: Weather Station
     action: notify.persistent_notification
   mode: single
-- id: '1721499853765'
-  alias: Internet speed slow
-  description: When Speedtest falls below 200
-  triggers:
-  - type: data_rate
-    device_id: 726bb73cb353676b256f6800aeca4a43
-    entity_id: 7655eb3908cc148ed484412cf853b84b
-    domain: sensor
-    below: 200
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-    trigger: device
-  conditions:
-  - condition: time
-    after: 09:00:00
-    before: '23:00:00'
-    weekday:
-    - sun
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
-  actions:
-  - target:
-      entity_id: media_player.googlehome9254
-    data:
-      media_content_id: media-source://tts/google_translate?message=Internet+speed+is+slow&language=en-za
-      media_content_type: provider
-    metadata:
-      title: Internet speed is slow
-      thumbnail: https://brands.home-assistant.io/_/google_translate/logo.png
-      media_class: app
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://tts
-      - media_content_type: provider
-        media_content_id: media-source://tts/google_translate?message=Internet+speed+is+slow&language=en-za
-    action: media_player.play_media
-  mode: single
 - id: '1740750516236'
   alias: Friday Pizza time at 16:00
   description: ''
@@ -894,3 +858,17 @@
             media_content_id: media-source://tts/google_translate?message=Hey%21+It%27s+supper+time%21&language=en-za
           browse_entity_id: media_player.googlehome9254
   mode: single
+- id: '1772392336579'
+  alias: Music Assistant - Local(only) Voice Support Blueprint
+  description: ''
+  use_blueprint:
+    path: music-assistant/mass_assist_blueprint_en.yaml
+    input:
+      default_player_entity_id_input: media_player.web_chrome_on_android
+- id: '1772395476709'
+  alias: Music Assistant - Local(only) Voice Support Blueprint
+  description: ''
+  use_blueprint:
+    path: music-assistant/mass_assist_blueprint_en.yaml
+    input:
+      default_player_entity_id_input: media_player.my_desktop_browser
